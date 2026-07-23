@@ -76,6 +76,9 @@ These fields summarize verified Activity Records and must not replace them.
 | `record_status` | enum: `Draft`, `Verified`, `Approved`, `Stale`, `Superseded` | Required | The status of the record. | `"Draft"` |
 | `duplicate_risk` | enum: `Low`, `Medium`, `High` | Required | Risk that this record is confused with a different person of the same name. | `"Low"` |
 | `ambiguity_notes` | string | Optional | Notes explaining any ambiguity. | `""` |
+| `stale_reason` | string | Required when `record_status` is Stale | A short explanation of why the record is considered stale, per [freshness-policy.md](../core/freshness-policy.md). | `""` |
+| `refresh_required` | boolean or `Unknown` | Optional | Whether this record needs to be re-checked before it can be used with confidence. Does not imply an automatic refresh. | `false` |
+| `duplicate_contact_group` | string | Optional | An optional logical label grouping this record with other duplicate or overlapping contact records, for output deduplication only. Not a database identifier. | `""` |
 
 ## Person Record Rules
 
@@ -88,6 +91,9 @@ These fields summarize verified Activity Records and must not replace them.
 7. Do not fabricate LinkedIn profile URLs.
 8. Every time-sensitive field requires `checked_at`.
 9. Public professional information only; no private-contact enrichment.
+10. `stale_reason` is required whenever `record_status` is Stale.
+11. `refresh_required` does not imply automatic refresh; a refresh occurs only after an explicit user request.
+12. `duplicate_contact_group` supports output deduplication only — it must not trigger automatic merging or deletion, and original records remain traceable.
 
 ## Example Record
 

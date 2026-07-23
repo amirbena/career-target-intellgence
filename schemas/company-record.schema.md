@@ -94,6 +94,8 @@ A company appearing in the target map must not imply that it is currently hiring
 | `record_status` | enum: `Draft`, `Verified`, `Approved`, `Stale`, `Superseded` | Required | The status of the record. | `"Draft"` |
 | `exclusion_status` | enum: `Included`, `Excluded`, `Needs Review` | Required | Whether the company remains in scope. | `"Included"` |
 | `exclusion_reason` | string | Optional | The reason for exclusion, if excluded. | `""` |
+| `stale_reason` | string | Required when `record_status` is Stale | A short explanation of why the record is considered stale, per [freshness-policy.md](../core/freshness-policy.md). | `""` |
+| `refresh_required` | boolean or `Unknown` | Optional | Whether this record needs to be re-checked before it can be used with confidence. Does not imply an automatic refresh. | `false` |
 
 ## Company Record Rules
 
@@ -105,6 +107,8 @@ A company appearing in the target map must not imply that it is currently hiring
 6. Do not invent office locations, teams, technologies, or open roles.
 7. Every mutable public claim requires a source and `checked_at`.
 8. Company suitability does not prove current hiring.
+9. `stale_reason` is required whenever `record_status` is Stale.
+10. `refresh_required` does not imply automatic refresh; a refresh occurs only after an explicit user request — see [freshness-policy.md](../core/freshness-policy.md), rule 9.
 
 ## Example Record
 

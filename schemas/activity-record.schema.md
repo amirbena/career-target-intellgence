@@ -53,6 +53,8 @@ Use explicit dates rather than only relative wording such as "three months ago."
 | `source_urls` | list of strings | Optional | Source URLs used for verification. | `["https://linkedin.com/posts/jordan-ashkenazi-example_hiring-activity-1234"]` |
 | `checked_at` | timestamp | Required | When this record was last checked. | `"2026-07-19T00:00:00Z"` |
 | `confidence` | enum: `Low`, `Medium`, `High` | Required | Confidence in the verification outcome. | `"High"` |
+| `stale_reason` | string | Required when `verification_status` is Stale | A short explanation of why the record is considered stale, per [freshness-policy.md](../core/freshness-policy.md). | `""` |
+| `refresh_required` | boolean or `Unknown` | Optional | Whether this record needs to be re-checked before it can be used with confidence. Does not imply an automatic refresh. | `false` |
 
 ## Job Signal
 
@@ -77,6 +79,8 @@ A post existing does not prove that the role remains open; `job_status` must ref
 8. Do not infer current job availability from an old post.
 9. Record failed verification rather than silently dropping the person.
 10. Activity verification occurs only after an explicit user request or as part of an explicitly requested full journey.
+11. `stale_reason` is required whenever `verification_status` is Stale.
+12. `refresh_required` does not imply automatic refresh; a refresh occurs only after an explicit user request.
 
 ## Example Records
 

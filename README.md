@@ -64,6 +64,17 @@ How the product routes and executes research work — running only the modules a
 - [workflows/focused-task-routing.md](workflows/focused-task-routing.md) — routing a specific request to the minimum required modules
 - [workflows/resume-journey.md](workflows/resume-journey.md) — continuing from the latest valid Research State
 
+## Output contracts
+
+The canonical outputs the product produces — what they contain, how they're ordered, and how a Markdown output maps to a CSV-compatible one — are defined in `core/` and `outputs/`:
+
+- [core/output-contracts.md](core/output-contracts.md) — every canonical output's purpose, required records, and rules
+- [outputs/company-map-template.md](outputs/company-map-template.md) — the Target Company Map
+- [outputs/people-map-template.md](outputs/people-map-template.md) — the People Map
+- [outputs/activity-verification-template.md](outputs/activity-verification-template.md) — the Activity Verification Report
+- [outputs/outreach-queue-template.md](outputs/outreach-queue-template.md) — the Outreach Priority Queue
+- [outputs/csv-column-contracts.md](outputs/csv-column-contracts.md) — stable CSV-compatible column definitions for every output
+
 ## Further reading
 
 - [ROADMAP.md](ROADMAP.md)
