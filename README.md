@@ -117,6 +117,35 @@ Skill, Instructions, and approved Knowledge into one distributable archive:
 `./scripts/package-claude-external-kit.sh` or
 `.\scripts\package-claude-external-kit.ps1`.
 
+## ChatGPT Custom GPT
+
+A deployable ChatGPT Custom GPT package adapts the same shared methodology
+for ChatGPT, using GPT Instructions for behavior and generated Knowledge
+bundles for reference material:
+
+- [chatgpt/instructions.md](chatgpt/instructions.md) — deployment-ready GPT Instructions
+- [chatgpt/builder-config.md](chatgpt/builder-config.md) — Builder configuration (name, description, capabilities)
+- [chatgpt/knowledge-manifest.md](chatgpt/knowledge-manifest.md) — Knowledge bundle-to-source mapping
+- [chatgpt/builder-setup.md](chatgpt/builder-setup.md) — setup guide
+- [chatgpt/testing-guide.md](chatgpt/testing-guide.md) — smoke tests
+- [chatgpt/sharing-and-publishing.md](chatgpt/sharing-and-publishing.md) — sharing and publishing guide
+- [chatgpt/package-manifest.md](chatgpt/package-manifest.md) — package structure
+
+Build the Knowledge bundles and the deployable archive:
+
+```bash
+./scripts/build-chatgpt-knowledge.sh
+./scripts/package-chatgpt-gpt.sh
+```
+
+```powershell
+.\scripts\build-chatgpt-knowledge.ps1
+.\scripts\package-chatgpt-gpt.ps1
+```
+
+Both produce `dist/career-targeting-intelligence-chatgpt.zip`. This
+package configures no Actions, Apps, or external APIs.
+
 ## Golden example
 
 A complete, end-to-end worked example — using a fully synthetic candidate ("Tova") and entirely synthetic companies, people, and activity — demonstrates the schemas, trust policy, ranking models, workflow, and output contracts working together:
