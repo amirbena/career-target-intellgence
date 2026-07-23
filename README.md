@@ -75,6 +75,28 @@ The canonical outputs the product produces — what they contain, how they're or
 - [outputs/outreach-queue-template.md](outputs/outreach-queue-template.md) — the Outreach Priority Queue
 - [outputs/csv-column-contracts.md](outputs/csv-column-contracts.md) — stable CSV-compatible column definitions for every output
 
+## Claude Skill
+
+A packaged, installable Claude Skill adapts the shared methodology for
+execution inside Claude, while `core/`, `schemas/`, `ranking/`, `workflows/`,
+and `outputs/` remain the canonical source of truth:
+
+- [claude/skill/SKILL.md](claude/skill/SKILL.md) — the Skill entry point
+- [claude/skill-manifest.md](claude/skill-manifest.md) — package contents, canonical source mappings, and expected ZIP structure
+- [claude/packaging.md](claude/packaging.md) — the packaging guide
+
+Build the installable package:
+
+```bash
+./scripts/package-claude-skill.sh
+```
+
+```powershell
+.\scripts\package-claude-skill.ps1
+```
+
+Both produce `dist/career-targeting-intelligence.skill.zip`.
+
 ## Golden example
 
 A complete, end-to-end worked example — using a fully synthetic candidate ("Tova") and entirely synthetic companies, people, and activity — demonstrates the schemas, trust policy, ranking models, workflow, and output contracts working together:

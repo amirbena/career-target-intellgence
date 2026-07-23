@@ -13,6 +13,27 @@
 - Do not add LinkedIn automation, scheduled monitoring, scraping, alerts, outreach automation, or automatic external-file mutation unless a future task explicitly requests it.
 - Do not push, open a PR, merge, or delete branches unless explicitly requested.
 
+## Claude Skill packaging rules
+
+- `claude/skill/` is the installable Skill source.
+- `core/`, `schemas/`, `ranking/`, `workflows/`, and `outputs/` remain
+  canonical — the Skill adapts them, it does not redefine them.
+- Platform adaptations must not silently change canonical rules, numbers,
+  or enums.
+- Packaging uses an explicit allowlist (`SKILL.md`, `references/`,
+  `templates/`), never a recursive repository copy followed by exclusions.
+- Never recursively package the whole repository.
+- The macOS/Linux and Windows packaging scripts must remain logically
+  equivalent (same allowlist, same output filename, same top-level
+  directory, same normalized file list).
+- Real user data and Golden Journey examples must never enter the Skill
+  ZIP.
+- Packaging scripts must work when invoked from outside the repository
+  root.
+- Remove obsolete `.gitkeep` files when real content is added to a
+  directory.
+- Every Skill change must validate package contents before completion.
+
 ## Before completion
 
 - Inspect the final diff.
