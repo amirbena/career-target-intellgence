@@ -37,6 +37,32 @@ This order reflects evidence strength, from strongest (a specific matching role,
 - No automatic messages, connection requests, monitoring, or scheduled follow-up. The queue is a prioritized list of suggested next actions for the user to perform manually.
 - The system recommends actions but does not perform them.
 
+## Tie-break Sequence
+
+When two candidate outreach entries are otherwise equivalent under the [Recommended Action Order](#recommended-action-order), the following default applies:
+
+> When evidence strength, activity level, role match, current employment, and company priority are otherwise equivalent, a relevant hiring manager ranks before a recruiter, because the manager is more likely to own or influence the matching team's hiring decision.
+
+**Exceptions to the default:**
+
+- A recruiter with direct ownership of the exact verified role may outrank a manager with only general team relevance.
+- An unresolved manager (unverified or unclear current employment) must not outrank a verified recruiter.
+- User preference may override the default tie-break.
+- Duplicate-contact avoidance may change queue order — see [Outreach Queue Inputs](#outreach-queue-inputs) below.
+
+**Complete tie-break sequence**, applied in order until the tie is resolved:
+
+1. Matching job evidence (an `A4` matching job post outranks anything weaker, regardless of person type).
+2. Current job status (`Verified Open` outranks `Post Found, Current Status Unknown`, which outranks the rest).
+3. Current employment verification (`Current` outranks `Unclear`/`Unable to Verify`, which outranks `Former`).
+4. Company priority (Priority 1 outranks Priority 2 outranks Priority 3).
+5. Person relevance score (the [Person Ranking Model](person-ranking-model.md) total, descending).
+6. Hiring activity recency (a more recent `activity_date` outranks an older one).
+7. Hiring manager before recruiter, when otherwise equivalent — the default described above, applied only after steps 1–6 have not resolved the tie.
+8. Confidence (Higher confidence outranks Lower, per the [confidence model](../core/confidence-model.md)).
+9. Duplicate-contact avoidance (an entry that is the strongest actionable record in its `duplicate_contact_group` outranks other records in the same group).
+10. Stable alphabetical fallback (by person name), so that ordering is deterministic even when every prior step is tied.
+
 ## Outreach Queue Inputs
 
 Each entry in the Outreach Queue should consider:

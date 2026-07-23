@@ -80,6 +80,37 @@ These fields summarize verified Activity Records and must not replace them.
 | `refresh_required` | boolean or `Unknown` | Optional | Whether this record needs to be re-checked before it can be used with confidence. Does not imply an automatic refresh. | `false` |
 | `duplicate_contact_group` | string | Optional | An optional logical label grouping this record with other duplicate or overlapping contact records, for output deduplication only. Not a database identifier. | `""` |
 
+## Duplicate Lifecycle Fields
+
+`duplicate_risk` and `duplicate_contact_group` answer two different questions and must not be conflated:
+
+- **`duplicate_risk`** represents uncertainty that two or more Person Records may refer to the same real person — it is about **identity ambiguity**. Values remain `Low`, `Medium`, `High`.
+- **`duplicate_contact_group`** represents a known or intentionally grouped set of records that should be treated as overlapping outreach options — it is about **outreach deduplication**, independent of whether identity is in question.
+
+Rules governing the interaction of these two fields:
+
+1. `duplicate_risk` is about identity uncertainty.
+2. `duplicate_contact_group` is about outreach deduplication.
+3. A record may legitimately have both: a high `duplicate_risk` value **and** a `duplicate_contact_group` label — the two are not mutually exclusive.
+4. High duplicate risk does not prove the records are the same person; it only flags that they might be.
+5. A `duplicate_contact_group` does not authorize merging or deleting records.
+6. When identity is unresolved, preserve all source records rather than collapsing them into one.
+7. The Outreach Queue should normally surface only the strongest actionable record from one `duplicate_contact_group`, while retaining the others in the People Map for traceability — see [build-outreach-queue.md](../workflows/build-outreach-queue.md).
+8. If records may represent different people, use `duplicate_risk` alone without forcing them into a `duplicate_contact_group` — grouping should only be applied when there is reason to believe the records represent the *same* underlying contact discovered via different sources, not merely people who share a name.
+
+**Synthetic example showing both fields together:**
+
+```text
+person_name: "Noa Cohen"
+company_name: "Riverton Analytics"
+current_title: "Technical Recruiter"
+duplicate_risk: "High"
+duplicate_contact_group: "riverton-noa-cohen"
+ambiguity_notes: "Two LinkedIn profiles named 'Noa Cohen' both list Technical Recruiter roles; this record and person-record 'noa-cohen-2' were grouped together as the same likely contact discovered via two search paths, but which underlying profile is authoritative remains unresolved."
+```
+
+Here, `duplicate_risk: High` flags that this "Noa Cohen" record's identity is uncertain (multiple same-named profiles exist), while `duplicate_contact_group: riverton-noa-cohen` groups it with a second record believed to be the *same* contact found via a different source — both fields apply to the same record without contradiction, per rule 3.
+
 ## Person Record Rules
 
 1. Verify that the person currently works at the company.
@@ -94,6 +125,7 @@ These fields summarize verified Activity Records and must not replace them.
 10. `stale_reason` is required whenever `record_status` is Stale.
 11. `refresh_required` does not imply automatic refresh; a refresh occurs only after an explicit user request.
 12. `duplicate_contact_group` supports output deduplication only — it must not trigger automatic merging or deletion, and original records remain traceable.
+13. `duplicate_risk` and `duplicate_contact_group` may both apply to the same record — see [Duplicate Lifecycle Fields](#duplicate-lifecycle-fields).
 
 ## Example Record
 
