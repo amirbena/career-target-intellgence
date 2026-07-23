@@ -46,6 +46,15 @@ The shared policy for how research claims are sourced, expressed with confidence
 - [core/freshness-policy.md](core/freshness-policy.md) — how freshness requirements depend on claim type
 - [core/quality-gates.md](core/quality-gates.md) — minimum checks before returning each research output
 
+## Ranking and prioritization
+
+The platform-independent rules for scoring target companies, scoring recruiters and hiring managers, handling excluded companies, and prioritizing outreach actions live in `ranking/`:
+
+- [ranking/company-ranking-model.md](ranking/company-ranking-model.md) — the weighted model for ranking target companies
+- [ranking/person-ranking-model.md](ranking/person-ranking-model.md) — the weighted model for ranking recruiters and potential hiring managers
+- [ranking/exclusion-policy.md](ranking/exclusion-policy.md) — how excluded and Needs Review companies are handled
+- [ranking/outreach-priority-model.md](ranking/outreach-priority-model.md) — the recommended action order for the Outreach Priority Queue
+
 ## Further reading
 
 - [ROADMAP.md](ROADMAP.md)
