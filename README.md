@@ -75,6 +75,12 @@ The canonical outputs the product produces — what they contain, how they're or
 - [outputs/outreach-queue-template.md](outputs/outreach-queue-template.md) — the Outreach Priority Queue
 - [outputs/csv-column-contracts.md](outputs/csv-column-contracts.md) — stable CSV-compatible column definitions for every output
 
+## Golden example
+
+A complete, end-to-end worked example — using a fully synthetic candidate ("Tova") and entirely synthetic companies, people, and activity — demonstrates the schemas, trust policy, ranking models, workflow, and output contracts working together:
+
+- [examples/tova/](examples/tova/) — the full journey from source profile through Candidate Profile, Search Criteria, Company Map, Excluded Companies, People Map, Activity Verification, Outreach Queue, Research State, and evaluation notes
+
 ## Further reading
 
 - [ROADMAP.md](ROADMAP.md)
