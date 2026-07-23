@@ -29,17 +29,18 @@ Each stage below uses the same status enum: `Not Started`, `Draft`, `Completed`,
 
 | Field | Type | Required | Description | Example |
 |---|---|---|---|---|
-| `candidate_profile_status` | enum | Required | Status of the Candidate Profile. | `"Approved"` |
-| `search_criteria_status` | enum | Required | Status of the Search Criteria. | `"Approved"` |
-| `company_discovery_status` | enum | Required | Status of target company discovery. | `"Not Started"` |
-| `company_classification_status` | enum | Required | Status of product-company classification/filtering. | `"Not Started"` |
-| `company_ranking_status` | enum | Required | Status of company prioritization/ranking. | `"Not Started"` |
-| `company_selection_status` | enum | Required | Status of final company selection. | `"Not Started"` |
-| `recruiter_research_status` | enum | Required | Status of recruiter discovery. | `"Not Started"` |
-| `hiring_manager_research_status` | enum | Required | Status of hiring manager discovery. | `"Not Started"` |
-| `activity_verification_status` | enum | Required | Status of activity verification. | `"Not Requested"` |
-| `outreach_queue_status` | enum | Required | Status of the outreach priority queue. | `"Not Started"` |
-| `export_status` | enum | Required | Status of any requested export. | `"Not Started"` |
+| `candidate_analysis_status` | enum | Required | Status of the Candidate Analysis stage (building the Candidate Profile). | `"Approved"` |
+| `search_criteria_status` | enum | Required | Status of the Search Criteria stage. | `"Approved"` |
+| `company_discovery_status` | enum | Required | Status of the Company Discovery stage. | `"Not Started"` |
+| `company_classification_status` | enum | Required | Status of the Company Classification stage. | `"Not Started"` |
+| `company_ranking_status` | enum | Required | Status of the Company Ranking stage. | `"Not Started"` |
+| `company_selection_status` | enum | Required | Status of the Company Selection stage. | `"Not Started"` |
+| `people_discovery_status` | enum | Required | Status of the People Discovery stage (recruiters and potential hiring managers). | `"Not Started"` |
+| `activity_verification_status` | enum | Required | Status of the Activity Verification stage. | `"Not Requested"` |
+| `outreach_queue_status` | enum | Required | Status of the Outreach Queue stage. | `"Not Started"` |
+| `export_status` | enum | Required | Status of the optional Export stage. | `"Not Started"` |
+
+Stage names align with the [workflow modules](../core/workflow.md#workflow-modules) — see [full-journey.md](../workflows/full-journey.md) for each stage's purpose, inputs, outputs, and quality gate.
 
 ## Saved References
 
@@ -82,7 +83,7 @@ research_id: "research-2026-07-20-dana-levi"
 candidate_name: "Dana Levi"
 journey_mode: "Focused Task"
 overall_status: "In Progress"
-candidate_profile_status: "Approved"
+candidate_analysis_status: "Approved"
 search_criteria_status: "Approved"
 company_discovery_status: "Not Started"
 recommended_next_stage: "company_discovery"
@@ -91,5 +92,7 @@ recommended_next_stage: "company_discovery"
 ## Related documents
 
 - [../core/data-model.md](../core/data-model.md)
+- [../core/workflow.md](../core/workflow.md)
+- [../workflows/full-journey.md](../workflows/full-journey.md)
 - [candidate-profile.schema.md](candidate-profile.schema.md)
 - [search-criteria.schema.md](search-criteria.schema.md)

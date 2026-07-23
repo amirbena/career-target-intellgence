@@ -55,6 +55,15 @@ The platform-independent rules for scoring target companies, scoring recruiters 
 - [ranking/exclusion-policy.md](ranking/exclusion-policy.md) — how excluded and Needs Review companies are handled
 - [ranking/outreach-priority-model.md](ranking/outreach-priority-model.md) — the recommended action order for the Outreach Priority Queue
 
+## Workflow orchestration
+
+How the product routes and executes research work — running only the modules a request actually needs, resuming from available context, and never repeating approved work — is defined in `core/` and `workflows/`:
+
+- [core/workflow.md](core/workflow.md) — the three operating modes and the routing principle
+- [workflows/full-journey.md](workflows/full-journey.md) — the complete, ordered end-to-end path
+- [workflows/focused-task-routing.md](workflows/focused-task-routing.md) — routing a specific request to the minimum required modules
+- [workflows/resume-journey.md](workflows/resume-journey.md) — continuing from the latest valid Research State
+
 ## Further reading
 
 - [ROADMAP.md](ROADMAP.md)
