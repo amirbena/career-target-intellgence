@@ -114,3 +114,41 @@ After running either script:
 6. Run the packaging command a second time and confirm the archive does not
    accumulate stale files from a previous run (the staging directory is
    fully rebuilt each time, not appended to).
+
+## Packaging the External Self-Install Kit
+
+A second, separate archive — the External Kit — bundles the Skill ZIP
+above together with Project Instructions, a fixed Knowledge allowlist, and
+installation documentation, for distribution to users outside the
+creator's Claude organization. See
+[`external-install/package-manifest.md`](external-install/package-manifest.md)
+for its full structure.
+
+### Commands
+
+```bash
+./scripts/package-claude-external-kit.sh
+```
+
+```powershell
+.\scripts\package-claude-external-kit.ps1
+```
+
+Both scripts build the Skill ZIP first (by invoking
+`package-claude-skill.sh` / `.ps1`), then assemble
+`dist/career-targeting-intelligence-claude-kit.zip` around it, using the
+same conventions as the Skill packager: an explicit allowlist, a dedicated
+staging directory, byte-for-byte copies of the canonical compact
+Instructions and Knowledge sources, and a single top-level package
+directory.
+
+### The two archives are distinct
+
+- `dist/career-targeting-intelligence.skill.zip` — the Skill execution
+  package. Install this as a Claude Skill.
+- `dist/career-targeting-intelligence-claude-kit.zip` — the distribution
+  package for external self-install. It contains the Skill ZIP above
+  (embedded, unchanged) plus Project Instructions, Knowledge, and setup
+  documentation. Distribute this to external users; do not distribute the
+  Skill ZIP alone and expect it to include Project setup, since the Skill
+  ZIP intentionally contains only Skill source.

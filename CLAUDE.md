@@ -34,6 +34,34 @@
   directory.
 - Every Skill change must validate package contents before completion.
 
+## Claude Project experience rules
+
+- Project Instructions orchestrate; they do not duplicate the Skill.
+- Full and compact Project Instructions must remain behaviorally aligned.
+- Skill activation language must be strong but not claim technical
+  guarantees.
+- Shared Project Knowledge must contain methodology only.
+- Personal records belong only in user-controlled context.
+- Platform persistence must not be reimplemented in prompts.
+- Project files must not redefine canonical weights, schemas, evidence
+  states, or output contracts.
+- Claude Project changes must be validated against the Tova Golden
+  Journey.
+- No ChatGPT files should be changed in Claude-only tasks.
+
+## Claude external kit rules
+
+- External kits use an explicit allowlist.
+- External Instructions are copied from the canonical compact source
+  during packaging.
+- Knowledge deployment files come from canonical repository sources.
+- External kits contain no Golden Journey or personal records.
+- Skill ZIP and External Kit ZIP are distinct artifacts.
+- macOS/Linux and Windows kit packagers must remain logically equivalent.
+- Normalized archive paths and extracted file contents must be validated.
+- Organization sharing and external installation remain separate product
+  paths.
+
 ## Before completion
 
 - Inspect the final diff.
