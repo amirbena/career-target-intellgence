@@ -62,6 +62,27 @@
 - Organization sharing and external installation remain separate product
   paths.
 
+## ChatGPT packaging rules
+
+- `chatgpt/instructions.md` is the canonical Custom GPT behavior source.
+- GPT Instructions define behavior; Knowledge defines reference material.
+- Generated Knowledge bundles must not be edited manually.
+- Knowledge bundles derive only from explicit canonical source allowlists.
+- Keep the Knowledge file count within the current GPT limit.
+- Do not upload Golden Journey or personal records as shared GPT
+  Knowledge.
+- The GPT must not claim unavailable memory, browsing, storage, or
+  automation.
+- Actions, Apps, APIs, monitoring, and outreach execution remain out of
+  scope.
+- macOS/Linux and Windows builders and packagers must remain logically
+  equivalent.
+- Every ChatGPT package change must validate Instructions, Knowledge
+  parity, normalized archive paths, and privacy exclusions.
+- Claude-only files must not be changed unless shared documentation
+  genuinely requires it.
+- Remove obsolete `.gitkeep` files when real content is added.
+
 ## Before completion
 
 - Inspect the final diff.
