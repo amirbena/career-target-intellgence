@@ -9,3 +9,4 @@ All notable changes to this project will be documented in this file.
 - Defined the Company, Person, and Activity Record schemas, extending the core data model to target companies, public professional contacts, and verified public activity evidence.
 - Defined the shared trust policy: Source Policy, Confidence Model, Freshness Policy, and Quality Gates.
 - Defined the ranking and outreach priority policy: Company Ranking Model, Person Ranking Model, Exclusion Policy, and Outreach Priority Model.
+- Defined modular workflow orchestration: core workflow, Full Journey, Focused Task Routing, Resume Journey, and per-module definitions (Analyze Candidate, Build Search Criteria, Discover Companies, Classify and Rank Companies, Discover People, Verify Activity, Build Outreach Queue); aligned Research State stage names with the workflow modules.
