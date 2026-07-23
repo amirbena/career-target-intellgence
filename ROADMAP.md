@@ -3,7 +3,7 @@
 This roadmap tracks the high-level phases for building Career Targeting Intelligence. Phases are sequential at a high level; detailed tasks within each phase will be defined when that phase begins.
 
 1. **Foundation** — repository structure, working rules, and high-level scope. **Completed.**
-2. **Core Methodology** — the platform-independent workflow, steps, and principles in `core/`. **In progress** — candidate, search criteria, company, person, activity, and research state data model defined.
+2. **Core Methodology** — the platform-independent workflow, steps, and principles in `core/`. **In progress** — candidate, search criteria, company, person, activity, and research state data model defined; source, confidence, freshness, and quality-gate policy defined.
 3. **Output Contracts** — defined shapes for each output (Candidate Profile, Target Company Map, Recruiter Map, Hiring Manager Map, Activity Verification, Outreach Priority Queue).
 4. **Golden Example** — a worked, end-to-end example demonstrating the full methodology.
 5. **Claude Product** — the Claude Skill and Claude Project instructions in `claude/`.

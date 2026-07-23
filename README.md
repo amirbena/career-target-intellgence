@@ -37,6 +37,15 @@ The canonical, platform-independent data model for the candidate, target compani
 - [schemas/activity-record.schema.md](schemas/activity-record.schema.md) — verified public activity evidence
 - [schemas/research-state.schema.md](schemas/research-state.schema.md) — what has already been completed, approved, or needs refresh
 
+## Trust and verification
+
+The shared policy for how research claims are sourced, expressed with confidence, and kept fresh lives in `core/`:
+
+- [core/source-policy.md](core/source-policy.md) — preferred source categories and claim-specific source rules
+- [core/confidence-model.md](core/confidence-model.md) — the evidence states used to describe how well a claim is supported
+- [core/freshness-policy.md](core/freshness-policy.md) — how freshness requirements depend on claim type
+- [core/quality-gates.md](core/quality-gates.md) — minimum checks before returning each research output
+
 ## Further reading
 
 - [ROADMAP.md](ROADMAP.md)
