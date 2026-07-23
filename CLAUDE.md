@@ -34,6 +34,21 @@
   directory.
 - Every Skill change must validate package contents before completion.
 
+## Claude Project experience rules
+
+- Project Instructions orchestrate; they do not duplicate the Skill.
+- Full and compact Project Instructions must remain behaviorally aligned.
+- Skill activation language must be strong but not claim technical
+  guarantees.
+- Shared Project Knowledge must contain methodology only.
+- Personal records belong only in user-controlled context.
+- Platform persistence must not be reimplemented in prompts.
+- Project files must not redefine canonical weights, schemas, evidence
+  states, or output contracts.
+- Claude Project changes must be validated against the Tova Golden
+  Journey.
+- No ChatGPT files should be changed in Claude-only tasks.
+
 ## Before completion
 
 - Inspect the final diff.

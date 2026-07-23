@@ -97,6 +97,19 @@ Build the installable package:
 
 Both produce `dist/career-targeting-intelligence.skill.zip`.
 
+## Claude Project experience
+
+A Claude Project layer turns the packaged Skill into a guided
+conversational product — routing requests, reusing active context, and
+presenting canonical outputs, without duplicating the Skill or `core/`
+methodology:
+
+- [claude/project-instructions.md](claude/project-instructions.md) — full Project Instructions
+- [claude/project-instructions.compact.md](claude/project-instructions.compact.md) — compact Project Instructions
+- [claude/project-setup.md](claude/project-setup.md) — setup guide
+- [claude/knowledge-manifest.md](claude/knowledge-manifest.md) — recommended Project Knowledge
+- [claude/artifact-policy.md](claude/artifact-policy.md) — when Claude should produce a dedicated artifact
+
 ## Golden example
 
 A complete, end-to-end worked example — using a fully synthetic candidate ("Tova") and entirely synthetic companies, people, and activity — demonstrates the schemas, trust policy, ranking models, workflow, and output contracts working together:
