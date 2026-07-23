@@ -23,7 +23,16 @@ Both surfaces are thin, platform-specific wrappers. The methodology itself lives
 
 ## Current project status
 
-Foundation stage. This repository currently defines project structure, working rules, and high-level scope only. The Claude Skill, Claude Project instructions, ChatGPT GPT instructions, detailed workflows, schemas, ranking models, and research examples have not been implemented yet.
+Foundation stage. This repository currently defines project structure, working rules, high-level scope, and the core candidate/research data model. The Claude Skill, Claude Project instructions, ChatGPT GPT instructions, detailed workflows, company/person research schemas, ranking models, and research examples have not been implemented yet.
+
+## Core model
+
+The canonical, platform-independent data model for the candidate and the research journey lives in `core/` and `schemas/`:
+
+- [core/data-model.md](core/data-model.md) — overview of the model and how the records relate
+- [schemas/candidate-profile.schema.md](schemas/candidate-profile.schema.md) — who the candidate is professionally
+- [schemas/search-criteria.schema.md](schemas/search-criteria.schema.md) — what should be searched for
+- [schemas/research-state.schema.md](schemas/research-state.schema.md) — what has already been completed, approved, or needs refresh
 
 ## Further reading
 
