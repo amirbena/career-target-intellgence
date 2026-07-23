@@ -53,6 +53,8 @@ This document defines stable, snake_case CSV-compatible column sets for each can
 
 ## Company Map
 
+Surfaces all eight [Company Ranking Model](../ranking/company-ranking-model.md) scoring dimensions as separate numeric columns, matching the [Company Map Markdown template](company-map-template.md) exactly.
+
 | Column | Source field | Value shape | Required | List handling | Unknown handling | Date format |
 |---|---|---|---|---|---|---|
 | `priority_tier` | Company Ranking Model tier | string | Required | n/a | n/a | n/a |
@@ -65,8 +67,16 @@ This document defines stable, snake_case CSV-compatible column sets for each can
 | `known_technologies` | `known_technologies` | semicolon-separated | Optional | semicolon-separated | empty | n/a |
 | `technology_scope` | `technology_scope` | enum | Required | n/a | n/a | n/a |
 | `relevant_roles` | `relevant_roles` | semicolon-separated | Optional | semicolon-separated | empty | n/a |
+| `role_fit` | Role and seniority fit dimension | number | Required | n/a | n/a | n/a |
+| `stack_fit` | Technology-stack fit dimension | number | Required | n/a | n/a | n/a |
+| `domain_fit` | Domain fit dimension | number | Required | n/a | n/a | n/a |
+| `system_type_fit` | System-type fit dimension | number | Required | n/a | n/a | n/a |
+| `product_company_fit` | Product-company fit dimension | number | Required | n/a | n/a | n/a |
+| `location_commute_fit` | Location and commute fit dimension | number | Required | n/a | n/a | n/a |
 | `possible_relevant_teams` | `possible_relevant_teams` | semicolon-separated | Optional | semicolon-separated | empty | n/a |
+| `relevant_team_evidence_fit` | Relevant-team evidence dimension | number | Required | n/a | n/a | n/a |
 | `hiring_signal_status` | `hiring_signal_status` | enum | Required | n/a | n/a | n/a |
+| `current_hiring_signal_fit` | Current hiring signal dimension | number | Required | n/a | n/a | n/a |
 | `confidence` | `confidence` | enum | Required | n/a | n/a | n/a |
 | `why_it_fits` | Written reasoning | string | Required | n/a | n/a | n/a |
 | `sources` | `sources` | semicolon-separated | Optional | semicolon-separated | empty | n/a |
