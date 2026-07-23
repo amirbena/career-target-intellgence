@@ -32,6 +32,40 @@ files in this repository.
    your own private workspace files, never in shared Knowledge, the Skill
    package, or this repository.
 
+## Distribution paths
+
+The steps above describe setting up a single Project directly from this
+repository. Depending on who you're setting the Project up for, that
+happens along one of two distinct paths:
+
+### Organization Shared Project
+
+For teammates within the creator's own Claude organization:
+
+- Share the Project within the same Claude organization.
+- Use restricted access unless editing is required.
+- Keep shared Knowledge free of personal candidate records.
+- Ensure the Skill is separately available to users — Project sharing
+  does not automatically install the Skill for everyone who gains access.
+
+### External Self-Install
+
+For anyone outside the creator's Claude organization:
+
+- Distribute the [external self-install kit](external-install/README.md)
+  instead of relying on Project sharing.
+- The user installs the Skill from the kit's embedded Skill ZIP.
+- The user creates their own private Project.
+- The user pastes the kit's included Instructions (copied byte-for-byte
+  from [`project-instructions.compact.md`](project-instructions.compact.md)
+  at packaging time).
+- The user uploads the kit's included Knowledge files.
+- The user optionally adds their own private workspace files.
+
+See [`external-install/README.md`](external-install/README.md) for the
+full flow and [`external-install/installation-checklist.md`](external-install/installation-checklist.md)
+for the step-by-step checklist.
+
 ## Responsibility table
 
 | Layer | Responsibility |

@@ -49,6 +49,19 @@
   Journey.
 - No ChatGPT files should be changed in Claude-only tasks.
 
+## Claude external kit rules
+
+- External kits use an explicit allowlist.
+- External Instructions are copied from the canonical compact source
+  during packaging.
+- Knowledge deployment files come from canonical repository sources.
+- External kits contain no Golden Journey or personal records.
+- Skill ZIP and External Kit ZIP are distinct artifacts.
+- macOS/Linux and Windows kit packagers must remain logically equivalent.
+- Normalized archive paths and extracted file contents must be validated.
+- Organization sharing and external installation remain separate product
+  paths.
+
 ## Before completion
 
 - Inspect the final diff.

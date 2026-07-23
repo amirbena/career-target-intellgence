@@ -4,6 +4,25 @@ This manifest describes the packaged Claude Skill for Career Targeting
 Intelligence: what it contains, how it maps back to the canonical
 repository, and how to build the installable ZIP.
 
+## Two distinct artifacts
+
+This repository builds two separate packages, and they are not
+interchangeable:
+
+- **Skill ZIP** (`career-targeting-intelligence.skill.zip`, documented in
+  this file) — the execution package: `SKILL.md`, progressive references,
+  and templates. It is what gets installed as a Claude Skill.
+- **External Kit ZIP** (`career-targeting-intelligence-claude-kit.zip`,
+  documented in [`external-install/package-manifest.md`](external-install/package-manifest.md))
+  — a distribution and Project-setup package for users outside the
+  creator's Claude organization. It embeds the Skill ZIP unchanged and
+  adds Project Instructions, a fixed Knowledge allowlist, and installation
+  documentation around it.
+
+Neither package may contain personal data, and the External Kit never
+redefines or forks the Skill — it packages the same Skill ZIP this file
+describes.
+
 ## Skill identity
 
 - **Skill name:** `career-targeting-intelligence`

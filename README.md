@@ -110,6 +110,13 @@ methodology:
 - [claude/knowledge-manifest.md](claude/knowledge-manifest.md) — recommended Project Knowledge
 - [claude/artifact-policy.md](claude/artifact-policy.md) — when Claude should produce a dedicated artifact
 
+For teammates outside the creator's Claude organization, a portable
+[external self-install kit](claude/external-install/README.md) packages the
+Skill, Instructions, and approved Knowledge into one distributable archive:
+`dist/career-targeting-intelligence-claude-kit.zip`, built with
+`./scripts/package-claude-external-kit.sh` or
+`.\scripts\package-claude-external-kit.ps1`.
+
 ## Golden example
 
 A complete, end-to-end worked example — using a fully synthetic candidate ("Tova") and entirely synthetic companies, people, and activity — demonstrates the schemas, trust policy, ranking models, workflow, and output contracts working together:
