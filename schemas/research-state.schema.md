@@ -1,25 +1,27 @@
 # Research State Schema
 
-The Research State record describes what has already been completed, approved, or needs refresh in a candidate's research journey. It exists to prevent unnecessary repetition and to support resuming work. It is separate from the [Candidate Profile](candidate-profile.schema.md) (who the candidate is) and the [Search Criteria](search-criteria.schema.md) (what should be searched for).
+The Research State record is a logical representation of the current progress of a candidate research journey, based on the context available to the running platform. It exists to prevent unnecessary repetition and to support resuming work within the context the platform makes available. It is separate from the [Candidate Profile](candidate-profile.schema.md) (who the candidate is) and the [Search Criteria](search-criteria.schema.md) (what should be searched for).
 
-This is a logical record. See [core/data-model.md](../core/data-model.md) for the principles that govern how it should be interpreted and populated. These are logical references, not an assumption of any specific database or file system.
+This is a logical record. See [core/data-model.md](../core/data-model.md) for the principles that govern how it should be interpreted and populated, including the [Context Boundary](../core/data-model.md#context-boundary) between this model and platform-managed persistence. These are logical references, not an assumption of any specific database or file system.
 
-## Session Identity
+Research State is not a storage mechanism and is not guaranteed to survive across conversations. It may be reconstructed from the available conversation or workspace context, and it may be used across multiple conversations when the platform exposes the same Project or workspace context to the product. Platform chat IDs, thread IDs, or Project IDs are not part of the canonical logical model.
+
+## Research Identity
 
 | Field | Type | Required | Description | Example |
 |---|---|---|---|---|
-| `research_id` | string | Required | A logical identifier for this research session. | `"research-2026-07-20-dana-levi"` |
-| `candidate_name` | string | Required | The candidate this research session belongs to. | `"Dana Levi"` |
-| `created_at` | timestamp | Required | When this research session was created. | `"2026-07-20T09:00:00Z"` |
-| `last_updated_at` | timestamp | Required | When this research session was last updated. | `"2026-07-20T10:30:00Z"` |
+| `research_id` | string | Required | A logical identifier for this research journey. | `"research-2026-07-20-dana-levi"` |
+| `candidate_name` | string | Required | The candidate this research journey belongs to. | `"Dana Levi"` |
+| `created_at` | timestamp | Required | When this research journey was created. | `"2026-07-20T09:00:00Z"` |
+| `last_updated_at` | timestamp | Required | When this research journey was last updated. | `"2026-07-20T10:30:00Z"` |
 
 ## Current Status
 
 | Field | Type | Required | Description | Example |
 |---|---|---|---|---|
 | `current_stage` | string | Required | The stage currently being worked on. | `"company_discovery"` |
-| `journey_mode` | enum: `Full Journey`, `Focused Task`, `Resume Journey` | Required | The mode this research session is operating in. | `"Focused Task"` |
-| `overall_status` | enum: `Not Started`, `In Progress`, `Blocked`, `Completed`, `Stale` | Required | The overall status of the research session. | `"In Progress"` |
+| `journey_mode` | enum: `Full Journey`, `Focused Task`, `Resume Journey` | Required | The mode this research journey is operating in. | `"Focused Task"` |
+| `overall_status` | enum: `Not Started`, `In Progress`, `Blocked`, `Completed`, `Stale` | Required | The overall status of the research journey. | `"In Progress"` |
 
 ## Stage Statuses
 
@@ -45,7 +47,7 @@ Each stage below uses the same status enum: `Not Started`, `Draft`, `Completed`,
 |---|---|---|---|---|
 | `candidate_profile_reference` | logical reference | Optional | A reference to the approved Candidate Profile. | `"candidate-profile:dana-levi:v2"` |
 | `search_criteria_reference` | logical reference | Optional | A reference to the current Search Criteria. | `"search-criteria:dana-levi:v1"` |
-| `selected_companies` | list of logical references | Optional | References to companies selected during this research session. | `[]` |
+| `selected_companies` | list of logical references | Optional | References to companies selected during this research journey. | `[]` |
 | `completed_outputs` | list of strings | Optional | Outputs that have been completed. | `["Candidate Profile"]` |
 | `pending_outputs` | list of strings | Optional | Outputs that are still pending. | `["Target Company Map"]` |
 
@@ -56,8 +58,8 @@ Each stage below uses the same status enum: `Not Started`, `Draft`, `Completed`,
 | `last_completed_stage` | string | Optional | The most recently completed stage. | `"search_criteria"` |
 | `recommended_next_stage` | string | Optional | The stage recommended to run next. | `"company_discovery"` |
 | `blocking_issues` | list of strings | Optional | Issues currently blocking progress. | `[]` |
-| `open_questions` | list of strings | Optional | Unresolved questions relevant to this research session. | `[]` |
-| `refresh_required` | boolean | Optional | Whether any part of this research session requires a refresh. | `false` |
+| `open_questions` | list of strings | Optional | Unresolved questions relevant to this research journey. | `[]` |
+| `refresh_required` | boolean | Optional | Whether any part of this research journey requires a refresh. | `false` |
 | `refresh_reason` | string | Optional | The reason a refresh is required, if applicable. | `""` |
 
 ## Research State Rules
