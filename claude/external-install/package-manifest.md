@@ -67,7 +67,7 @@ never contains:
 - `.git/`, `.github/`
 - `examples/` (including the Tova Golden Journey)
 - `tests/`
-- `CLAUDE.md`
+- `AGENTS.md`, `CLAUDE.md`
 - `README.md`, `ROADMAP.md`, `CHANGELOG.md` (the repository's own root
   docs — distinct from the kit's own `README.md`)
 - `scripts/` (the packaging scripts themselves)

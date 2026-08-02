@@ -29,8 +29,8 @@ Knowledge versus Instructions.
   material, not GPT configuration.
 - Personal candidate records.
 - Tova or any other Golden Journey content.
-- Repository-development rules (`CLAUDE.md`, working rules, commit
-  conventions).
+- Repository-development rules (`AGENTS.md`, `CLAUDE.md`, working rules,
+  commit conventions).
 - Packaging scripts.
 - `CHANGELOG.md` or `ROADMAP.md`.
 - Hidden state of any kind.
