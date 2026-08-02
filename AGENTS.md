@@ -155,6 +155,13 @@ Use a different merge strategy only when there is a clear
 repository-specific reason to preserve multiple commits. Do not rewrite
 or force-push `main`.
 
+If a repository ruleset blocks an otherwise-clean, reviewed squash merge
+(e.g. a required-approving-review count that hasn't been satisfied), the
+`--admin` flag on `gh pr merge --squash --admin` may be used to bypass
+the ruleset for that single merge. This is a per-action override, not a
+standing permission: confirm with the user in chat before using it each
+time, even if it was authorized for a prior PR in the same session.
+
 ### Post-merge synchronization
 
 After a PR is successfully merged:
