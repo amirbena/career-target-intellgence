@@ -34,4 +34,5 @@ The following are explicitly out of scope for the MVP and must not be introduced
 
 - [product-definition.md](product-definition.md)
 - [../README.md](../README.md)
+- [../AGENTS.md](../AGENTS.md)
 - [../CLAUDE.md](../CLAUDE.md)

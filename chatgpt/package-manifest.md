@@ -59,7 +59,7 @@ By construction (an explicit allowlist, never a recursive copy), the
 archive never contains:
 
 - `.git/`, `.github/`
-- `CLAUDE.md`
+- `AGENTS.md`, `CLAUDE.md`
 - The repository root `README.md`, `ROADMAP.md`, `CHANGELOG.md`
 - `scripts/` (the packaging and knowledge-build scripts themselves)
 - Any Claude distribution files (`claude/`)

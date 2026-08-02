@@ -64,7 +64,8 @@ The package uses an explicit allowlist (`SKILL.md`, `references/`,
 
 - `.git/`, `.github/`
 - `.DS_Store`, `Thumbs.db`, `__MACOSX/`
-- The repository root `README.md`, `ROADMAP.md`, `CHANGELOG.md`, `CLAUDE.md`
+- The repository root `README.md`, `ROADMAP.md`, `CHANGELOG.md`,
+  `AGENTS.md`, `CLAUDE.md`
 - `core/`, `schemas/`, `ranking/`, `workflows/`, `outputs/`
 - `examples/` (including the Tova golden journey — it is a repository
   development asset, not Skill content, and must never enter the package)

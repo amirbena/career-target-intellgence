@@ -55,8 +55,8 @@ The kit's Knowledge set never includes:
 - A duplicate copy of the Skill source (`claude/skill/` — the Skill is
   installed separately as a Skill package, not re-uploaded as Knowledge).
 - Golden Journey example files (`examples/tova/`).
-- `CLAUDE.md` (repository working instructions for contributors, not
-  end-user methodology).
+- `AGENTS.md` and `CLAUDE.md` (repository working instructions for
+  contributors, not end-user methodology).
 - `ROADMAP.md` or `CHANGELOG.md` (repository project-management history).
 - Packaging scripts (`scripts/`).
 - Test fixtures (`tests/`).
