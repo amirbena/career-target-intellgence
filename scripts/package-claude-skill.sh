@@ -25,6 +25,11 @@ fail() {
 
 command -v zip >/dev/null 2>&1 || fail "the 'zip' command is required but was not found on PATH. Install zip and re-run this script."
 
+# Validate the Skill description field payload stays within the Claude
+# Skill description character limit before packaging anything.
+[ -x "${SCRIPT_DIR}/validate-skill-description.sh" ] || fail "required validation script not found or not executable: ${SCRIPT_DIR}/validate-skill-description.sh"
+"${SCRIPT_DIR}/validate-skill-description.sh"
+
 [ -f "${SKILL_SOURCE_DIR}/SKILL.md" ] || fail "required file not found: ${SKILL_SOURCE_DIR}/SKILL.md"
 [ -d "${SKILL_SOURCE_DIR}/references" ] || fail "required directory not found: ${SKILL_SOURCE_DIR}/references"
 [ -d "${SKILL_SOURCE_DIR}/templates" ] || fail "required directory not found: ${SKILL_SOURCE_DIR}/templates"
