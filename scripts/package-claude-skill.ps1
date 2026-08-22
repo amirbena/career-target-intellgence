@@ -21,6 +21,15 @@ function Fail {
 
 $RepoRoot = Split-Path -Parent $PSScriptRoot
 $SkillSourceDir = Join-Path $RepoRoot "claude\skill"
+
+# Validate the Skill description field payload stays within the Claude
+# Skill description character limit before packaging anything.
+$DescriptionValidator = Join-Path $PSScriptRoot "validate-skill-description.ps1"
+if (-not (Test-Path -LiteralPath $DescriptionValidator -PathType Leaf)) {
+    Fail "required validation script not found: $DescriptionValidator"
+}
+& $DescriptionValidator
+
 $DistDir = Join-Path $RepoRoot "dist"
 $BuildDir = Join-Path $RepoRoot ".build\claude-skill-package"
 $PackageName = "career-targeting-intelligence"

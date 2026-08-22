@@ -29,6 +29,11 @@ fail() {
 
 command -v zip >/dev/null 2>&1 || fail "the 'zip' command is required but was not found on PATH. Install zip and re-run this script."
 
+# Validate the Instructions field payload stays within the Custom GPT
+# character limit before packaging anything.
+[ -x "${SCRIPT_DIR}/validate-chatgpt-instructions.sh" ] || fail "required validation script not found or not executable: ${SCRIPT_DIR}/validate-chatgpt-instructions.sh"
+"${SCRIPT_DIR}/validate-chatgpt-instructions.sh"
+
 # Required deployment documentation.
 DOCS=(README.md instructions.md builder-config.md conversation-starters.md builder-setup.md capability-policy.md testing-guide.md sharing-and-publishing.md knowledge-manifest.md)
 for doc in "${DOCS[@]}"; do

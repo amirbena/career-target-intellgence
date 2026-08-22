@@ -45,6 +45,17 @@ document rather than restate the rule.
 - Remove obsolete `.gitkeep` files when real content is added to a
   directory.
 - Every Skill change must validate package contents before completion.
+- The final packaged Skill `description` field (YAML frontmatter in
+  `claude/skill/SKILL.md`) must be < 2400 characters; prefer <= 2200 to
+  retain a safety margin.
+- Measure the exact final `description` payload that ships in the Skill
+  package, not a raw line count — YAML folding changes the actual string.
+- Do not work around the limit by moving required runtime behavior into
+  the description. It is concise activation metadata; canonical behavior
+  belongs in `SKILL.md` body content and `references/`.
+- These packaging length limits (ChatGPT Instructions and Skill
+  description) are automated build constraints, enforced by dedicated
+  validator scripts wired into packaging, not manual review conventions.
 
 ## Claude Project experience rules
 
@@ -94,6 +105,15 @@ document rather than restate the rule.
 - Claude-only files must not be changed unless shared documentation
   genuinely requires it.
 - Remove obsolete `.gitkeep` files when real content is added.
+- The final packaged ChatGPT Instructions payload (the exact text pasted
+  into the Custom GPT's Instructions field) must be < 8000 characters;
+  prefer <= 7600 to retain headroom.
+- Measure the actual final payload copied into the GPT Instructions field,
+  not a partial or pre-edit draft.
+- Compress structurally to stay within the limit; do not remove required
+  product behavior merely to satisfy it.
+- The canonical source of the Instructions payload remains
+  `chatgpt/instructions.md` unless repository architecture changes.
 
 ## Git and PR workflow
 
