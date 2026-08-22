@@ -13,34 +13,47 @@ Rebuild it using the ChatGPT Knowledge build script
 
 ## Purpose
 
-Career Targeting Intelligence turns a candidate's profile and goals into a prioritized, evidence-based map of where to focus a job search: which companies to target, which people to reach, and in what order — without automating outreach or monitoring on the candidate's behalf.
+Career Targeting Intelligence finds currently open roles that meaningfully match the candidate, verifies their current availability using the strongest available public evidence, evaluates relevant company-state signals, identifies appropriate recruiters or potential hiring managers, and produces an evidence-based manual outreach queue.
+
+Company-first research remains a supported, focused journey — a company can still be a useful target even without a verified open role today — but it is not the default when the user's intent is to find jobs. See [Primary user journey](#primary-user-journey) and [Company Targeting Journey](#company-targeting-journey).
 
 ## Primary user journey
 
-A candidate describes who they are and what they're looking for. The workflow analyzes that input, defines search criteria, discovers and filters target companies, prioritizes them, identifies relevant recruiters and hiring managers, optionally verifies recent activity when the candidate explicitly asks for it, and produces a prioritized outreach queue the candidate can act on manually.
+For job-discovery intent — "find me jobs," "what roles should I apply to," and equivalents — the default is the **Job Search Journey**: Candidate Input/Existing Candidate Profile → Search Criteria → Current Job Discovery → Current Job Verification → Candidate–Job Fit → Company State Verification → Recruiter/Hiring-Manager Discovery → Outreach Prioritization. See [workflows/job-search-journey.md](../workflows/job-search-journey.md).
+
+A successful primary job result represents one specific role with: a specific employer, a specific job title, sufficient role detail to assess candidate relevance, an explicit current-availability state, an exact verification timestamp, source URL(s), a candidate-fit assessment, a company-state assessment, and recruiter/hiring-manager discovery when useful and possible. The product prefers fewer strongly verified matches over many stale, closed, weak, or unverifiable ones. None of the following, alone, is treated as proof a job is currently open: a company being attractive, a recruiter's hiring post, a LinkedIn job page, a Glassdoor listing, an Indeed listing, a search-result snippet, or historical hiring evidence — see [core/job-verification-policy.md](job-verification-policy.md).
+
+## Company Targeting Journey
+
+The prior company-first path remains fully supported as a focused mode: "which companies should I target?", "find companies that match me even if there is no role today," "find recruiters at these companies." A company may appear in this mode's results without a verified open role, but the output must explicitly say so rather than implying a current opening exists. See [workflows/full-journey.md](../workflows/full-journey.md).
 
 ## Main outputs
 
 - **Candidate Profile** — a structured summary of the candidate's background, goals, and constraints.
-- **Target Company Map** — the set of companies worth targeting, with the reasoning behind their inclusion.
-- **Recruiter Map** — relevant recruiters associated with target companies.
-- **Hiring Manager Map** — relevant hiring managers associated with target companies and roles.
-- **Activity Verification** — confirmation of recent, relevant activity (e.g., open roles, hiring signals), performed only when explicitly requested.
-- **Outreach Priority Queue** — a ranked list of who to contact next and why.
+- **Verified Jobs Map** — the primary output for job-search intent: currently open, candidate-fit roles that passed the [Primary Job Eligibility Gate](../ranking/job-eligibility-gate.md), each with availability evidence, candidate-fit assessment, and company-state context.
+- **Unverified and Rejected Job Leads** — roles that did not pass the gate, kept visible with an explicit reason rather than silently dropped.
+- **Target Company Map** — the set of companies worth targeting under the Company Targeting Journey, with the reasoning behind their inclusion.
+- **Recruiter Map** — relevant recruiters associated with target companies or verified roles.
+- **Hiring Manager Map** — relevant hiring managers associated with target companies, roles, or teams.
+- **Activity Verification** — confirmation of a person's recent, relevant public activity (e.g., a hiring-related post), performed only when explicitly requested; distinct from Current Job Verification, which is a required part of the Job Search Journey rather than optional.
+- **Outreach Priority Queue** — a ranked list of who to contact next and why, able to reference a specific verified Job Record.
 
 ## Structured but modular
 
 The workflow follows a defined sequence of stages, but each stage is a self-contained, modular step. A user can request a single stage in isolation (e.g., "just build my Candidate Profile") without running the full workflow.
 
-## Research is opt-in
+## Research is opt-in, except job verification when job discovery is requested
 
-Research actions — including activity verification and any lookup beyond the candidate's own input — are performed only after the candidate explicitly requests them. The workflow does not run background or speculative research on its own initiative.
+Research actions — including any lookup beyond the candidate's own input — are performed only after the candidate explicitly requests them; the workflow does not run background or speculative research on its own initiative. **Current Job Verification is the one exception to "optional until asked":** when the user explicitly requests current job discovery (the Job Search Journey's default intent), Current Job Verification is a required part of that journey, not an optional add-on — a role cannot appear in the primary Verified Jobs Map without it. Activity Verification of a person's social posts remains optional and separate, since it is about what a person publicly did, not about proving a specific job is open — see [job-verification-policy.md](job-verification-policy.md) and [workflows/verify-activity.md](../workflows/verify-activity.md).
 
 ## Related documents
 
 - [../README.md](../README.md)
 - [scope-and-non-goals.md](scope-and-non-goals.md)
 - [../ROADMAP.md](../ROADMAP.md)
+- [job-verification-policy.md](job-verification-policy.md)
+- [../workflows/job-search-journey.md](../workflows/job-search-journey.md)
+- [../ranking/job-eligibility-gate.md](../ranking/job-eligibility-gate.md)
 
 
 ---
@@ -55,12 +68,16 @@ The MVP covers the following capabilities:
 
 - Candidate analysis
 - Search-criteria definition
-- Target-company discovery
+- Current job discovery, across official careers pages, LinkedIn, Glassdoor, Indeed, other job boards, and recruiter posts
+- Current job verification against the strongest available public evidence (official careers site/ATS preferred), per [job-verification-policy.md](job-verification-policy.md)
+- Candidate–job fit evaluation against a hard eligibility gate, per [ranking/job-eligibility-gate.md](../ranking/job-eligibility-gate.md)
+- Company-state evaluation (layoffs, freezes, restructuring, funding, expansion, leadership changes, and similar events), kept separate from job availability and candidate fit
+- Target-company discovery (Company Targeting Journey)
 - Product-company filtering
 - Company prioritization
 - Recruiter discovery
 - Hiring-manager discovery
-- Explicitly requested activity verification
+- Explicitly requested activity verification of a person's public posts
 - Outreach prioritization
 - Manual Markdown or CSV-compatible outputs
 
@@ -79,12 +96,16 @@ The following are explicitly out of scope for the MVP and must not be introduced
 - API
 - Multi-agent architecture
 
+Current job verification is public-evidence weighing only — it does not authorize scraping, access-control bypass, or automated/scheduled re-checking of job listings; every check is a response to an explicit user request, per [job-verification-policy.md](job-verification-policy.md), rule 10.
+
 ## Related documents
 
 - [product-definition.md](product-definition.md)
 - [../README.md](../README.md)
 - [../AGENTS.md](../AGENTS.md)
 - [../CLAUDE.md](../CLAUDE.md)
+- [job-verification-policy.md](job-verification-policy.md)
+- [../ranking/job-eligibility-gate.md](../ranking/job-eligibility-gate.md)
 
 
 ---
@@ -110,7 +131,9 @@ Candidate Profile
         ↓
 Search Criteria
         ↓
-Company Records
+Company Records ──── Company State Records
+        ↓                    │
+Job Records ─────────────────┘
         ↓
 Person Records
         ↓
@@ -122,20 +145,37 @@ Research State
 - **Candidate Profile** describes who the person is professionally — background, experience, technologies, and domains.
 - **Search Criteria** describes what should be searched for — the preferences and constraints that shape the research, separate from the candidate's professional facts. Search Criteria guide company discovery.
 - **Company Records** describe target organizations and the evidence gathered about them — identity, classification, technology and hiring evidence, and relevance notes.
+- **Company State Records** describe specific, dated, time-sensitive organizational developments at a company (layoffs, freezes, restructuring, funding, expansion, leadership change, and similar events) — kept separate from the Company Record's stable identity/classification fields because their freshness behavior and evidence requirements differ. See [Job Record — Company State Boundary](../schemas/company-state-record.schema.md#record-boundary).
+- **Job Records** describe one specific, discovered role as a first-class logical record — identity, discovery, current-availability state, role requirements, and candidate-fit gate result. A Job Record is authoritative for whether one specific role is currently open; see [Migration and Compatibility](#migration-and-compatibility-job-record).
 - **Person Records** describe potentially relevant public professional contacts at those companies — recruiters, hiring managers, and related roles — with employment verification kept separate from activity verification.
-- **Activity Records** contain specific, dated public evidence linked to a Person Record. They exist so that activity claims are never asserted without a verifiable basis.
-- **Research State** describes what has already been completed, approved, or needs refresh — a logical representation of research journey progress across all of the above records, based on the context available to the running platform. It is not a storage mechanism, separate from the candidate's facts, search preferences, and the company/person/activity records themselves.
+- **Activity Records** contain specific, dated public evidence linked to a Person Record. They exist so that activity claims are never asserted without a verifiable basis. An Activity Record stays authoritative for what a person publicly posted or did; it may reference a related Job Record when a post concerns a specific role, but it is not authoritative for that role's current availability — see [Migration and Compatibility](#migration-and-compatibility-job-record).
+- **Research State** describes what has already been completed, approved, or needs refresh — a logical representation of research journey progress across all of the above records, based on the context available to the running platform. It is not a storage mechanism, separate from the candidate's facts, search preferences, and the company/job/person/activity/company-state records themselves.
 
-Each record has a distinct responsibility. A change to one does not automatically imply a rebuild of the others. Company, Person, and Activity Records do not perform ranking by themselves — they capture evidence for a later ranking step to consume. Storage and persistence of all records remain platform-managed; see [Context Boundary](#context-boundary).
+Each record has a distinct responsibility. A change to one does not automatically imply a rebuild of the others. Company, Job, Person, Activity, and Company State Records do not perform ranking by themselves — they capture evidence for a later ranking or gating step to consume. Storage and persistence of all records remain platform-managed; see [Context Boundary](#context-boundary).
 
 ## Schemas
 
 - [Candidate Profile](../schemas/candidate-profile.schema.md)
 - [Search Criteria](../schemas/search-criteria.schema.md)
 - [Company Record](../schemas/company-record.schema.md)
+- [Company State Record](../schemas/company-state-record.schema.md)
+- [Job Record](../schemas/job-record.schema.md)
 - [Person Record](../schemas/person-record.schema.md)
 - [Activity Record](../schemas/activity-record.schema.md)
 - [Research State](../schemas/research-state.schema.md)
+
+## Migration and Compatibility: Job Record
+
+Introducing the Job Record as a first-class record changes where "is this specific job currently open" is authoritatively decided. This section documents that boundary change so existing Company and Activity Record usage is not silently broken.
+
+- **Before this record existed**, the closest analog was the Activity Record's [Job Signal](../schemas/activity-record.schema.md#job-signal) section (`job_title`, `job_location`, `job_status`, `job_status_checked_at`) and the Company Record's [Hiring Evidence](../schemas/company-record.schema.md#hiring-evidence) section (`current_role_evidence`, `hiring_signal_status`). Both remain valid and are not removed.
+- **After this record exists:**
+  - The **Job Record is authoritative** for the current availability of one specific role, decided per [job-verification-policy.md](job-verification-policy.md).
+  - The **Activity Record stays authoritative** for what a person publicly posted or did. Its Job Signal fields remain meaningful as a description of what a specific post claimed (e.g., "this post mentioned a role and, at the time, that role's status was X") — they are not overwritten or deprecated. When an Activity Record's post concerns a specific tracked role, link the two via the Job Record's `related_activity_record_references` rather than treating the Activity Record's `job_status` as the current, authoritative answer.
+  - The **Company Record stays authoritative** for stable company facts and general hiring signal (`hiring_signal_status` remains a company-wide summary signal, not a specific-role determination). It does not need to enumerate every open role — that detail now lives in Job Records, referenced from the company via `related_job_record_references` on the Job Record side.
+  - **Company State Records** are new and have no prior analog; they did not previously exist as evidence inside the Company Record.
+- **No two conflicting sources of truth:** when both an Activity Record and a Job Record exist for what appears to be the same role, the Job Record's `job_status` is the current answer; the Activity Record remains the historical record of what that specific post said, dated as of its own `checked_at`.
+- **Nothing about existing Company, Person, Activity, Candidate Profile, Search Criteria, or Research State semantics is casually broken** by this change — all of their existing required fields, enums, and rules remain in force unless explicitly amended in their own schema files.
 
 ## Context Boundary
 
@@ -206,10 +246,15 @@ The product should use this information when relevant, but must not copy real pe
 8. Platform-specific adapters may describe how users supply context, but may not redefine the core data model.
 9. Absence of prior context does not block a focused task when the user supplies sufficient input.
 10. No state rule may imply background monitoring or scheduled execution.
+11. A Job Record is authoritative for one specific role's current availability; a Company Record is authoritative for stable company facts; an Activity Record is authoritative for what a person publicly posted — see [Migration and Compatibility: Job Record](#migration-and-compatibility-job-record).
+12. A Company State Record never silently overrides a Job Record's `job_status` or a Company Record's stable classification — see [job-verification-policy.md](job-verification-policy.md#company-state-does-not-gate-job-availability).
 
 ## Related documents
 
 - [../README.md](../README.md)
 - [product-definition.md](product-definition.md)
 - [scope-and-non-goals.md](scope-and-non-goals.md)
+- [job-verification-policy.md](job-verification-policy.md)
+- [../schemas/job-record.schema.md](../schemas/job-record.schema.md)
+- [../schemas/company-state-record.schema.md](../schemas/company-state-record.schema.md)
 

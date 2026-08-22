@@ -35,12 +35,16 @@ Each stage below uses the same status enum: `Not Started`, `Draft`, `Completed`,
 | `company_classification_status` | enum | Required | Status of the Company Classification stage. | `"Not Started"` |
 | `company_ranking_status` | enum | Required | Status of the Company Ranking stage. | `"Not Started"` |
 | `company_selection_status` | enum | Required | Status of the Company Selection stage. | `"Not Started"` |
+| `job_discovery_status` | enum | Required | Status of the Current Job Discovery stage. | `"Not Started"` |
+| `job_verification_status` | enum | Required | Status of the Current Job Verification stage. | `"Not Started"` |
+| `job_fit_evaluation_status` | enum | Required | Status of the Candidate–Job Fit stage. | `"Not Started"` |
+| `company_state_verification_status` | enum | Required | Status of the Company State Verification stage. | `"Not Started"` |
 | `people_discovery_status` | enum | Required | Status of the People Discovery stage (recruiters and potential hiring managers). | `"Not Started"` |
 | `activity_verification_status` | enum | Required | Status of the Activity Verification stage. | `"Not Requested"` |
 | `outreach_queue_status` | enum | Required | Status of the Outreach Queue stage. | `"Not Started"` |
 | `export_status` | enum | Required | Status of the optional Export stage. | `"Not Started"` |
 
-Stage names align with the [workflow modules](../core/workflow.md#workflow-modules) — see [full-journey.md](../workflows/full-journey.md) for each stage's purpose, inputs, outputs, and quality gate.
+Stage names align with the [workflow modules](../core/workflow.md#workflow-modules) — see [full-journey.md](../workflows/full-journey.md) (Company Targeting Journey) and [job-search-journey.md](../workflows/job-search-journey.md) (Job Search Journey, the default for job-discovery intent) for each stage's purpose, inputs, outputs, and quality gate. `job_discovery_status`, `job_verification_status`, `job_fit_evaluation_status`, and `company_state_verification_status` can each resume/refresh independently of the others and of the Company Targeting stages above — see Research State Rules below.
 
 ## Saved References
 
@@ -75,6 +79,8 @@ Stage names align with the [workflow modules](../core/workflow.md#workflow-modul
 8. No state value may imply scheduled or background monitoring.
 9. Every external research refresh must follow an explicit user request.
 10. Superseded records must not silently replace approved records without traceability.
+11. Job Discovery, Job Verification, Job Fit Evaluation, and Company State Verification may each be resumed or refreshed independently — a stale `job_verification_status` must not force a Candidate Profile rebuild, and a stale `company_state_verification_status` must not auto-invalidate stable company identity data on the Company Record.
+12. `journey_mode` may additionally reflect which full journey is active (Job Search Journey vs. Company Targeting Journey) when the distinction matters for resuming correctly.
 
 ## Example Record
 
@@ -94,5 +100,8 @@ recommended_next_stage: "company_discovery"
 - [../core/data-model.md](../core/data-model.md)
 - [../core/workflow.md](../core/workflow.md)
 - [../workflows/full-journey.md](../workflows/full-journey.md)
+- [../workflows/job-search-journey.md](../workflows/job-search-journey.md)
 - [candidate-profile.schema.md](candidate-profile.schema.md)
 - [search-criteria.schema.md](search-criteria.schema.md)
+- [job-record.schema.md](job-record.schema.md)
+- [company-state-record.schema.md](company-state-record.schema.md)

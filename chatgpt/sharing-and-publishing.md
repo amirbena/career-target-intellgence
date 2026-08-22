@@ -22,7 +22,7 @@ broadly, confirm:
 
 - The name and description are accurate and match
   [`builder-config.md`](builder-config.md).
-- No private Knowledge files were uploaded — only the eight generated
+- No private Knowledge files were uploaded — only the nine generated
   bundles from `knowledge/`.
 - There is no misleading affiliation with any company, job board, or
   platform.

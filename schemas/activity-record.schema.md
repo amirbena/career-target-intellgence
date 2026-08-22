@@ -62,10 +62,11 @@ Use explicit dates rather than only relative wording such as "three months ago."
 |---|---|---|---|---|
 | `job_title` | string | Optional | The job title mentioned in the activity, if any. | `"Senior Backend Engineer"` |
 | `job_location` | string | Optional | The job location mentioned, if any. | `"Ra'anana"` |
-| `job_status` | enum: `Verified Open`, `Post Found, Current Status Unknown`, `Closed`, `Historical`, `Not Applicable`, `Unable to Verify` | Required | The verified status of the job referenced. | `"Post Found, Current Status Unknown"` |
+| `job_status` | enum: `Verified Open`, `Post Found, Current Status Unknown`, `Closed`, `Historical`, `Not Applicable`, `Unable to Verify` | Required | The verified status of the job **as referenced by this specific post**, at the time it was checked. | `"Post Found, Current Status Unknown"` |
 | `job_status_checked_at` | timestamp | Required | When `job_status` was last checked. | `"2026-07-19T00:00:00Z"` |
+| `related_job_record_reference` | logical reference | Optional | The [Job Record](job-record.schema.md) tracking this role's current availability, when one has been created. | `"job:northbridge-systems:senior-backend-engineer:2026-07-20"` |
 
-A post existing does not prove that the role remains open; `job_status` must reflect what was actually verified.
+A post existing does not prove that the role remains open; `job_status` on this record must reflect what was actually verified from this post, and describes the post's own claim — it is not the authoritative, current answer for the role. **When a `related_job_record_reference` exists, the linked Job Record's `job_status` is authoritative for the role's current availability; this field remains a historical description of what the post itself indicated at the time it was checked.** See [Migration and Compatibility: Job Record](../core/data-model.md#migration-and-compatibility-job-record).
 
 ## Activity Record Rules
 
@@ -149,5 +150,7 @@ A dated post announces a specific role that has been verified as meaningfully ma
 ## Related documents
 
 - [../core/data-model.md](../core/data-model.md)
+- [../core/job-verification-policy.md](../core/job-verification-policy.md)
 - [person-record.schema.md](person-record.schema.md)
 - [company-record.schema.md](company-record.schema.md)
+- [job-record.schema.md](job-record.schema.md)

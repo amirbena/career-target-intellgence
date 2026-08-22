@@ -37,6 +37,28 @@ This document defines the canonical outputs produced by the product, downstream 
 - **Draft/Verified/Approved:** Mirrors `criteria_status` (Draft, Ready, Superseded).
 - **May be produced partially:** Yes — a Draft set of criteria may be shown before it is Ready.
 
+### Verified Jobs Map
+
+- **Purpose:** Present the primary result for job-search intent: currently open, candidate-fit roles that passed the [Primary Job Eligibility Gate](../ranking/job-eligibility-gate.md), with availability evidence, candidate-fit assessment, and company-state context.
+- **Required source records:** [Job Records](../schemas/job-record.schema.md) with `record_disposition` of `Primary Candidate`, and any linked [Company State Records](../schemas/company-state-record.schema.md) and [Person Records](../schemas/person-record.schema.md).
+- **Required sections:** See [outputs/verified-jobs-map-template.md](../outputs/verified-jobs-map-template.md).
+- **Minimum verification requirements:** `job_status` of `Verified Open` or `Likely Open / Partially Verified` only; `official_verification_attempted`/`official_verification_result`/`job_status_checked_at` present on every entry; `fit_gate_result` of `Passes`.
+- **Unknown/unavailable handling:** A missing recruiter/hiring-manager reference is shown as "Not yet identified"; missing company-state evidence is shown as "No current company-state evidence found" — never omitted from the row.
+- **Ordering:** Verified Open section before Likely Open / Partially Verified section; within each, candidate-fit strength, then company priority, then `job_status_checked_at` descending.
+- **Draft/Verified/Approved:** Mirrors the underlying Job Record's `record_status`.
+- **May be produced partially:** Yes — grows as Current Job Discovery/Verification/Fit continue, clearly labeled as partial while in progress.
+
+### Unverified and Rejected Job Leads
+
+- **Purpose:** Keep every role that did not pass the Job Eligibility Gate visible with an explicit reason, rather than silently dropped.
+- **Required source records:** Job Records with `record_disposition` of `Rejected Lead`.
+- **Required sections:** See [outputs/unverified-job-leads-template.md](../outputs/unverified-job-leads-template.md).
+- **Minimum verification requirements:** A `rejection_reason` from the canonical list is required for every entry.
+- **Unknown/unavailable handling:** `Not Found on Official Site` is never conflated with `Closed`; the distinction must be visible in the row.
+- **Ordering:** By `rejection_reason` (grouped), then by company name.
+- **Draft/Verified/Approved:** Mirrors the underlying Job Record's `record_status`.
+- **May be produced partially:** Yes — grows incrementally as verification/fit evaluation proceeds.
+
 ### Target Company Map
 
 - **Purpose:** Present ranked, Included/Needs-Review companies for outreach planning.
@@ -83,8 +105,8 @@ This document defines the canonical outputs produced by the product, downstream 
 
 ### Outreach Priority Queue
 
-- **Purpose:** Present a prioritized, advisory list of manual outreach actions.
-- **Required source records:** Ranked Company Records, Person Records, and (when available) Activity Records, combined per the [Outreach Priority Model](../ranking/outreach-priority-model.md).
+- **Purpose:** Present a prioritized, advisory list of manual outreach actions. A verified matching job may be explicitly associated with the recommended contact — no automatic outreach is implied by that association.
+- **Required source records:** Ranked Company Records, Person Records, and (when available) Activity Records and primary [Job Records](../schemas/job-record.schema.md), combined per the [Outreach Priority Model](../ranking/outreach-priority-model.md).
 - **Required sections/columns:** See [outputs/outreach-queue-template.md](../outputs/outreach-queue-template.md).
 - **Minimum verification requirements:** Recommendations reflect the evidence level actually available; stale evidence never presented as current.
 - **Unknown/unavailable handling:** When employment or activity is unresolved, the recommended action is capped accordingly (see [build-outreach-queue.md](../workflows/build-outreach-queue.md)).
@@ -115,14 +137,20 @@ This document defines the canonical outputs produced by the product, downstream 
 8. Output generation does not create new evidence.
 9. CSV-compatible output must preserve the same meaning as Markdown output.
 10. Shared templates must contain only synthetic examples.
+11. The Verified Jobs Map contains only roles that passed the [Primary Job Eligibility Gate](../ranking/job-eligibility-gate.md); job availability, company health/state, and candidate fit remain three distinct, visibly labeled claims and are never merged into one silent score.
+12. A company appearing under the Company Targeting Journey without a verified open role must say so explicitly, not imply a current opening.
 
 ## Related documents
 
 - [data-model.md](data-model.md)
 - [workflow.md](workflow.md)
 - [quality-gates.md](quality-gates.md)
+- [job-verification-policy.md](job-verification-policy.md)
 - [../ranking/outreach-priority-model.md](../ranking/outreach-priority-model.md)
+- [../ranking/job-eligibility-gate.md](../ranking/job-eligibility-gate.md)
 - [../outputs/csv-column-contracts.md](../outputs/csv-column-contracts.md)
+- [../outputs/verified-jobs-map-template.md](../outputs/verified-jobs-map-template.md)
+- [../outputs/unverified-job-leads-template.md](../outputs/unverified-job-leads-template.md)
 
 
 ---
@@ -387,6 +415,151 @@ Ready
 
 ---
 
+## Source: `outputs/verified-jobs-map-template.md`
+
+# Verified Jobs Map Template
+
+This is the Markdown presentation template for the Verified Jobs Map (also called the Job Opportunities Map) output — the new canonical **primary** output for job-search intent, built from [Job Records](../schemas/job-record.schema.md) that passed the [Primary Job Eligibility Gate](../ranking/job-eligibility-gate.md), per [core/output-contracts.md](../core/output-contracts.md#verified-jobs-map). All values below are synthetic.
+
+## Disclaimer
+
+> This map contains only roles that passed both the current-availability gate and the candidate-fit gate. It is not a claim that these are the only relevant roles at these companies — see the [Unverified and Rejected Job Leads](unverified-job-leads-template.md) report for roles that did not pass the gate, and why.
+
+This disclaimer must accompany every Verified Jobs Map output.
+
+## Structure
+
+The map has two sections, never merged:
+
+1. **Verified Open** — roles with `job_status` of `Verified Open` that passed both gates.
+2. **Likely Open / Partially Verified** — roles with `job_status` of `Likely Open / Partially Verified` that passed both gates. This section must be clearly separated and labeled lower-confidence; it must never be presented as equivalent to the Verified Open section.
+
+## Required Columns
+
+| Column | Source field |
+|---|---|
+| Job Title | `job_title` |
+| Company | `company_name` |
+| Location / Work Model | `job_location`, `work_model` |
+| Candidate-Fit Summary | `fit_notes`, `fit_gate_result` |
+| Availability Status | `job_status` |
+| Availability Evidence | `job_status_evidence` |
+| Discovery Source | `discovery_source`, `discovery_source_type` |
+| Official Verification | `official_verification_result`, `official_verification_url` |
+| Job Status Checked At | `job_status_checked_at` |
+| Company-State Summary | Linked [Company State Record(s)](../schemas/company-state-record.schema.md) `event_description` + `candidate_impact_assessment`, or "No current company-state evidence found" |
+| Company-State Evidence Date / Checked At | Linked Company State Record `source_date` / `checked_at` |
+| Recruiter / Hiring-Manager Refs | `related_person_references`, or "Not yet identified" |
+| Uncertainty / Caveats | Any Gate A `Likely Open` caveat, stale-evidence notes, or unresolved fit dimensions |
+| Record Status | `record_status` |
+
+## Ordering
+
+1. Section (Verified Open before Likely Open / Partially Verified).
+2. Within a section: candidate-fit strength, then company priority (per the [Company Ranking Model](../ranking/company-ranking-model.md), when scored), then `job_status_checked_at` descending (most recently checked first).
+
+## Rules
+
+- Only roles with `record_disposition` of `Primary Candidate` appear here — a closed, unverified, or hard-constraint-failing role must never appear in this map (see [job-eligibility-gate.md](../ranking/job-eligibility-gate.md)).
+- Company-State evidence is disclosed as context; it must never be presented as changing the Availability Status itself.
+- A missing Recruiter / Hiring-Manager reference is shown as "Not yet identified," never omitted from the row.
+- Every row must show `job_status_checked_at`.
+
+## Synthetic Example
+
+### Verified Open
+
+| Job Title | Company | Location / Work Model | Candidate-Fit Summary | Availability Status | Discovery Source | Official Verification | Job Status Checked At | Company-State Summary | Recruiter / Hiring-Manager Refs | Uncertainty / Caveats | Record Status |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Senior Backend Engineer | Northbridge Systems | Ra'anana / Hybrid | Matches target seniority and primary stack (C#, .NET) | Verified Open | LinkedIn Jobs search (LinkedIn) | Confirmed on official careers page | 2026-07-20T09:10:00Z | Company announced an ~8% workforce reduction concentrated in sales on 2026-06-01 (Fact); engineering hiring for this team does not appear directly affected (Supported Inference) | Jordan Ashkenazi, Technical Recruiter | None | Verified |
+
+### Likely Open / Partially Verified
+
+| Job Title | Company | Location / Work Model | Candidate-Fit Summary | Availability Status | Discovery Source | Official Verification | Job Status Checked At | Company-State Summary | Recruiter / Hiring-Manager Refs | Uncertainty / Caveats | Record Status |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Platform Engineer | Meridian Retail Systems | Tel Aviv / Hybrid | Matches role family; seniority slightly below target (Mid vs. Senior) but within acceptable range | Likely Open / Partially Verified | Official careers page | Confirmed, but posting date/status text was ambiguous | 2026-07-19T14:00:00Z | No current company-state evidence found | Not yet identified | Official page listing exists but freshness could not be fully confirmed | Verified |
+
+## Related documents
+
+- [../schemas/job-record.schema.md](../schemas/job-record.schema.md)
+- [../schemas/company-state-record.schema.md](../schemas/company-state-record.schema.md)
+- [../ranking/job-eligibility-gate.md](../ranking/job-eligibility-gate.md)
+- [../core/job-verification-policy.md](../core/job-verification-policy.md)
+- [../core/output-contracts.md](../core/output-contracts.md)
+- [unverified-job-leads-template.md](unverified-job-leads-template.md)
+- [outreach-queue-template.md](outreach-queue-template.md)
+
+
+---
+
+## Source: `outputs/unverified-job-leads-template.md`
+
+# Unverified and Rejected Job Leads Template
+
+This is the Markdown presentation template for the Unverified/Rejected Job Leads output, which keeps every role that did not pass the [Primary Job Eligibility Gate](../ranking/job-eligibility-gate.md) visible with an explicit reason, per [core/output-contracts.md](../core/output-contracts.md#unverified-and-rejected-job-leads) — instead of silently dropping it. All values below are synthetic.
+
+## Disclaimer
+
+> A role appearing here was not confirmed as a strong, currently-open, candidate-fit match — it was not necessarily disproven. Each row states the specific reason it did not enter the [Verified Jobs Map](verified-jobs-map-template.md).
+
+## Required Columns
+
+| Column | Source field |
+|---|---|
+| Job Title | `job_title` |
+| Company | `company_name` |
+| Discovery Source | `discovery_source`, `discovery_source_type` |
+| Rejection Reason | `rejection_reason` |
+| Reason Detail | `job_status_evidence`, `fit_gate_reason`, or `stale_reason`, whichever applies |
+| Official Verification Attempted | `official_verification_attempted`, `official_verification_result` |
+| Last Checked At | `job_status_checked_at` |
+| Reconsideration Note | A short note on what would change the outcome (e.g., "revisit if official careers page is reachable again") |
+
+## Rejection Reasons
+
+One of the following, matching `rejection_reason` on the [Job Record schema](../schemas/job-record.schema.md#evidence-and-lifecycle):
+
+- Closed
+- Not Found on Official Site
+- Unable to Verify
+- Seniority mismatch
+- Location mismatch
+- Hard technology mismatch
+- User exclusion
+- Stale
+- Duplicate
+
+## Rules
+
+- Every role with `record_disposition` of `Rejected Lead` must appear here, not be silently dropped.
+- `Not Found on Official Site` must never be presented as equivalent to `Closed` — the Reason Detail column must make the distinction explicit.
+- Rows are retained for reconsideration; a later refresh may move a role from here into the Verified Jobs Map if new evidence changes the outcome.
+- This report must not be merged into the Verified Jobs Map — the two lists communicate different confidence levels and must remain visually distinct.
+
+## Ordering
+
+By Rejection Reason (grouped), then by Company name within each group.
+
+## Synthetic Example
+
+| Job Title | Company | Discovery Source | Rejection Reason | Reason Detail | Official Verification Attempted | Last Checked At | Reconsideration Note |
+|---|---|---|---|---|---|---|---|
+| Backend Engineer | Meridian Retail Systems | Glassdoor listing (Glassdoor) | Not Found on Official Site | Official careers page was reachable; this exact role was not found there | Yes — Not Found | 2026-07-19T09:00:00Z | Recheck official careers page in 1–2 weeks; listing may be stale rather than closed |
+| Platform Engineer | Riverton Analytics | LinkedIn Jobs search (LinkedIn) | Unable to Verify | Official careers site returned an error / was inaccessible during the check | Yes — Site Inaccessible | 2026-07-17T09:20:00Z | Retry official-site verification later |
+| Staff Backend Engineer | Northbridge Systems | Official careers page (Official Careers) | Closed | Official page states "This position is no longer accepting applications" | Yes — Confirmed | 2026-07-20T09:00:00Z | Not applicable — direct closure evidence |
+| Senior Backend Engineer (US-based) | Northbridge Systems | Official careers page (Official Careers) | Location mismatch | Role is on-site in Austin, Texas; outside candidate's central-Israel-only constraint | Yes — Confirmed | 2026-07-20T09:00:00Z | Would only be reconsidered if the candidate's geographic constraint changes |
+
+## Related documents
+
+- [../schemas/job-record.schema.md](../schemas/job-record.schema.md)
+- [../ranking/job-eligibility-gate.md](../ranking/job-eligibility-gate.md)
+- [../core/job-verification-policy.md](../core/job-verification-policy.md)
+- [../core/output-contracts.md](../core/output-contracts.md)
+- [verified-jobs-map-template.md](verified-jobs-map-template.md)
+
+
+---
+
 ## Source: `outputs/company-map-template.md`
 
 # Company Map Template
@@ -647,6 +820,7 @@ This is the Markdown presentation template for the Outreach Priority Queue outpu
 | Duplicate Contact Group | `duplicate_contact_group` |
 | Confidence | Overall confidence in the recommendation |
 | Checked At | `checked_at` |
+| Associated Job Record | `job_id`, when a specific verified job (from the [Verified Jobs Map](verified-jobs-map-template.md)) is being associated with this contact — otherwise "Not associated with a specific job" |
 
 ## Supported Actions
 
@@ -666,6 +840,8 @@ This is the Markdown presentation template for the Outreach Priority Queue outpu
 - Unresolved current employment must remain visible in the entry, not hidden behind a confident-sounding action.
 - Stale activity must not be presented as a current opportunity.
 - The user controls whether any action is performed.
+- An Associated Job Record reference is descriptive only — it does not authorize or imply automatic outreach on the candidate's behalf.
+- A Job Record with `record_disposition` of `Rejected Lead` must never be associated with a queue entry as if it were a verified opportunity.
 
 ## Ordering
 
@@ -673,10 +849,10 @@ By Queue Position, following the [Recommended Action Order](../ranking/outreach-
 
 ## Synthetic Example
 
-| Queue Position | Company | Person | Person Type | Company Priority | Person Priority Score | Evidence Signal | Recommended Action | Reason | Timing | Status | Follow-up Date | Duplicate Contact Group | Confidence | Checked At |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 1 | Northbridge Systems | Jordan Ashkenazi | Technical Recruiter | Priority 1 | 84 | A3 hiring-related post | Send Direct Message | Currently employed recruiter with a recent hiring-related post; role not yet confirmed as matching. | Now | Not started | — | — | Medium | 2026-07-19 |
-| 2 | Northbridge Systems | Ronit Peretz | Engineering Manager | Priority 1 | 60 | A1 activity page only, no dated post | Research Team | Relevant manager identified, but no recent activity evidence exists yet. | This week | Not started | 2026-08-02 | — | Low | 2026-07-19 |
+| Queue Position | Company | Person | Person Type | Company Priority | Person Priority Score | Evidence Signal | Recommended Action | Reason | Timing | Status | Follow-up Date | Duplicate Contact Group | Confidence | Checked At | Associated Job Record |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | Northbridge Systems | Jordan Ashkenazi | Technical Recruiter | Priority 1 | 84 | A4 matching job post; job Verified Open | Apply Now | Currently employed recruiter with a verified matching role open on the official careers page. | Now | Not started | — | — | High | 2026-07-20 | job:northbridge-systems:senior-backend-engineer:2026-07-20 |
+| 2 | Northbridge Systems | Ronit Peretz | Engineering Manager | Priority 1 | 60 | A1 activity page only, no dated post | Research Team | Relevant manager identified, but no recent activity evidence exists yet. | This week | Not started | 2026-08-02 | — | Low | 2026-07-19 | Not associated with a specific job |
 
 ## Related documents
 
@@ -684,6 +860,8 @@ By Queue Position, following the [Recommended Action Order](../ranking/outreach-
 - [../core/output-contracts.md](../core/output-contracts.md)
 - [people-map-template.md](people-map-template.md)
 - [activity-verification-template.md](activity-verification-template.md)
+- [verified-jobs-map-template.md](verified-jobs-map-template.md)
+- [../schemas/job-record.schema.md](../schemas/job-record.schema.md)
 
 
 ---
@@ -742,6 +920,43 @@ This document defines stable, snake_case CSV-compatible column sets for each can
 | `requested_outputs` | `requested_outputs` | semicolon-separated | Required | semicolon-separated | empty | n/a |
 | `criteria_status` | `criteria_status` | enum | Required | n/a | n/a | n/a |
 | `last_updated_at` | `last_updated_at` | timestamp | Required | n/a | n/a | ISO 8601 |
+
+## Verified Jobs Map
+
+| Column | Source field | Value shape | Required | List handling | Unknown handling | Date format |
+|---|---|---|---|---|---|---|
+| `section` | Verified Open vs. Likely Open / Partially Verified | enum | Required | n/a | n/a | n/a |
+| `job_title` | `job_title` | string | Required | n/a | n/a | n/a |
+| `company_name` | `company_name` | string | Required | n/a | n/a | n/a |
+| `job_location` | `job_location` | string | Optional | n/a | `Unknown` | n/a |
+| `work_model` | `work_model` | enum | Required | n/a | n/a | n/a |
+| `fit_gate_result` | `fit_gate_result` | enum | Required | n/a | n/a | n/a |
+| `fit_notes` | `fit_notes` | string | Optional | n/a | empty | n/a |
+| `job_status` | `job_status` | enum | Required | n/a | n/a | n/a |
+| `job_status_evidence` | `job_status_evidence` | semicolon-separated | Optional | semicolon-separated | empty | n/a |
+| `discovery_source_type` | `discovery_source_type` | enum | Required | n/a | n/a | n/a |
+| `official_verification_result` | `official_verification_result` | enum | Required | n/a | n/a | n/a |
+| `official_verification_url` | `official_verification_url` | URL | Optional | n/a | empty | n/a |
+| `job_status_checked_at` | `job_status_checked_at` | timestamp | Required | n/a | n/a | ISO 8601 |
+| `company_state_summary` | Linked Company State Record `event_description` + `candidate_impact_assessment` | string | Optional | n/a | `No current company-state evidence found` | n/a |
+| `company_state_checked_at` | Linked Company State Record `checked_at` | timestamp | Optional | n/a | empty | ISO 8601 |
+| `recruiter_hiring_manager_refs` | `related_person_references` | semicolon-separated | Optional | semicolon-separated | `Not yet identified` | n/a |
+| `uncertainty_caveats` | Written caveats | string | Optional | n/a | empty | n/a |
+| `record_status` | `record_status` | enum | Required | n/a | n/a | n/a |
+
+## Unverified and Rejected Job Leads
+
+| Column | Source field | Value shape | Required | List handling | Unknown handling | Date format |
+|---|---|---|---|---|---|---|
+| `job_title` | `job_title` | string | Required | n/a | n/a | n/a |
+| `company_name` | `company_name` | string | Required | n/a | n/a | n/a |
+| `discovery_source_type` | `discovery_source_type` | enum | Required | n/a | n/a | n/a |
+| `rejection_reason` | `rejection_reason` | enum | Required | n/a | n/a | n/a |
+| `reason_detail` | `job_status_evidence`, `fit_gate_reason`, or `stale_reason` | string | Optional | n/a | empty | n/a |
+| `official_verification_attempted` | `official_verification_attempted` | boolean | Required | n/a | n/a | n/a |
+| `official_verification_result` | `official_verification_result` | enum | Required | n/a | n/a | n/a |
+| `job_status_checked_at` | `job_status_checked_at` | timestamp | Required | n/a | n/a | ISO 8601 |
+| `reconsideration_note` | Written note | string | Optional | n/a | empty | n/a |
 
 ## Company Map
 
@@ -850,6 +1065,7 @@ Surfaces all eight [Company Ranking Model](../ranking/company-ranking-model.md) 
 | `duplicate_contact_group` | `duplicate_contact_group` | string | Optional | n/a | empty | n/a |
 | `confidence` | Overall confidence | enum | Required | n/a | n/a | n/a |
 | `checked_at` | `checked_at` | timestamp | Required | n/a | n/a | ISO 8601 |
+| `associated_job_id` | `job_id` | string | Optional | n/a | `Not associated with a specific job` | n/a |
 
 ## Related documents
 
@@ -859,4 +1075,6 @@ Surfaces all eight [Company Ranking Model](../ranking/company-ranking-model.md) 
 - [people-map-template.md](people-map-template.md)
 - [activity-verification-template.md](activity-verification-template.md)
 - [outreach-queue-template.md](outreach-queue-template.md)
+- [verified-jobs-map-template.md](verified-jobs-map-template.md)
+- [unverified-job-leads-template.md](unverified-job-leads-template.md)
 

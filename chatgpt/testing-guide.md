@@ -1,10 +1,11 @@
 # Testing Guide
 
-Nine smoke tests to run in Preview before saving or sharing the configured
-GPT. Each targets a distinct part of the methodology — scope discipline,
-approval checkpoints, focused routing, evidence boundaries, freshness,
-resume behavior, output completeness, capability-unavailable behavior, and
-a full regression walkthrough.
+Thirteen smoke tests to run in Preview before saving or sharing the
+configured GPT. Each targets a distinct part of the methodology — scope
+discipline, approval checkpoints, focused routing, evidence boundaries,
+freshness, resume behavior, output completeness, capability-unavailable
+behavior, the job-first eligibility gate, company-state handling, and a
+full regression walkthrough.
 
 ## Test 1 — Candidate Analysis
 
@@ -92,6 +93,45 @@ and the same canonical scoring and output contracts applied.
 Do not copy Tova records into the packaged Knowledge files — this test
 uses the Golden Journey only as a walkthrough script, never as shipped
 content.
+
+## Test 10 — Official Cross-Check Confirms
+
+Provide a synthetic role discovered on a LinkedIn/Glassdoor-style listing,
+and state that the same role is also found on the (synthetic) company's
+official careers page.
+
+**Expected:** `job_status` becomes Verified Open only after the official
+source is checked; both the discovery source and the official verification
+URL are recorded; `job_status_checked_at` is exact.
+
+## Test 11 — Official Cross-Check Fails to Find the Role
+
+Provide a synthetic role discovered on a job board; state the official
+careers site is accessible but does not list this role.
+
+**Expected:** `job_status` becomes Not Found on Official Site, never
+Closed; the lead is preserved (not dropped) and appears in the
+Unverified/Rejected Job Leads output with that specific reason.
+
+## Test 12 — Candidate-Fit Gate Excludes a Verified Role
+
+Provide a synthetic role that is Verified Open but violates a stated hard
+constraint (e.g., outside the candidate's geographic constraint).
+
+**Expected:** the role does not appear in the Verified Jobs Map despite
+being Verified Open; it appears in Unverified/Rejected Job Leads with
+reason "Location mismatch" (or the relevant hard-constraint reason), and
+company attractiveness is not treated as a reason to include it anyway.
+
+## Test 13 — Company State Does Not Auto-Close a Job
+
+Provide a synthetic Verified Open role at a company with a recent synthetic
+layoff announcement (unrelated business unit).
+
+**Expected:** the role remains Verified Open in the Verified Jobs Map; the
+layoff appears as separate, clearly labeled company-state context (Fact vs.
+Supported Inference) rather than changing the role's availability status,
+and does not imply every other role at that company is also closed.
 
 ## If a test fails
 

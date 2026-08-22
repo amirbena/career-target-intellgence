@@ -1,17 +1,49 @@
 # Ranking and Exclusions
 
 Adapts the Company Ranking Model, Person Ranking Model, Exclusion Policy,
-and Outreach Priority Model for execution inside Claude. These scoring
-weights, bands, thresholds, and sequences are canonical — do not alter them,
-approximate them, or invent alternate numbers.
+Job Eligibility Gate, and Outreach Priority Model for execution inside
+Claude. These scoring weights, bands, thresholds, and sequences are
+canonical — do not alter them, approximate them, or invent alternate
+numbers.
 
 **Canonical sources:** [`ranking/company-ranking-model.md`](../../../ranking/company-ranking-model.md),
 [`ranking/person-ranking-model.md`](../../../ranking/person-ranking-model.md),
 [`ranking/exclusion-policy.md`](../../../ranking/exclusion-policy.md),
+[`ranking/job-eligibility-gate.md`](../../../ranking/job-eligibility-gate.md),
 [`ranking/outreach-priority-model.md`](../../../ranking/outreach-priority-model.md).
 
 A score is an explainability and consistency mechanism, not an objective
 truth claim.
+
+## Job Eligibility Gate (job-search intent)
+
+For job-search intent, a role must pass **both** gates before entering the
+primary Verified Jobs Map. Company attractiveness never substitutes for
+passing either gate — this is a hard gate, not a soft score dimension.
+
+- **Gate A — Availability:** `job_status` of `Verified Open` passes; `Likely
+  Open / Partially Verified` passes but must appear only in a clearly
+  separate, lower-confidence section. `Unable to Verify`, `Not Found on
+  Official Site`, `Closed`, `Historical`, and `Stale` all fail.
+- **Gate B — Candidate Fit:** evaluate role family/discipline, seniority,
+  mandatory technologies, hard exclusions, geography/commute, work model,
+  excluded company/domain constraints, and explicit user must-haves against
+  the approved Candidate Profile and Search Criteria. Unknown evidence is
+  never treated as either a pass or a fail signal.
+
+A role failing either gate is reclassified `Rejected Lead` with a specific
+`rejection_reason` (Closed / Not Found on Official Site / Unable to Verify /
+Seniority mismatch / Location mismatch / Hard technology mismatch / User
+exclusion / Stale / Duplicate) and stays visible in the Unverified/Rejected
+Job Leads output — never silently dropped. See
+[`job-intelligence.md`](job-intelligence.md) for the full Job Record shape
+and the current-availability policy that decides `job_status`.
+
+After the gate, ranking within the primary set may weigh (qualitatively, not
+as a new numeric model): candidate/job fit strength, strength of official
+verification, company fit (Company Ranking Model below), company state
+(disclosed as context, never folded into the score), recruiter/contact
+quality, team/domain relevance, and evidence confidence/freshness.
 
 ## Shared scoring-band rubric
 
@@ -206,10 +238,12 @@ avoidance may change the order.
 
 **Complete tie-break sequence (apply in order until resolved):**
 
-1. Matching job evidence — A4 outranks anything weaker, regardless of person
-   type.
-2. Current job status — Verified Open > Post Found, Current Status Unknown
-   > all others.
+1. Matching job evidence — a Job Record `job_status` of Verified Open for a
+   matching role outranks anything weaker, regardless of person type;
+   absent a Job Record, an A4 matching job post is next-strongest.
+2. Current job status — Job Record Verified Open > Likely Open / Partially
+   Verified > Activity Record Post Found, Current Status Unknown > all
+   others.
 3. Current employment verification — Current > Unclear/Unable to Verify >
    Former.
 4. Company priority — P1 > P2 > P3.
@@ -224,5 +258,9 @@ avoidance may change the order.
     tiebreaker.
 
 **Outreach Queue inputs:** company priority, person relevance, activity
-level (A0–A4), current job status (`job_status`), evidence confidence, user
-preferences (Search Criteria), duplicate-contact avoidance.
+level (A0–A4), current job status (Job Record `job_status` when one exists,
+otherwise Activity Record `job_status`), company state (disclosed as
+context), evidence confidence, user preferences (Search Criteria),
+duplicate-contact avoidance. When a primary Job Record exists for a queue
+entry, associate its `job_id` in the output — descriptive only, never
+implying automatic outreach.

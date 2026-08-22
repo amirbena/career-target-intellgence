@@ -14,6 +14,7 @@ Combine company ranking, person relevance, and activity evidence into an ordered
 ## Optional Inputs
 
 - Activity Records, when Activity Verification has been run — their absence does not block the queue, but it does cap which actions can be recommended (see below).
+- Primary [Job Records](../schemas/job-record.schema.md) (`record_disposition` of `Primary Candidate`), when the request originated from the [Job Search Journey](job-search-journey.md) — a Job Record's `job_status` of `Verified Open` is the strongest available "currently open role" evidence and should be preferred over an Activity Record's own `job_status` for the same role, per [Migration and Compatibility: Job Record](../core/data-model.md#migration-and-compatibility-job-record).
 
 ## Preconditions
 
@@ -23,8 +24,9 @@ Combine company ranking, person relevance, and activity evidence into an ordered
 
 1. For each company/person pairing, determine the recommended action using the [Recommended Action Order](../ranking/outreach-priority-model.md#recommended-action-order) — from an A4 matching job post down to Skip.
 2. Select from the [Supported Actions](../ranking/outreach-priority-model.md#supported-actions) list only.
-3. Apply the [Outreach Queue Inputs](../ranking/outreach-priority-model.md#outreach-queue-inputs): company priority, person relevance, activity level, current job status, evidence confidence, user preferences, and duplicate-contact avoidance.
+3. Apply the [Outreach Queue Inputs](../ranking/outreach-priority-model.md#outreach-queue-inputs): company priority, person relevance, activity level, current job status, company state, evidence confidence, user preferences, and duplicate-contact avoidance.
 4. Avoid generating multiple redundant entries for the same person across overlapping roles at one company.
+5. When a primary Job Record exists for the role, associate its `job_id` with the queue entry (see [outreach-queue-template.md](../outputs/outreach-queue-template.md)) — this association is descriptive only and never implies automatic outreach.
 
 ## Outputs
 
@@ -58,4 +60,7 @@ Combine company ranking, person relevance, and activity evidence into an ordered
 - [classify-and-rank-companies.md](classify-and-rank-companies.md)
 - [discover-people.md](discover-people.md)
 - [verify-activity.md](verify-activity.md)
+- [evaluate-candidate-job-fit.md](evaluate-candidate-job-fit.md)
 - [full-journey.md](full-journey.md)
+- [job-search-journey.md](job-search-journey.md)
+- [../schemas/job-record.schema.md](../schemas/job-record.schema.md)

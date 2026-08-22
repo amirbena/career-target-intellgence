@@ -64,9 +64,11 @@ $KnowledgeFiles = @(
     @{ Source = Join-Path $CoreDir "freshness-policy.md"; Dest = "freshness-policy.md" },
     @{ Source = Join-Path $CoreDir "quality-gates.md"; Dest = "quality-gates.md" },
     @{ Source = Join-Path $CoreDir "output-contracts.md"; Dest = "output-contracts.md" },
+    @{ Source = Join-Path $CoreDir "job-verification-policy.md"; Dest = "job-verification-policy.md" },
     @{ Source = Join-Path $RankingDir "company-ranking-model.md"; Dest = "company-ranking-model.md" },
     @{ Source = Join-Path $RankingDir "person-ranking-model.md"; Dest = "person-ranking-model.md" },
     @{ Source = Join-Path $RankingDir "exclusion-policy.md"; Dest = "exclusion-policy.md" },
+    @{ Source = Join-Path $RankingDir "job-eligibility-gate.md"; Dest = "job-eligibility-gate.md" },
     @{ Source = Join-Path $RankingDir "outreach-priority-model.md"; Dest = "outreach-priority-model.md" }
 )
 

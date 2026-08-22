@@ -35,6 +35,7 @@ career-targeting-intelligence-chatgpt/
     06-workflow-and-state.md
     07-evidence-confidence-freshness.md
     08-output-contracts.md
+    09-job-and-company-state.md
 ```
 
 See [`package-manifest.md`](package-manifest.md) for the full structure
@@ -44,7 +45,7 @@ definition and exclusions.
 
 1. Paste [`instructions.md`](instructions.md) into the GPT's Instructions
    field.
-2. Upload all eight files under `knowledge/` as Knowledge.
+2. Upload all nine files under `knowledge/` as Knowledge.
 3. Set the Name, Description, and Capabilities from
    [`builder-config.md`](builder-config.md).
 4. Add the Conversation Starters from
@@ -52,9 +53,9 @@ definition and exclusions.
 
 Full step-by-step instructions: [`builder-setup.md`](builder-setup.md).
 
-## Which eight files to upload as Knowledge
+## Which nine files to upload as Knowledge
 
-All eight files under `knowledge/`, listed above — no more, no fewer. They
+All nine files under `knowledge/`, listed above — no more, no fewer. They
 are generated from canonical repository sources; see
 [`knowledge-manifest.md`](knowledge-manifest.md) for exactly which source
 maps to which bundle.

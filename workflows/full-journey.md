@@ -1,6 +1,8 @@
-# Full Journey
+# Full Journey (Company Targeting Journey)
 
-The Full Journey is the complete, ordered path from candidate input to an outreach-ready result, as introduced in [core/workflow.md](../core/workflow.md). It coordinates the workflow modules but does not redefine the rules already established by the schemas, trust policy, and ranking models it invokes.
+This is the **Company Targeting Journey**: the complete, ordered, company-first path from candidate input to an outreach-ready result, as introduced in [core/workflow.md](../core/workflow.md#company-targeting-journey). It coordinates the workflow modules but does not redefine the rules already established by the schemas, trust policy, and ranking models it invokes.
+
+For job-discovery intent ("find me jobs" and equivalents), the **default** journey is instead the [Job Search Journey](job-search-journey.md) — see [core/product-definition.md](../core/product-definition.md#primary-user-journey). This journey remains fully supported as a focused mode: exploring companies worth targeting even without a verified open role today. A company may appear here without a currently open matching role; that must be disclosed explicitly rather than implied — see [ranking/exclusion-policy.md](../ranking/exclusion-policy.md#relationship-to-job-level-rejection).
 
 ```text
 Candidate Input
@@ -146,6 +148,7 @@ Optional Export
 ## Related documents
 
 - [../core/workflow.md](../core/workflow.md)
+- [job-search-journey.md](job-search-journey.md)
 - [focused-task-routing.md](focused-task-routing.md)
 - [resume-journey.md](resume-journey.md)
 - [../schemas/research-state.schema.md](../schemas/research-state.schema.md)

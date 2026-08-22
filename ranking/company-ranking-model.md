@@ -2,6 +2,8 @@
 
 This document defines the platform-independent scoring model used to rank target companies. It builds on the [Company Record](../schemas/company-record.schema.md) and the [confidence model](../core/confidence-model.md), and it feeds the [Outreach Priority Model](outreach-priority-model.md). See [exclusion-policy.md](exclusion-policy.md) for how a company is filtered out of ranking entirely.
 
+**Scope note for job-search intent:** this model ranks company-level suitability for the [Company Targeting Journey](../workflows/full-journey.md). For job-search intent, a high company score never substitutes for a role passing the [Primary Job Eligibility Gate](job-eligibility-gate.md) — availability and hard candidate fit are gates on the specific role, evaluated independently of this company-level score. A company's Company State evidence (see [Company State Record schema](../schemas/company-state-record.schema.md)) is surfaced as separate context and must not be folded into this score.
+
 The score is an **explainability and consistency mechanism, not objective truth**. It exists to make prioritization reasoning legible and repeatable — not to assert a precise, unarguable measure of fit. Scores must always be accompanied by written reasoning, not presented as a bare number.
 
 ## Scoring Dimensions
@@ -242,8 +244,11 @@ Role fit 19/20, stack fit 19/20, domain fit 14/15, system fit 9/10, product-comp
 ## Related documents
 
 - [../schemas/company-record.schema.md](../schemas/company-record.schema.md)
+- [../schemas/company-state-record.schema.md](../schemas/company-state-record.schema.md)
 - [../core/confidence-model.md](../core/confidence-model.md)
 - [exclusion-policy.md](exclusion-policy.md)
+- [job-eligibility-gate.md](job-eligibility-gate.md)
 - [person-ranking-model.md](person-ranking-model.md)
 - [outreach-priority-model.md](outreach-priority-model.md)
 - [../workflows/classify-and-rank-companies.md](../workflows/classify-and-rank-companies.md)
+- [../workflows/job-search-journey.md](../workflows/job-search-journey.md)

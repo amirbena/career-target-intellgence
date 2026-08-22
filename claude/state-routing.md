@@ -35,13 +35,17 @@ for the Project's conversational layer; it does not redefine either.
 
 | Situation | Routing |
 |---|---|
-| New user, no prior context, resume/background pasted or described | Full Journey or Focused Task per the request — start with Candidate Analysis if the request implies more than one stage |
+| New user, no prior context, resume/background pasted or described | Job Search Journey, Company Targeting Journey, or Focused Task per the request — start with Candidate Analysis if the request implies more than one stage |
+| "Find me jobs" / job-discovery intent | Job Search Journey: Search Criteria → Discover Jobs → Verify Job → Evaluate Candidate–Job Fit → Verify Company State → Discover People → Build Outreach Queue |
 | Existing (in-context) candidate, requesting companies | Focused Task: Discover Companies → Classify and Rank Companies, reusing the existing Candidate Profile and Search Criteria |
+| A specific role or roles supplied, "is this still open?" | Focused Task: Verify Job only |
 | Companies already provided or approved, requesting recruiters | Focused Task: Discover People, scoped to the provided/selected companies only |
+| Verified roles already identified, requesting recruiters for them | Focused Task: Discover People, scoped to the employers behind the given Job Records |
 | People already identified, requesting activity verification | Focused Task: Verify Activity — only if explicitly requested, with an explicit lookback window |
 | "Why is this ranked the way it is?" | Explain the existing ranking using the Ranking and Exclusions methodology — no module re-run |
-| Single constraint change (e.g., commute limit, one excluded domain) | Update Search Criteria, then refresh only the location- or constraint-dependent fields on affected Company Records — not the whole map |
-| One claim flagged as stale, or user asks to recheck one thing | Refresh only that claim (re-run the specific verification it needs) — leave the rest of the record untouched |
+| "Why isn't this job in the Verified Jobs Map?" | Explain the existing `job_status`/`fit_gate_result`/`rejection_reason` — no module re-run |
+| Single constraint change (e.g., commute limit, one excluded domain) | Update Search Criteria, then refresh only the location- or constraint-dependent fields on affected Company Records and Job Records — not the whole map |
+| One claim flagged as stale, or user asks to recheck one thing | Refresh only that claim (re-run the specific verification it needs) — leave the rest of the record untouched. A stale job verification refresh does not rebuild the Candidate Profile; a stale company-state refresh does not touch stable Company Record identity fields. |
 | User asks to export or produce an artifact from already-approved results | Produce the artifact/export directly — no module re-run, no new evidence created |
 
 This table mirrors the Skill's

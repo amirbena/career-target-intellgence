@@ -8,6 +8,8 @@ as the starting structure for any output you produce.
 **Canonical sources:** [`core/output-contracts.md`](../../../core/output-contracts.md),
 [`outputs/candidate-profile-template.md`](../../../outputs/candidate-profile-template.md),
 [`outputs/search-criteria-template.md`](../../../outputs/search-criteria-template.md),
+[`outputs/verified-jobs-map-template.md`](../../../outputs/verified-jobs-map-template.md),
+[`outputs/unverified-job-leads-template.md`](../../../outputs/unverified-job-leads-template.md),
 [`outputs/company-map-template.md`](../../../outputs/company-map-template.md),
 [`outputs/excluded-companies-template.md`](../../../outputs/excluded-companies-template.md),
 [`outputs/people-map-template.md`](../../../outputs/people-map-template.md),
@@ -21,7 +23,18 @@ as the starting structure for any output you produce.
    Superseded). Template: [`candidate-profile.md`](../templates/candidate-profile.md).
 2. **Search Criteria** — mirrors `criteria_status` (Draft, Ready,
    Superseded). Template: [`search-criteria.md`](../templates/search-criteria.md).
-3. **Target Company Map** — ranked Included and Needs Review companies.
+3. **Verified Jobs Map** — the primary output for job-search intent: Job
+   Records with `record_disposition: Primary Candidate`, in two clearly
+   separate sections (Verified Open, then Likely Open / Partially Verified —
+   never merged). Ordering within a section: candidate-fit strength, then
+   company priority, then `job_status_checked_at` descending. Template:
+   [`verified-jobs-map.md`](../templates/verified-jobs-map.md).
+4. **Unverified and Rejected Job Leads** — every Job Record with
+   `record_disposition: Rejected Lead`, each with a specific
+   `rejection_reason`; never silently dropped. Ordering: by rejection
+   reason, then company name. Template:
+   [`unverified-job-leads.md`](../templates/unverified-job-leads.md).
+5. **Target Company Map** — ranked Included and Needs Review companies.
    Ordering: Priority tier, then score descending, then confidence, then
    company name. Verified once classification and ranking are complete;
    Approved once the user reviews it during Company Selection. Template:
@@ -47,6 +60,22 @@ as the starting structure for any output you produce.
    no new evidence. May never be produced partially.
 
 ## Required columns (exact order)
+
+**Verified Jobs Map (14 columns):** Job Title, Company, Location / Work
+Model, Candidate-Fit Summary, Availability Status, Availability Evidence,
+Discovery Source, Official Verification, Job Status Checked At,
+Company-State Summary, Company-State Evidence Date / Checked At, Recruiter /
+Hiring-Manager Refs, Uncertainty / Caveats, Record Status. Must always show
+two clearly separate sections (Verified Open, then Likely Open / Partially
+Verified) and this disclaimer: "This map contains only roles that passed
+both the current-availability gate and the candidate-fit gate. It is not a
+claim that these are the only relevant roles at these companies — see the
+Unverified and Rejected Job Leads report for roles that did not pass the
+gate, and why."
+
+**Unverified and Rejected Job Leads (8 columns):** Job Title, Company,
+Discovery Source, Rejection Reason, Reason Detail, Official Verification
+Attempted, Last Checked At, Reconsideration Note.
 
 **Target Company Map (22 columns):** Priority, Score, Company, Relevant
 Location, Estimated Commute, Company Type, Product / Domain, Relevant
@@ -76,12 +105,14 @@ Level, Activity Type, Authorship Status, Post Date, Within Lookback Window,
 Hiring Related, Matching Role, Job Status, Post URL, Verification Status,
 Confidence, Stale Reason, Refresh Required, Checked At.
 
-**Outreach Priority Queue (15 columns):** Queue Position, Company, Person,
+**Outreach Priority Queue (16 columns):** Queue Position, Company, Person,
 Person Type, Company Priority, Person Priority Score, Evidence Signal,
 Recommended Action, Reason, Timing, Status, Follow-up Date, Duplicate
-Contact Group, Confidence, Checked At. Recommended Action must be one of
-the eight Supported Actions defined in
-[`ranking-and-exclusions.md`](ranking-and-exclusions.md).
+Contact Group, Confidence, Checked At, Associated Job Record. Recommended
+Action must be one of the eight Supported Actions defined in
+[`ranking-and-exclusions.md`](ranking-and-exclusions.md). Associated Job
+Record is descriptive only (a `job_id` or "Not associated with a specific
+job") — it never implies automatic outreach.
 
 ## CSV-compatible export
 

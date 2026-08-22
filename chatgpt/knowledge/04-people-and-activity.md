@@ -229,10 +229,11 @@ Use explicit dates rather than only relative wording such as "three months ago."
 |---|---|---|---|---|
 | `job_title` | string | Optional | The job title mentioned in the activity, if any. | `"Senior Backend Engineer"` |
 | `job_location` | string | Optional | The job location mentioned, if any. | `"Ra'anana"` |
-| `job_status` | enum: `Verified Open`, `Post Found, Current Status Unknown`, `Closed`, `Historical`, `Not Applicable`, `Unable to Verify` | Required | The verified status of the job referenced. | `"Post Found, Current Status Unknown"` |
+| `job_status` | enum: `Verified Open`, `Post Found, Current Status Unknown`, `Closed`, `Historical`, `Not Applicable`, `Unable to Verify` | Required | The verified status of the job **as referenced by this specific post**, at the time it was checked. | `"Post Found, Current Status Unknown"` |
 | `job_status_checked_at` | timestamp | Required | When `job_status` was last checked. | `"2026-07-19T00:00:00Z"` |
+| `related_job_record_reference` | logical reference | Optional | The [Job Record](job-record.schema.md) tracking this role's current availability, when one has been created. | `"job:northbridge-systems:senior-backend-engineer:2026-07-20"` |
 
-A post existing does not prove that the role remains open; `job_status` must reflect what was actually verified.
+A post existing does not prove that the role remains open; `job_status` on this record must reflect what was actually verified from this post, and describes the post's own claim — it is not the authoritative, current answer for the role. **When a `related_job_record_reference` exists, the linked Job Record's `job_status` is authoritative for the role's current availability; this field remains a historical description of what the post itself indicated at the time it was checked.** See [Migration and Compatibility: Job Record](../core/data-model.md#migration-and-compatibility-job-record).
 
 ## Activity Record Rules
 
@@ -316,8 +317,10 @@ A dated post announces a specific role that has been verified as meaningfully ma
 ## Related documents
 
 - [../core/data-model.md](../core/data-model.md)
+- [../core/job-verification-policy.md](../core/job-verification-policy.md)
 - [person-record.schema.md](person-record.schema.md)
 - [company-record.schema.md](company-record.schema.md)
+- [job-record.schema.md](job-record.schema.md)
 
 
 ---
@@ -396,6 +399,8 @@ Identify publicly relevant contacts at target companies, with current employment
 
 Applies the A0–A4 activity levels to discovered people, producing [Activity Records](../schemas/activity-record.schema.md). This module runs only when explicitly requested — never automatically.
 
+**Distinct from Current Job Verification:** this module verifies what a *person* publicly posted or did. It is not a precondition for verifying whether a specific *job* is currently open — the official careers page can settle that question on its own, per [core/job-verification-policy.md](../core/job-verification-policy.md) and [verify-job.md](verify-job.md). Do not require this module to run merely to prove a job exists.
+
 ## Purpose
 
 Establish specific, dated, verifiable evidence of a person's public activity and hiring-related posts, within an explicit lookback window.
@@ -454,7 +459,11 @@ Establish specific, dated, verifiable evidence of a person's public activity and
 
 - [../schemas/activity-record.schema.md](../schemas/activity-record.schema.md)
 - [../schemas/person-record.schema.md](../schemas/person-record.schema.md)
+- [../schemas/job-record.schema.md](../schemas/job-record.schema.md)
 - [../core/freshness-policy.md](../core/freshness-policy.md)
+- [../core/job-verification-policy.md](../core/job-verification-policy.md)
 - [discover-people.md](discover-people.md)
+- [verify-job.md](verify-job.md)
 - [full-journey.md](full-journey.md)
+- [job-search-journey.md](job-search-journey.md)
 

@@ -223,6 +223,10 @@ A company marked Excluded:
 - Insufficient evidence
 - User-requested exclusion
 
+## Relationship to Job-Level Rejection
+
+`exclusion_status` on the Company Record governs whether a **company** participates in the [Company Targeting Journey](../workflows/full-journey.md)'s ranking. It is a separate concept from `record_disposition`/`rejection_reason` on a [Job Record](../schemas/job-record.schema.md), which governs whether one **specific role** enters the [Verified Jobs Map](../outputs/verified-jobs-map-template.md) — see [job-eligibility-gate.md](job-eligibility-gate.md). A company can be `Included` here (a legitimate target) while every discovered Job Record at that company is a `Rejected Lead` (no currently open, candidate-fit role) — that combination must be disclosed explicitly, per [Company Map quality gate](../core/quality-gates.md#company-map), rather than implied as a current job match.
+
 ## Rules
 
 1. Exclusion is not the same as a zero score. A zero-scoring company that remains Included is still visible in ranked results at the bottom; an Excluded company is removed from the ranked set entirely and reported separately.
@@ -246,15 +250,17 @@ A company marked Excluded:
 
 # Outreach Priority Model
 
-This document defines how the [Company Ranking Model](company-ranking-model.md), [Person Ranking Model](person-ranking-model.md), and [Activity Record](../schemas/activity-record.schema.md) A0–A4 levels combine into a recommended action order for the Outreach Priority Queue. All recommendations here are advisory — the system recommends actions but does not perform them. See [scope-and-non-goals.md](../core/scope-and-non-goals.md) for the non-goals this model must respect.
+This document defines how the [Company Ranking Model](company-ranking-model.md), [Person Ranking Model](person-ranking-model.md), [Job Record](../schemas/job-record.schema.md) verification state, and [Activity Record](../schemas/activity-record.schema.md) A0–A4 levels combine into a recommended action order for the Outreach Priority Queue. All recommendations here are advisory — the system recommends actions but does not perform them. See [scope-and-non-goals.md](../core/scope-and-non-goals.md) for the non-goals this model must respect.
+
+**Job-first note:** when a [Job Record](../schemas/job-record.schema.md) with `record_disposition` of `Primary Candidate` exists for the company/role in question, its `job_status` (from the [Primary Job Eligibility Gate](job-eligibility-gate.md), decided per [job-verification-policy.md](../core/job-verification-policy.md)) is the strongest available evidence for the "currently verified open role" condition below — it should be preferred over an Activity Record's own `job_status` field when both exist for what appears to be the same role, per [Migration and Compatibility](../core/data-model.md#migration-and-compatibility-job-record).
 
 ## Recommended Action Order
 
-1. Relevant hiring manager with an A4 matching job post.
-2. Relevant technical recruiter with an A4 matching job post.
-3. Relevant hiring manager with A3 hiring activity.
-4. Relevant recruiter with A3 hiring activity.
-5. Direct application to a currently verified open role.
+1. Relevant hiring manager, with a Job Record `job_status` of Verified Open for a matching role (or, absent a Job Record, an A4 matching job post).
+2. Relevant technical recruiter, with a Job Record `job_status` of Verified Open for a matching role (or, absent a Job Record, an A4 matching job post).
+3. Relevant hiring manager with A3 hiring activity, role not independently Verified Open.
+4. Relevant recruiter with A3 hiring activity, role not independently Verified Open.
+5. Direct application to a currently verified open role (Job Record `job_status`: Verified Open) with no identified relevant contact yet.
 6. Relevant manager with verified employment but no hiring signal.
 7. Relevant recruiter with verified employment but no hiring signal.
 8. Follow public activity manually.
@@ -298,8 +304,8 @@ When two candidate outreach entries are otherwise equivalent under the [Recommen
 
 **Complete tie-break sequence**, applied in order until the tie is resolved:
 
-1. Matching job evidence (an `A4` matching job post outranks anything weaker, regardless of person type).
-2. Current job status (`Verified Open` outranks `Post Found, Current Status Unknown`, which outranks the rest).
+1. Matching job evidence (a Job Record `job_status` of `Verified Open` for a matching role outranks anything weaker, regardless of person type; absent a Job Record, an `A4` matching job post is the next-strongest signal).
+2. Current job status (Job Record `job_status` of `Verified Open` outranks `Likely Open / Partially Verified`, which outranks Activity Record `Post Found, Current Status Unknown`, which outranks the rest).
 3. Current employment verification (`Current` outranks `Unclear`/`Unable to Verify`, which outranks `Former`).
 4. Company priority (Priority 1 outranks Priority 2 outranks Priority 3).
 5. Person relevance score (the [Person Ranking Model](person-ranking-model.md) total, descending).
@@ -316,7 +322,8 @@ Each entry in the Outreach Queue should consider:
 - company priority (from the [Company Ranking Model](company-ranking-model.md));
 - person relevance (from the [Person Ranking Model](person-ranking-model.md));
 - activity level (A0–A4, from the [Activity Record](../schemas/activity-record.schema.md));
-- current job status (`job_status` on the Activity Record);
+- current job status (`job_status` on the primary [Job Record](../schemas/job-record.schema.md) when one exists for the role, otherwise `job_status` on the Activity Record);
+- company state (from any linked [Company State Record](../schemas/company-state-record.schema.md), disclosed as context — never silently folded into the numeric priority);
 - evidence confidence (per the [confidence model](../core/confidence-model.md));
 - user preferences (from [Search Criteria](../schemas/search-criteria.schema.md));
 - duplicate-contact avoidance — the same person should not generate multiple redundant queue entries across overlapping roles at the same company.
@@ -346,7 +353,12 @@ A company scored below 40 and is not Excluded (e.g., retained for visibility), w
 - [company-ranking-model.md](company-ranking-model.md)
 - [person-ranking-model.md](person-ranking-model.md)
 - [exclusion-policy.md](exclusion-policy.md)
+- [job-eligibility-gate.md](job-eligibility-gate.md)
 - [../schemas/activity-record.schema.md](../schemas/activity-record.schema.md)
+- [../schemas/job-record.schema.md](../schemas/job-record.schema.md)
+- [../schemas/company-state-record.schema.md](../schemas/company-state-record.schema.md)
 - [../core/confidence-model.md](../core/confidence-model.md)
 - [../core/scope-and-non-goals.md](../core/scope-and-non-goals.md)
+- [../core/job-verification-policy.md](../core/job-verification-policy.md)
+- [../outputs/verified-jobs-map-template.md](../outputs/verified-jobs-map-template.md)
 
