@@ -11,6 +11,8 @@ the Project's conversational layer — it does not redefine either.
 
 - Candidate Profile
 - Search Criteria
+- Verified Jobs Map
+- Unverified and Rejected Job Leads
 - Company Map
 - Excluded Companies Report
 - People Map
@@ -28,8 +30,8 @@ contract — an artifact is a presentation of that shape, not a new one.
 1. Short intermediate results (a quick answer, a single explanation, a
    small clarifying comparison) may remain inline in chat — not every
    response needs an artifact.
-2. A canonical or reusable output — one of the nine listed above, once it
-   has real content — should become an artifact rather than staying
+2. A canonical or reusable output — one of the eleven listed above, once
+   it has real content — should become an artifact rather than staying
    buried in chat, so the user can return to it, edit it, or export it.
 3. Lifecycle status (Draft, Verified, Approved, Stale, Superseded, or the
    applicable output-specific status) must remain visible on the artifact
@@ -49,3 +51,8 @@ contract — an artifact is a presentation of that shape, not a new one.
 8. Outreach-related artifacts (the Outreach Queue) remain advisory and
    manual. An artifact recommending an action never performs that action,
    and must not be framed as having already done so.
+9. A Verified Jobs Map artifact must keep its Verified Open and Likely
+   Open / Partially Verified sections visually separate — never merged
+   into one undifferentiated list.
+10. A rejected job lead never appears inside a Verified Jobs Map artifact;
+    it belongs only in the Unverified and Rejected Job Leads artifact.

@@ -17,7 +17,9 @@ Candidate Profile
         ↓
 Search Criteria
         ↓
-Company Records
+Company Records ──── Company State Records
+        ↓                    │
+Job Records ─────────────────┘
         ↓
 Person Records
         ↓
@@ -29,20 +31,37 @@ Research State
 - **Candidate Profile** describes who the person is professionally — background, experience, technologies, and domains.
 - **Search Criteria** describes what should be searched for — the preferences and constraints that shape the research, separate from the candidate's professional facts. Search Criteria guide company discovery.
 - **Company Records** describe target organizations and the evidence gathered about them — identity, classification, technology and hiring evidence, and relevance notes.
+- **Company State Records** describe specific, dated, time-sensitive organizational developments at a company (layoffs, freezes, restructuring, funding, expansion, leadership change, and similar events) — kept separate from the Company Record's stable identity/classification fields because their freshness behavior and evidence requirements differ. See [Job Record — Company State Boundary](../schemas/company-state-record.schema.md#record-boundary).
+- **Job Records** describe one specific, discovered role as a first-class logical record — identity, discovery, current-availability state, role requirements, and candidate-fit gate result. A Job Record is authoritative for whether one specific role is currently open; see [Migration and Compatibility](#migration-and-compatibility-job-record).
 - **Person Records** describe potentially relevant public professional contacts at those companies — recruiters, hiring managers, and related roles — with employment verification kept separate from activity verification.
-- **Activity Records** contain specific, dated public evidence linked to a Person Record. They exist so that activity claims are never asserted without a verifiable basis.
-- **Research State** describes what has already been completed, approved, or needs refresh — a logical representation of research journey progress across all of the above records, based on the context available to the running platform. It is not a storage mechanism, separate from the candidate's facts, search preferences, and the company/person/activity records themselves.
+- **Activity Records** contain specific, dated public evidence linked to a Person Record. They exist so that activity claims are never asserted without a verifiable basis. An Activity Record stays authoritative for what a person publicly posted or did; it may reference a related Job Record when a post concerns a specific role, but it is not authoritative for that role's current availability — see [Migration and Compatibility](#migration-and-compatibility-job-record).
+- **Research State** describes what has already been completed, approved, or needs refresh — a logical representation of research journey progress across all of the above records, based on the context available to the running platform. It is not a storage mechanism, separate from the candidate's facts, search preferences, and the company/job/person/activity/company-state records themselves.
 
-Each record has a distinct responsibility. A change to one does not automatically imply a rebuild of the others. Company, Person, and Activity Records do not perform ranking by themselves — they capture evidence for a later ranking step to consume. Storage and persistence of all records remain platform-managed; see [Context Boundary](#context-boundary).
+Each record has a distinct responsibility. A change to one does not automatically imply a rebuild of the others. Company, Job, Person, Activity, and Company State Records do not perform ranking by themselves — they capture evidence for a later ranking or gating step to consume. Storage and persistence of all records remain platform-managed; see [Context Boundary](#context-boundary).
 
 ## Schemas
 
 - [Candidate Profile](../schemas/candidate-profile.schema.md)
 - [Search Criteria](../schemas/search-criteria.schema.md)
 - [Company Record](../schemas/company-record.schema.md)
+- [Company State Record](../schemas/company-state-record.schema.md)
+- [Job Record](../schemas/job-record.schema.md)
 - [Person Record](../schemas/person-record.schema.md)
 - [Activity Record](../schemas/activity-record.schema.md)
 - [Research State](../schemas/research-state.schema.md)
+
+## Migration and Compatibility: Job Record
+
+Introducing the Job Record as a first-class record changes where "is this specific job currently open" is authoritatively decided. This section documents that boundary change so existing Company and Activity Record usage is not silently broken.
+
+- **Before this record existed**, the closest analog was the Activity Record's [Job Signal](../schemas/activity-record.schema.md#job-signal) section (`job_title`, `job_location`, `job_status`, `job_status_checked_at`) and the Company Record's [Hiring Evidence](../schemas/company-record.schema.md#hiring-evidence) section (`current_role_evidence`, `hiring_signal_status`). Both remain valid and are not removed.
+- **After this record exists:**
+  - The **Job Record is authoritative** for the current availability of one specific role, decided per [job-verification-policy.md](job-verification-policy.md).
+  - The **Activity Record stays authoritative** for what a person publicly posted or did. Its Job Signal fields remain meaningful as a description of what a specific post claimed (e.g., "this post mentioned a role and, at the time, that role's status was X") — they are not overwritten or deprecated. When an Activity Record's post concerns a specific tracked role, link the two via the Job Record's `related_activity_record_references` rather than treating the Activity Record's `job_status` as the current, authoritative answer.
+  - The **Company Record stays authoritative** for stable company facts and general hiring signal (`hiring_signal_status` remains a company-wide summary signal, not a specific-role determination). It does not need to enumerate every open role — that detail now lives in Job Records, referenced from the company via `related_job_record_references` on the Job Record side.
+  - **Company State Records** are new and have no prior analog; they did not previously exist as evidence inside the Company Record.
+- **No two conflicting sources of truth:** when both an Activity Record and a Job Record exist for what appears to be the same role, the Job Record's `job_status` is the current answer; the Activity Record remains the historical record of what that specific post said, dated as of its own `checked_at`.
+- **Nothing about existing Company, Person, Activity, Candidate Profile, Search Criteria, or Research State semantics is casually broken** by this change — all of their existing required fields, enums, and rules remain in force unless explicitly amended in their own schema files.
 
 ## Context Boundary
 
@@ -113,9 +132,14 @@ The product should use this information when relevant, but must not copy real pe
 8. Platform-specific adapters may describe how users supply context, but may not redefine the core data model.
 9. Absence of prior context does not block a focused task when the user supplies sufficient input.
 10. No state rule may imply background monitoring or scheduled execution.
+11. A Job Record is authoritative for one specific role's current availability; a Company Record is authoritative for stable company facts; an Activity Record is authoritative for what a person publicly posted — see [Migration and Compatibility: Job Record](#migration-and-compatibility-job-record).
+12. A Company State Record never silently overrides a Job Record's `job_status` or a Company Record's stable classification — see [job-verification-policy.md](job-verification-policy.md#company-state-does-not-gate-job-availability).
 
 ## Related documents
 
 - [../README.md](../README.md)
 - [product-definition.md](product-definition.md)
 - [scope-and-non-goals.md](scope-and-non-goals.md)
+- [job-verification-policy.md](job-verification-policy.md)
+- [../schemas/job-record.schema.md](../schemas/job-record.schema.md)
+- [../schemas/company-state-record.schema.md](../schemas/company-state-record.schema.md)

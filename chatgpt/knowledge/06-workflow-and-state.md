@@ -23,9 +23,40 @@ The workflow is **structured but flexible**. It must:
 
 ## Operating Modes
 
-### Full Journey
+There are two full, end-to-end journeys, plus Focused Task and Resume Journey modes that apply to both. Which full journey applies depends on user intent:
 
-The complete, ordered path from candidate input to an outreach-ready result:
+- **Job Search Journey (default for job-discovery intent)** — "find me jobs," "what roles should I apply to," and equivalents. See [Job Search Journey](#job-search-journey) below.
+- **Company Targeting Journey (preserved focused mode)** — "which companies should I target," "find companies that match me even if there is no role today," "find recruiters at these companies." See [Company Targeting Journey](#company-targeting-journey) below.
+
+Company-first research remains fully supported; it is simply not the default when the user is asking to find jobs. See [core/product-definition.md](product-definition.md#primary-user-journey) for the product-level framing.
+
+### Job Search Journey
+
+The default, complete, ordered path from candidate input to a verified, outreach-ready job result:
+
+```text
+Candidate Input / Existing Candidate Profile
+        ↓
+Search Criteria
+        ↓
+Current Job Discovery
+        ↓
+Current Job Verification
+        ↓
+Candidate–Job Fit
+        ↓
+Company State Verification
+        ↓
+Recruiter/Hiring-Manager Discovery
+        ↓
+Outreach Prioritization
+```
+
+See [workflows/job-search-journey.md](../workflows/job-search-journey.md) for the per-stage definition. This journey applies the [Primary Job Eligibility Gate](../ranking/job-eligibility-gate.md): company attractiveness alone never substitutes for a verified, candidate-fit role.
+
+### Company Targeting Journey
+
+The complete, ordered path from candidate input to an outreach-ready result, company-first:
 
 ```text
 Candidate Input
@@ -51,7 +82,7 @@ Outreach Queue
 Optional Export
 ```
 
-See [workflows/full-journey.md](../workflows/full-journey.md) for the per-stage definition.
+See [workflows/full-journey.md](../workflows/full-journey.md) for the per-stage definition. A company may appear here without a verified open role; the output must say so explicitly rather than implying a current opening exists — see [ranking/exclusion-policy.md](../ranking/exclusion-policy.md).
 
 ### Focused Task
 
@@ -69,11 +100,11 @@ See [workflows/resume-journey.md](../workflows/resume-journey.md) for details.
 
 > Use the minimum required workflow modules needed to satisfy the current request while preserving all applicable evidence, freshness, ranking, and quality-gate rules.
 
-This principle governs all three operating modes. It means:
+This principle governs both full journeys and both remaining operating modes. It means:
 
 - a focused task never triggers unrelated modules;
 - a resumed journey never rebuilds approved, still-fresh work;
-- even a Full Journey may skip a module when its preconditions are already satisfied by approved, non-stale state — see [Research State Rules](../schemas/research-state.schema.md#research-state-rules).
+- even a full journey may skip a module when its preconditions are already satisfied by approved, non-stale state — see [Research State Rules](../schemas/research-state.schema.md#research-state-rules).
 
 ## Workflow Modules
 
@@ -85,11 +116,15 @@ Each module below is documented independently in [workflows/](../workflows/) and
 | Build Search Criteria | [workflows/build-search-criteria.md](../workflows/build-search-criteria.md) | [Search Criteria schema](../schemas/search-criteria.schema.md) |
 | Discover Companies | [workflows/discover-companies.md](../workflows/discover-companies.md) | [Company Record schema](../schemas/company-record.schema.md) |
 | Classify and Rank Companies | [workflows/classify-and-rank-companies.md](../workflows/classify-and-rank-companies.md) | [Exclusion Policy](../ranking/exclusion-policy.md), [Company Ranking Model](../ranking/company-ranking-model.md) |
+| Discover Jobs | [workflows/discover-jobs.md](../workflows/discover-jobs.md) | [Job Record schema](../schemas/job-record.schema.md) |
+| Verify Job | [workflows/verify-job.md](../workflows/verify-job.md) | [Job Record schema](../schemas/job-record.schema.md), [job-verification-policy.md](job-verification-policy.md) |
+| Evaluate Candidate–Job Fit | [workflows/evaluate-candidate-job-fit.md](../workflows/evaluate-candidate-job-fit.md) | [Job Eligibility Gate](../ranking/job-eligibility-gate.md) |
+| Verify Company State | [workflows/verify-company-state.md](../workflows/verify-company-state.md) | [Company State Record schema](../schemas/company-state-record.schema.md) |
 | Discover People | [workflows/discover-people.md](../workflows/discover-people.md) | [Person Record schema](../schemas/person-record.schema.md), [Person Ranking Model](../ranking/person-ranking-model.md) |
 | Verify Activity | [workflows/verify-activity.md](../workflows/verify-activity.md) | [Activity Record schema](../schemas/activity-record.schema.md) |
 | Build Outreach Queue | [workflows/build-outreach-queue.md](../workflows/build-outreach-queue.md) | [Outreach Priority Model](../ranking/outreach-priority-model.md) |
 
-Company Selection and Export are decision points within [full-journey.md](../workflows/full-journey.md) and [focused-task-routing.md](../workflows/focused-task-routing.md) rather than independent modules — selection is a user review step on already-ranked output, and export packages an already-approved output rather than producing new evidence.
+Company Selection and Export are decision points within [full-journey.md](../workflows/full-journey.md), [job-search-journey.md](../workflows/job-search-journey.md), and [focused-task-routing.md](../workflows/focused-task-routing.md) rather than independent modules — selection is a user review step on already-ranked output, and export packages an already-approved output rather than producing new evidence.
 
 ## Related documents
 
@@ -98,11 +133,16 @@ Company Selection and Export are decision points within [full-journey.md](../wor
 - [confidence-model.md](confidence-model.md)
 - [freshness-policy.md](freshness-policy.md)
 - [quality-gates.md](quality-gates.md)
+- [job-verification-policy.md](job-verification-policy.md)
 - [../ranking/company-ranking-model.md](../ranking/company-ranking-model.md)
 - [../ranking/person-ranking-model.md](../ranking/person-ranking-model.md)
 - [../ranking/exclusion-policy.md](../ranking/exclusion-policy.md)
 - [../ranking/outreach-priority-model.md](../ranking/outreach-priority-model.md)
+- [../ranking/job-eligibility-gate.md](../ranking/job-eligibility-gate.md)
 - [../schemas/research-state.schema.md](../schemas/research-state.schema.md)
+- [../schemas/job-record.schema.md](../schemas/job-record.schema.md)
+- [../schemas/company-state-record.schema.md](../schemas/company-state-record.schema.md)
+- [../workflows/job-search-journey.md](../workflows/job-search-journey.md)
 
 
 ---
@@ -146,12 +186,16 @@ Each stage below uses the same status enum: `Not Started`, `Draft`, `Completed`,
 | `company_classification_status` | enum | Required | Status of the Company Classification stage. | `"Not Started"` |
 | `company_ranking_status` | enum | Required | Status of the Company Ranking stage. | `"Not Started"` |
 | `company_selection_status` | enum | Required | Status of the Company Selection stage. | `"Not Started"` |
+| `job_discovery_status` | enum | Required | Status of the Current Job Discovery stage. | `"Not Started"` |
+| `job_verification_status` | enum | Required | Status of the Current Job Verification stage. | `"Not Started"` |
+| `job_fit_evaluation_status` | enum | Required | Status of the Candidate–Job Fit stage. | `"Not Started"` |
+| `company_state_verification_status` | enum | Required | Status of the Company State Verification stage. | `"Not Started"` |
 | `people_discovery_status` | enum | Required | Status of the People Discovery stage (recruiters and potential hiring managers). | `"Not Started"` |
 | `activity_verification_status` | enum | Required | Status of the Activity Verification stage. | `"Not Requested"` |
 | `outreach_queue_status` | enum | Required | Status of the Outreach Queue stage. | `"Not Started"` |
 | `export_status` | enum | Required | Status of the optional Export stage. | `"Not Started"` |
 
-Stage names align with the [workflow modules](../core/workflow.md#workflow-modules) — see [full-journey.md](../workflows/full-journey.md) for each stage's purpose, inputs, outputs, and quality gate.
+Stage names align with the [workflow modules](../core/workflow.md#workflow-modules) — see [full-journey.md](../workflows/full-journey.md) (Company Targeting Journey) and [job-search-journey.md](../workflows/job-search-journey.md) (Job Search Journey, the default for job-discovery intent) for each stage's purpose, inputs, outputs, and quality gate. `job_discovery_status`, `job_verification_status`, `job_fit_evaluation_status`, and `company_state_verification_status` can each resume/refresh independently of the others and of the Company Targeting stages above — see Research State Rules below.
 
 ## Saved References
 
@@ -186,6 +230,8 @@ Stage names align with the [workflow modules](../core/workflow.md#workflow-modul
 8. No state value may imply scheduled or background monitoring.
 9. Every external research refresh must follow an explicit user request.
 10. Superseded records must not silently replace approved records without traceability.
+11. Job Discovery, Job Verification, Job Fit Evaluation, and Company State Verification may each be resumed or refreshed independently — a stale `job_verification_status` must not force a Candidate Profile rebuild, and a stale `company_state_verification_status` must not auto-invalidate stable company identity data on the Company Record.
+12. `journey_mode` may additionally reflect which full journey is active (Job Search Journey vs. Company Targeting Journey) when the distinction matters for resuming correctly.
 
 ## Example Record
 
@@ -205,17 +251,22 @@ recommended_next_stage: "company_discovery"
 - [../core/data-model.md](../core/data-model.md)
 - [../core/workflow.md](../core/workflow.md)
 - [../workflows/full-journey.md](../workflows/full-journey.md)
+- [../workflows/job-search-journey.md](../workflows/job-search-journey.md)
 - [candidate-profile.schema.md](candidate-profile.schema.md)
 - [search-criteria.schema.md](search-criteria.schema.md)
+- [job-record.schema.md](job-record.schema.md)
+- [company-state-record.schema.md](company-state-record.schema.md)
 
 
 ---
 
 ## Source: `workflows/full-journey.md`
 
-# Full Journey
+# Full Journey (Company Targeting Journey)
 
-The Full Journey is the complete, ordered path from candidate input to an outreach-ready result, as introduced in [core/workflow.md](../core/workflow.md). It coordinates the workflow modules but does not redefine the rules already established by the schemas, trust policy, and ranking models it invokes.
+This is the **Company Targeting Journey**: the complete, ordered, company-first path from candidate input to an outreach-ready result, as introduced in [core/workflow.md](../core/workflow.md#company-targeting-journey). It coordinates the workflow modules but does not redefine the rules already established by the schemas, trust policy, and ranking models it invokes.
+
+For job-discovery intent ("find me jobs" and equivalents), the **default** journey is instead the [Job Search Journey](job-search-journey.md) — see [core/product-definition.md](../core/product-definition.md#primary-user-journey). This journey remains fully supported as a focused mode: exploring companies worth targeting even without a verified open role today. A company may appear here without a currently open matching role; that must be disclosed explicitly rather than implied — see [ranking/exclusion-policy.md](../ranking/exclusion-policy.md#relationship-to-job-level-rejection).
 
 ```text
 Candidate Input
@@ -361,8 +412,145 @@ Optional Export
 ## Related documents
 
 - [../core/workflow.md](../core/workflow.md)
+- [job-search-journey.md](job-search-journey.md)
 - [focused-task-routing.md](focused-task-routing.md)
 - [resume-journey.md](resume-journey.md)
+- [../schemas/research-state.schema.md](../schemas/research-state.schema.md)
+
+
+---
+
+## Source: `workflows/job-search-journey.md`
+
+# Job Search Journey
+
+The Job Search Journey is the **default** end-to-end path when the user's intent is to find jobs — as opposed to the [Company Targeting Journey](full-journey.md), which remains a supported focused mode for company-first exploration. See [core/workflow.md](../core/workflow.md#operating-modes) for how these two full journeys relate, and [core/product-definition.md](../core/product-definition.md) for why job-first is the default for job-discovery intent.
+
+```text
+Candidate Input / Existing Candidate Profile
+        ↓
+Search Criteria
+        ↓
+Current Job Discovery
+        ↓
+Current Job Verification
+        ↓
+Candidate–Job Fit
+        ↓
+Company State Verification
+        ↓
+Recruiter / Hiring-Manager Discovery
+        ↓
+Outreach Prioritization
+```
+
+A successful primary result under this journey is a specific role with: a specific employer, a specific job title, sufficient role detail to assess candidate relevance, an explicit current-availability state, an exact `job_status_checked_at`, source URL(s), a candidate-fit assessment, a company-state assessment, and recruiter/hiring-manager discovery when useful and possible. Prefer fewer strongly verified matches over many stale, closed, weak, or unverifiable ones.
+
+## Stages
+
+### Candidate Input / Existing Candidate Profile
+
+- **Purpose:** Reuse or build the [Candidate Profile](../schemas/candidate-profile.schema.md) — identical to [Full Journey — Candidate Analysis](full-journey.md#candidate-analysis); this journey does not redefine that stage.
+- **Conditions for skipping:** An Approved Candidate Profile already exists in the available context and the user has not indicated changes.
+
+### Search Criteria
+
+- **Purpose:** Build or reuse [Search Criteria](../schemas/search-criteria.schema.md) — identical to [Full Journey — Search Criteria](full-journey.md#search-criteria).
+- **Conditions for skipping:** Ready Search Criteria already exist and the user has not indicated changes.
+
+### Current Job Discovery
+
+- **Purpose:** Identify a broad set of candidate roles across discovery sources — official careers pages, LinkedIn Jobs, Glassdoor, Indeed, other job boards, and recruiter posts — before verification or fit evaluation.
+- **Required inputs:** Ready Search Criteria.
+- **Outputs:** Draft [Job Records](../schemas/job-record.schema.md), each with `discovery_source`, `discovery_source_type`, and `discovered_at` populated; `job_status` not yet decided beyond a provisional value.
+- **State transition:** `job_discovery_status` moves Not Started → Draft → Completed.
+- **Quality gate:** See [Job Record Rules](../schemas/job-record.schema.md#job-record-rules), rule 3 — a discovery-source listing is never treated as verification.
+- **Module reference:** [discover-jobs.md](discover-jobs.md).
+
+### Current Job Verification
+
+- **Purpose:** Decide each discovered role's `job_status` per [core/job-verification-policy.md](../core/job-verification-policy.md), including the mandatory official-site/ATS cross-check.
+- **Required inputs:** Draft Job Records from Current Job Discovery.
+- **Outputs:** Job Records with `job_status`, `official_verification_attempted`, `official_verification_result`, and `job_status_checked_at` populated.
+- **State transition:** `job_verification_status` moves Not Started → Draft → Completed.
+- **Quality gate:** See [core/job-verification-policy.md](../core/job-verification-policy.md#policy-rules) — no discovery source alone produces Verified Open; a failed or impossible verification attempt is recorded, not omitted.
+- **Module reference:** [verify-job.md](verify-job.md).
+
+**Rule 1:** Do not require Activity verification merely to prove a job exists if the official careers page already proves current availability — Activity Record verification (see [verify-activity.md](verify-activity.md)) remains a separate, optional module about a person's public posts, not a precondition for Current Job Verification.
+
+### Candidate–Job Fit
+
+- **Purpose:** Apply the [Primary Job Eligibility Gate](../ranking/job-eligibility-gate.md) — Gate B (candidate fit) — to verified/likely-open roles, and record `fit_gate_result`/`fit_gate_reason` on each Job Record.
+- **Required inputs:** Job Records with `job_status` decided; an approved Candidate Profile and Ready Search Criteria.
+- **Outputs:** Job Records with `fit_evaluation_status`, `fit_gate_result`, `fit_gate_reason` (when failing), and `record_disposition` populated.
+- **State transition:** `job_fit_evaluation_status` moves Not Started → Draft → Completed.
+- **Quality gate:** See [job-eligibility-gate.md](../ranking/job-eligibility-gate.md#rules) — unknown fit evidence is never a positive signal; a hard-constraint violation excludes the role from the primary map regardless of company attractiveness.
+- **Module reference:** [evaluate-candidate-job-fit.md](evaluate-candidate-job-fit.md).
+
+**Rule 2:** A role that fails Gate A (availability) or Gate B (fit) is reclassified as a Rejected Lead, not deleted — see [Unverified and Rejected Job Leads](../outputs/unverified-job-leads-template.md).
+
+### Company State Verification
+
+- **Purpose:** Surface relevant, recent organizational developments (layoffs, freezes, restructuring, funding, expansion, leadership change, etc.) for the employer of each role that passed the eligibility gate, per [company-state-record.schema.md](../schemas/company-state-record.schema.md).
+- **Required inputs:** Job Records with `record_disposition` of `Primary Candidate`.
+- **Outputs:** [Company State Records](../schemas/company-state-record.schema.md), linked to the relevant Job Record(s) via `related_company_state_references`.
+- **State transition:** `company_state_verification_status` moves Not Started → Draft → Completed.
+- **Quality gate:** See [Company State Record Rules](../schemas/company-state-record.schema.md#company-state-record-rules) — Fact and Supported Inference stay labeled and separate; this stage never changes a Job Record's `job_status` or `fit_gate_result`.
+- **Module reference:** [verify-company-state.md](verify-company-state.md).
+
+**Rule 3:** Company State evidence is disclosed alongside the role, never merged into it — a recent layoff does not remove a verified open role from the primary map, and it does not automatically mark every role at that company Closed.
+
+### Recruiter / Hiring-Manager Discovery
+
+- **Purpose:** Identify public professional contacts relevant to each primary role, using the priority order in [source-policy.md](../core/source-policy.md) and [person-ranking-model.md](../ranking/person-ranking-model.md) — identical module to [Full Journey — People Discovery](full-journey.md#people-discovery), scoped to the companies behind primary roles rather than a broader selected-company set.
+- **Required inputs:** Job Records with `record_disposition` of `Primary Candidate`.
+- **Outputs:** [Person Records](../schemas/person-record.schema.md), with `related_person_references` populated on the relevant Job Record(s) when discovered.
+- **State transition:** `people_discovery_status` moves Not Started → Draft → Completed (shared with the Company Targeting Journey's stage of the same name).
+- **Conditions for skipping:** Relevant Person Records for the role's employer already exist and are not stale.
+
+### Outreach Prioritization
+
+- **Purpose:** Produce the [Outreach Priority Queue](../outputs/outreach-queue-template.md), now able to associate a specific verified Job Record with a recommended contact — see [build-outreach-queue.md](build-outreach-queue.md).
+- **Required inputs:** Primary Job Records, discovered Person Records, and (when available) Activity Records and Company State Records.
+- **Outputs:** An Outreach Priority Queue.
+- **State transition:** `outreach_queue_status` moves Not Started → Draft → Completed (shared with the Company Targeting Journey).
+
+## Primary Result Requirements
+
+Every entry that reaches the [Verified Jobs Map](../outputs/verified-jobs-map-template.md) must have all of the following, per the product spec:
+
+- specific employer (`company_name`);
+- specific job title (`job_title`);
+- sufficient role detail to assess candidate relevance;
+- explicit current-availability state (`job_status`);
+- exact `job_status_checked_at`;
+- source URL(s);
+- a candidate-fit assessment (`fit_gate_result`, `fit_notes`);
+- a company-state assessment (linked Company State Record(s), or an explicit note that none were found);
+- recruiter/hiring-manager discovery when useful and possible (not mandatory when no relevant contact could be found — that gap is disclosed, not fabricated).
+
+## Explicit Non-Actions
+
+- Do not treat a company's general attractiveness, a recruiter's hiring post, a job-board listing, or historical hiring evidence as proof a specific job is currently open.
+- Do not require Activity Verification of a person's social posts as a precondition for Current Job Verification when the official careers page already settles availability.
+- Do not silently drop a role that fails a gate — route it to Rejected/Unverified Leads with a specific reason.
+- Do not let Company State evidence auto-invalidate a verified role, and do not let it auto-close every role at a company.
+- Do not perform scheduled or background job monitoring; this journey runs once per explicit request.
+
+## Related documents
+
+- [../core/workflow.md](../core/workflow.md)
+- [../core/job-verification-policy.md](../core/job-verification-policy.md)
+- [../ranking/job-eligibility-gate.md](../ranking/job-eligibility-gate.md)
+- [full-journey.md](full-journey.md)
+- [focused-task-routing.md](focused-task-routing.md)
+- [resume-journey.md](resume-journey.md)
+- [discover-jobs.md](discover-jobs.md)
+- [verify-job.md](verify-job.md)
+- [evaluate-candidate-job-fit.md](evaluate-candidate-job-fit.md)
+- [verify-company-state.md](verify-company-state.md)
+- [../outputs/verified-jobs-map-template.md](../outputs/verified-jobs-map-template.md)
+- [../outputs/unverified-job-leads-template.md](../outputs/unverified-job-leads-template.md)
 - [../schemas/research-state.schema.md](../schemas/research-state.schema.md)
 
 
@@ -379,12 +567,20 @@ A Focused Task lets the user enter directly into a specific [workflow module](..
 | User request | Required modules |
 |---|---|
 | "Analyze this resume" | Analyze Candidate |
+| "Find me jobs" | Search Criteria → Discover Jobs → Verify Job → Evaluate Candidate–Job Fit → Company State Verification → Discover People → Build Outreach Queue (see [job-search-journey.md](job-search-journey.md)) |
 | "Find 30 companies" | Search Criteria → Discover Companies → Classify and Rank Companies |
+| "Check whether these roles are still open" | Verify Job only (roles already discovered) |
+| "Verify these jobs" | Verify Job → Evaluate Candidate–Job Fit |
+| "Assess company state for these companies" | Verify Company State only |
+| "Refresh only stale job statuses" | Verify Job, scoped to Job Records with `job_status` of Stale or `refresh_required` |
+| "Refresh only company-state claims" | Verify Company State, scoped to Company State Records with `currency_assessment` of Likely Superseded or `refresh_required` |
 | "Find recruiters at these companies" | Discover People |
+| "Find recruiters for these verified roles" | Discover People, scoped to the employers behind the given Job Records |
 | "Find managers who may manage this profile" | Discover People |
 | "Check who posted jobs recently" | Verify Activity |
 | "Why is this Priority 2?" | Explain existing ranking only — no module re-run |
-| "Change commute to 20 minutes" | Update Search Criteria → refresh location-dependent Company Record fields only |
+| "Why isn't this job in the Verified Jobs Map?" | Explain existing `job_status`/`fit_gate_result`/`rejection_reason` only — no module re-run |
+| "Change commute to 20 minutes" | Update Search Criteria → refresh location-dependent Company Record fields only, and refresh the Location and commute fit inputs on affected Job Records |
 | "Create an outreach list" | Build Outreach Queue |
 | "Export this to CSV" | Export existing approved output only — no module re-run |
 
@@ -409,11 +605,22 @@ Only Search Criteria updates (`maximum_commute_minutes`), and only the Company R
 **"Find managers who may manage this profile"**
 Only Discover People runs, scoped to Engineering Manager, Group Manager, Director of Engineering, Head of R&D, and VP R&D person types, per the [Person Ranking Model](../ranking/person-ranking-model.md#hiring-managers). Company discovery and ranking are not re-run if a selected company set already exists.
 
+**"Check whether these roles are still open"**
+Only Verify Job runs against the specified Job Records — Discover Jobs, Evaluate Candidate–Job Fit, Company State Verification, and People Discovery are not re-run unless the user also asks for them. This is the standard "refresh only stale job statuses" pattern in practice.
+
+**"Refresh only company-state claims"**
+Only Verify Company State runs, scoped to the specified companies or to Company State Records already flagged `refresh_required`; this never touches Job Record `job_status` or the stable Company Record identity fields — see [job-verification-policy.md](../core/job-verification-policy.md#company-state-does-not-gate-job-availability).
+
 ## Related documents
 
 - [../core/workflow.md](../core/workflow.md)
 - [full-journey.md](full-journey.md)
+- [job-search-journey.md](job-search-journey.md)
 - [resume-journey.md](resume-journey.md)
+- [discover-jobs.md](discover-jobs.md)
+- [verify-job.md](verify-job.md)
+- [evaluate-candidate-job-fit.md](evaluate-candidate-job-fit.md)
+- [verify-company-state.md](verify-company-state.md)
 
 
 ---
@@ -448,7 +655,8 @@ Using the [Stage Statuses](../schemas/research-state.schema.md#stage-statuses) e
 ## Refreshing Only Stale Public Research
 
 - Refresh only the specific stage(s) marked Stale or flagged via `refresh_required`/`refresh_reason`, not the entire journey.
-- Candidate Profile and Search Criteria are not refreshed just because downstream public research (companies, people, activity) is stale — see [freshness-policy.md](../core/freshness-policy.md), rule 8.
+- Candidate Profile and Search Criteria are not refreshed just because downstream public research (companies, jobs, people, activity, company state) is stale — see [freshness-policy.md](../core/freshness-policy.md), rule 8.
+- `job_discovery_status`, `job_verification_status`, `job_fit_evaluation_status`, and `company_state_verification_status` each refresh independently — a stale job verification does not force a Candidate Profile rebuild, and a stale company-state event does not auto-invalidate stable Company Record identity data — see [Research State Rules](../schemas/research-state.schema.md#research-state-rules), rule 11.
 
 ## Avoiding Rebuilds of Stable Candidate Information
 
@@ -471,6 +679,7 @@ Using the [Stage Statuses](../schemas/research-state.schema.md#stage-statuses) e
 
 - [../core/workflow.md](../core/workflow.md)
 - [full-journey.md](full-journey.md)
+- [job-search-journey.md](job-search-journey.md)
 - [focused-task-routing.md](focused-task-routing.md)
 - [../schemas/research-state.schema.md](../schemas/research-state.schema.md)
 
@@ -495,6 +704,7 @@ Combine company ranking, person relevance, and activity evidence into an ordered
 ## Optional Inputs
 
 - Activity Records, when Activity Verification has been run — their absence does not block the queue, but it does cap which actions can be recommended (see below).
+- Primary [Job Records](../schemas/job-record.schema.md) (`record_disposition` of `Primary Candidate`), when the request originated from the [Job Search Journey](job-search-journey.md) — a Job Record's `job_status` of `Verified Open` is the strongest available "currently open role" evidence and should be preferred over an Activity Record's own `job_status` for the same role, per [Migration and Compatibility: Job Record](../core/data-model.md#migration-and-compatibility-job-record).
 
 ## Preconditions
 
@@ -502,10 +712,11 @@ Combine company ranking, person relevance, and activity evidence into an ordered
 
 ## Procedure
 
-1. For each company/person pairing, determine the recommended action using the [Recommended Action Order](../ranking/outreach-priority-model.md#recommended-action-order) — from an A4 matching job post down to Skip.
+1. For each company/person pairing, determine the recommended action using the [Recommended Action Order](../ranking/outreach-priority-model.md#recommended-action-order) — from a qualifying Job Record-verified open role down to Skip. An A4 matching job post without a qualifying Job Record is not sufficient for "Apply Now" — see [Job Record required for "Apply Now"](../ranking/outreach-priority-model.md#recommended-action-order).
 2. Select from the [Supported Actions](../ranking/outreach-priority-model.md#supported-actions) list only.
-3. Apply the [Outreach Queue Inputs](../ranking/outreach-priority-model.md#outreach-queue-inputs): company priority, person relevance, activity level, current job status, evidence confidence, user preferences, and duplicate-contact avoidance.
+3. Apply the [Outreach Queue Inputs](../ranking/outreach-priority-model.md#outreach-queue-inputs): company priority, person relevance, activity level, current job status, company state, evidence confidence, user preferences, and duplicate-contact avoidance.
 4. Avoid generating multiple redundant entries for the same person across overlapping roles at one company.
+5. When a primary Job Record exists for the role, associate its `job_id` with the queue entry (see [outreach-queue-template.md](../outputs/outreach-queue-template.md)) — this association is descriptive only and never implies automatic outreach.
 
 ## Outputs
 
@@ -539,5 +750,8 @@ Combine company ranking, person relevance, and activity evidence into an ordered
 - [classify-and-rank-companies.md](classify-and-rank-companies.md)
 - [discover-people.md](discover-people.md)
 - [verify-activity.md](verify-activity.md)
+- [evaluate-candidate-job-fit.md](evaluate-candidate-job-fit.md)
 - [full-journey.md](full-journey.md)
+- [job-search-journey.md](job-search-journey.md)
+- [../schemas/job-record.schema.md](../schemas/job-record.schema.md)
 

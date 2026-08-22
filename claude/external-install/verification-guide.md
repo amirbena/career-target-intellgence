@@ -1,9 +1,9 @@
 # Verification Guide
 
-Five smoke tests to run right after installation, before relying on the
+Seven smoke tests to run right after installation, before relying on the
 Project for real research. Each checks a distinct part of the
 methodology — routing, scope discipline, evidence rules, resume behavior,
-and output completeness.
+output completeness, and the job-first eligibility gate.
 
 ## 1. Candidate analysis without company research
 
@@ -54,6 +54,27 @@ Role Fit, Stack Fit, Domain Fit, System-type Fit, Product-company Fit,
 Location and Commute Fit, Relevant Team Evidence, and Current Hiring
 Signal — in that order, alongside Priority, Score, and the other required
 Company Map columns.
+
+## 6. A LinkedIn discovery alone does not become Verified Open
+
+Prompt: "This role was posted on LinkedIn: [synthetic role/company]. Is it
+open?" — without supplying an official-site confirmation.
+
+Expect: the Project attempts (or asks to attempt) an official-site/ATS
+cross-check rather than declaring the role Verified Open from the LinkedIn
+listing alone; if the official site cannot be checked, the result is
+Unable to Verify, not Verified Open.
+
+## 7. A verified role failing a hard constraint is excluded from the primary map
+
+Prompt: supply a synthetic role that is confirmed open on an official
+careers page but conflicts with a hard constraint you've stated (e.g., a
+location outside your stated geographic limit).
+
+Expect: the role does not appear in the Verified Jobs Map despite being
+confirmed open; it appears in the Unverified/Rejected Job Leads output with
+the specific constraint named as the reason — company attractiveness does
+not override the exclusion.
 
 ## If a test fails
 

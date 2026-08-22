@@ -34,6 +34,7 @@ career-targeting-intelligence-chatgpt/
     06-workflow-and-state.md
     07-evidence-confidence-freshness.md
     08-output-contracts.md
+    09-job-and-company-state.md
 ```
 
 Exactly one top-level directory is allowed inside the archive.

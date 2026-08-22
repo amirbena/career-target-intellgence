@@ -20,9 +20,11 @@ them as read-only shared Knowledge:
 - [`core/freshness-policy.md`](../core/freshness-policy.md)
 - [`core/quality-gates.md`](../core/quality-gates.md)
 - [`core/output-contracts.md`](../core/output-contracts.md)
+- [`core/job-verification-policy.md`](../core/job-verification-policy.md)
 - [`ranking/company-ranking-model.md`](../ranking/company-ranking-model.md)
 - [`ranking/person-ranking-model.md`](../ranking/person-ranking-model.md)
 - [`ranking/exclusion-policy.md`](../ranking/exclusion-policy.md)
+- [`ranking/job-eligibility-gate.md`](../ranking/job-eligibility-gate.md)
 - [`ranking/outreach-priority-model.md`](../ranking/outreach-priority-model.md)
 
 ## What Project Knowledge is for
@@ -62,6 +64,8 @@ repository:
 - `candidate-profile.md`
 - `search-criteria.md`
 - `research-state.md`
+- `verified-jobs-map.md`
+- `unverified-job-leads.md`
 - `company-map.md`
 - `people-map.md`
 - `activity-verification.md`

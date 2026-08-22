@@ -41,7 +41,7 @@ Add each starter listed there as one of the GPT's Conversation Starters.
 
 ## Knowledge uploads
 
-Upload all eight generated bundles under `chatgpt/knowledge/`:
+Upload all nine generated bundles under `chatgpt/knowledge/`:
 
 1. `01-product-and-terminology.md`
 2. `02-candidate-and-search.md`
@@ -51,6 +51,7 @@ Upload all eight generated bundles under `chatgpt/knowledge/`:
 6. `06-workflow-and-state.md`
 7. `07-evidence-confidence-freshness.md`
 8. `08-output-contracts.md`
+9. `09-job-and-company-state.md`
 
 These are generated files — build or rebuild them with
 `scripts/build-chatgpt-knowledge.sh` (or `.ps1`) rather than editing them

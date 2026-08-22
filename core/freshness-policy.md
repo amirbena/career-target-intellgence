@@ -16,8 +16,28 @@ There is no single universal expiration period that applies to every field. Fres
 | Current employment | Current evidence required |
 | Public activity | Must fall inside the user-requested lookback window |
 | Hiring signal | Recent evidence required |
-| Job availability | Current verification required |
+| Job availability | Current verification required — see [Job Availability Freshness](#job-availability-freshness) |
+| Company state (organizational event) | Event-specific — see [Company State Freshness](#company-state-freshness) |
 | Commute estimate | Depends on transport mode and traffic assumptions |
+
+## Job Availability Freshness
+
+Job availability is highly time-sensitive. A role used as a current recommendation (entering the [Verified Jobs Map](../outputs/verified-jobs-map-template.md)) must have:
+
+- a current verification attempt (`official_verification_attempted`, `official_verification_result` on the [Job Record](../schemas/job-record.schema.md));
+- an exact `job_status_checked_at`.
+
+Do not rely on the listing's own publication date (`source_date`) alone as proof the role remains open — a listing can remain posted long after a role closes. See [job-verification-policy.md](job-verification-policy.md).
+
+## Company State Freshness
+
+Company State evidence uses event-specific freshness, distinguishing three separate questions that must not be collapsed into one:
+
+1. **When did the event happen** — `source_date` on the [Company State Record](../schemas/company-state-record.schema.md).
+2. **When was it last checked** — `checked_at`.
+3. **Is the impact still relevant to the decision at hand** — `currency_assessment` (`Current`, `Materially Relevant Though Older`, `Likely Superseded`, `Unknown`).
+
+A months-old layoff may still be materially relevant and must not be auto-expired just because it falls outside the (much shorter) job-verification freshness window — the two freshness clocks are independent. `currency_assessment` of `Likely Superseded` is the only case that should be treated like an expired claim, and it requires a `stale_reason`.
 
 ## Key Concepts
 
@@ -40,6 +60,8 @@ There is no single universal expiration period that applies to every field. Fres
 8. Refresh only the affected public research, not stable candidate information.
 9. Refresh activity or hiring information only after an explicit user request.
 10. Do not imply continuous monitoring.
+11. Job-status freshness and company-state freshness are independent clocks; a stale company-state event does not invalidate a fresh job verification, and a stale job verification does not invalidate a still-relevant company-state event.
+12. Refreshing a stale job verification must not force a Candidate Profile rebuild; refreshing a stale company-state event must not auto-invalidate stable company identity data.
 
 ## Related documents
 
@@ -47,4 +69,7 @@ There is no single universal expiration period that applies to every field. Fres
 - [confidence-model.md](confidence-model.md)
 - [quality-gates.md](quality-gates.md)
 - [data-model.md](data-model.md)
+- [job-verification-policy.md](job-verification-policy.md)
 - [../schemas/research-state.schema.md](../schemas/research-state.schema.md)
+- [../schemas/job-record.schema.md](../schemas/job-record.schema.md)
+- [../schemas/company-state-record.schema.md](../schemas/company-state-record.schema.md)

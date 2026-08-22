@@ -8,7 +8,27 @@ them into different meanings.
 **Canonical sources:** [`core/source-policy.md`](../../../core/source-policy.md),
 [`core/confidence-model.md`](../../../core/confidence-model.md),
 [`core/freshness-policy.md`](../../../core/freshness-policy.md),
-[`core/quality-gates.md`](../../../core/quality-gates.md).
+[`core/quality-gates.md`](../../../core/quality-gates.md),
+[`core/job-verification-policy.md`](../../../core/job-verification-policy.md).
+
+## Current job availability and company state (summary)
+
+Full detail lives in [`job-intelligence.md`](job-intelligence.md) — this is
+the cross-reference for the trust rules specifically.
+
+- Job availability source hierarchy: (1) official company careers site, (2)
+  official ATS/job page the company controls or links, (3) other official
+  company recruitment source. LinkedIn/Glassdoor/Indeed/other boards/
+  recruiter posts/search snippets may discover a role; none alone produce
+  Verified Open. Attempt the official-site/ATS cross-check whenever
+  publicly accessible, and record the attempt's outcome even when it fails.
+  Absence from an official careers search means the check failed or the
+  listing may be stale — not automatic proof of closure.
+- Company state source hierarchy: (1) official announcements/filings, (2)
+  regulatory filings where applicable, (3) direct executive/company
+  communications, (4) highly reputable business/news reporting, (5) other
+  credible secondary sources. A social-media rumor alone never becomes a
+  verified event; corroborate significant negative events when practical.
 
 ## Source policy
 
@@ -75,7 +95,8 @@ Freshness expectations by claim type:
 | Current employment | Requires current evidence |
 | Public activity | Must fall inside the user-requested lookback window |
 | Hiring signal | Requires recent evidence |
-| Job availability | Requires current verification |
+| Job availability | Requires current verification (official-site cross-check, exact `job_status_checked_at`) |
+| Company state (organizational event) | Event-specific: `source_date` (when it happened) vs. `checked_at` (last checked) vs. `currency_assessment` (still relevant?) are three separate questions — a months-old event can stay Materially Relevant Though Older |
 | Commute estimate | Depends on transport mode and traffic assumptions |
 
 ### Rules
@@ -95,6 +116,29 @@ Freshness expectations by claim type:
 
 ## Quality gates (before returning each output)
 
+**Verified Jobs Map:** every entry has `record_disposition: Primary
+Candidate`; `job_status` is Verified Open or Likely Open / Partially
+Verified only (never Closed / Unable to Verify / Not Found on Official Site
+/ Historical / Stale); the two sections stay visually separate;
+`official_verification_attempted`/`result` present on every entry; a
+job-board listing, recruiter post, or search snippet alone never produced
+Verified Open; no entry violates a hard candidate constraint;
+`job_status_checked_at` present and exact; company-state context shown
+separately, never merged into availability or fit; recruiter/manager refs
+shown or explicitly "Not yet identified."
+
+**Unverified and Rejected Job Leads:** every Rejected Lead included, never
+dropped; each entry has a specific `rejection_reason`; "Not Found on
+Official Site" never presented as equivalent to "Closed"; Closed entries
+carry direct closure evidence and an exact date; a missing official
+verification attempt is visible.
+
+**Company State Verification:** `event_description` (Fact) and
+`candidate_impact_assessment` (Fact or Supported Inference) stay separated
+and labeled; a social post alone never becomes Verified; significant
+negative events are corroborated when practical; conflicting evidence stays
+visible; this evidence never auto-closes a Job Record.
+
 **Company Map:** identity verified or explicitly marked otherwise; type
 classified or marked Unclear; location evidence present when commute
 matters; technology evidence scoped; suitability kept separate from current
@@ -105,7 +149,8 @@ hiring; every exclusion carries a reason; mutable claims carry
 unresolved; person type classified; recruiter relevance kept separate from
 managerial relevance; duplicate-name risk considered; no fabricated profile
 URL; activity status never inferred from an Activity URL alone; `checked_at`
-present.
+present; a person's current-employment verification stays a separate claim
+from any job's availability status — never conflated.
 
 **Activity Verification:** A0–A4 assigned consistently; A2 and above carry a
 specific, dated post; authorship vs. repost noted; exact lookback dates

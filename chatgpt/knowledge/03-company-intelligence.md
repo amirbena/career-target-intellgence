@@ -91,9 +91,11 @@ Do not add numeric scores or priority tiers in this task.
 | `current_role_evidence` | list of strings | Optional | Evidence of currently open roles. | `["Senior Backend Engineer listing dated 2026-07-10"]` |
 | `general_hiring_signal` | string | Optional | A general description of hiring activity, if any. | `"Multiple engineering roles open"` |
 | `hiring_signal_date` | timestamp | Optional | When the hiring signal was observed. | `"2026-07-10T00:00:00Z"` |
-| `hiring_signal_status` | enum: `Verified Current Role`, `Recent Hiring Signal`, `Historical Hiring Signal`, `No Signal Found`, `Unable to Verify` | Required | The status of the hiring signal. | `"Recent Hiring Signal"` |
+| `hiring_signal_status` | enum: `Verified Current Role`, `Recent Hiring Signal`, `Historical Hiring Signal`, `No Signal Found`, `Unable to Verify` | Required | A general, company-level summary of hiring activity — not a determination for any one specific role. | `"Recent Hiring Signal"` |
+| `related_job_record_references` | list of logical references | Optional | [Job Records](job-record.schema.md) tracking specific roles at this company, when discovered. | `["job:northbridge-systems:senior-backend-engineer:2026-07-20"]` |
+| `related_company_state_references` | list of logical references | Optional | [Company State Records](company-state-record.schema.md) describing recent organizational developments at this company. | `["company-state:northbridge-systems:2026-06-01-layoff"]` |
 
-A company appearing in the target map must not imply that it is currently hiring; `hiring_signal_status` carries that determination explicitly.
+A company appearing in the target map must not imply that it is currently hiring; `hiring_signal_status` carries that determination explicitly. `hiring_signal_status` remains a company-wide summary; it is not authoritative for any single role's current availability — that determination belongs to the referenced [Job Record(s)](job-record.schema.md). See [Migration and Compatibility: Job Record](../core/data-model.md#migration-and-compatibility-job-record).
 
 ## Evidence and Lifecycle
 
@@ -120,6 +122,8 @@ A company appearing in the target map must not imply that it is currently hiring
 8. Company suitability does not prove current hiring.
 9. `stale_reason` is required whenever `record_status` is Stale.
 10. `refresh_required` does not imply automatic refresh; a refresh occurs only after an explicit user request — see [freshness-policy.md](../core/freshness-policy.md), rule 9.
+11. This record stays authoritative for stable company facts and general hiring signal; it is not authoritative for a specific role's current availability — see [job-record.schema.md](job-record.schema.md) and [Migration and Compatibility: Job Record](../core/data-model.md#migration-and-compatibility-job-record).
+12. A Company State Record must never silently change this record's `company_status` or classification fields — see [company-state-record.schema.md](company-state-record.schema.md).
 
 ## Example Record
 
@@ -142,8 +146,11 @@ checked_at: "2026-07-20T09:00:00Z"
 ## Related documents
 
 - [../core/data-model.md](../core/data-model.md)
+- [../core/job-verification-policy.md](../core/job-verification-policy.md)
 - [person-record.schema.md](person-record.schema.md)
 - [activity-record.schema.md](activity-record.schema.md)
+- [job-record.schema.md](job-record.schema.md)
+- [company-state-record.schema.md](company-state-record.schema.md)
 
 
 ---
@@ -295,6 +302,8 @@ This module also handles re-scoring an already-ranked company when a [Re-scoring
 # Company Ranking Model
 
 This document defines the platform-independent scoring model used to rank target companies. It builds on the [Company Record](../schemas/company-record.schema.md) and the [confidence model](../core/confidence-model.md), and it feeds the [Outreach Priority Model](outreach-priority-model.md). See [exclusion-policy.md](exclusion-policy.md) for how a company is filtered out of ranking entirely.
+
+**Scope note for job-search intent:** this model ranks company-level suitability for the [Company Targeting Journey](../workflows/full-journey.md). For job-search intent, a high company score never substitutes for a role passing the [Primary Job Eligibility Gate](job-eligibility-gate.md) — availability and hard candidate fit are gates on the specific role, evaluated independently of this company-level score. A company's Company State evidence (see [Company State Record schema](../schemas/company-state-record.schema.md)) is surfaced as separate context and must not be folded into this score.
 
 The score is an **explainability and consistency mechanism, not objective truth**. It exists to make prioritization reasoning legible and repeatable — not to assert a precise, unarguable measure of fit. Scores must always be accompanied by written reasoning, not presented as a bare number.
 
@@ -536,9 +545,12 @@ Role fit 19/20, stack fit 19/20, domain fit 14/15, system fit 9/10, product-comp
 ## Related documents
 
 - [../schemas/company-record.schema.md](../schemas/company-record.schema.md)
+- [../schemas/company-state-record.schema.md](../schemas/company-state-record.schema.md)
 - [../core/confidence-model.md](../core/confidence-model.md)
 - [exclusion-policy.md](exclusion-policy.md)
+- [job-eligibility-gate.md](job-eligibility-gate.md)
 - [person-ranking-model.md](person-ranking-model.md)
 - [outreach-priority-model.md](outreach-priority-model.md)
 - [../workflows/classify-and-rank-companies.md](../workflows/classify-and-rank-companies.md)
+- [../workflows/job-search-journey.md](../workflows/job-search-journey.md)
 

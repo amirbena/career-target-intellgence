@@ -80,9 +80,11 @@ Do not add numeric scores or priority tiers in this task.
 | `current_role_evidence` | list of strings | Optional | Evidence of currently open roles. | `["Senior Backend Engineer listing dated 2026-07-10"]` |
 | `general_hiring_signal` | string | Optional | A general description of hiring activity, if any. | `"Multiple engineering roles open"` |
 | `hiring_signal_date` | timestamp | Optional | When the hiring signal was observed. | `"2026-07-10T00:00:00Z"` |
-| `hiring_signal_status` | enum: `Verified Current Role`, `Recent Hiring Signal`, `Historical Hiring Signal`, `No Signal Found`, `Unable to Verify` | Required | The status of the hiring signal. | `"Recent Hiring Signal"` |
+| `hiring_signal_status` | enum: `Verified Current Role`, `Recent Hiring Signal`, `Historical Hiring Signal`, `No Signal Found`, `Unable to Verify` | Required | A general, company-level summary of hiring activity — not a determination for any one specific role. | `"Recent Hiring Signal"` |
+| `related_job_record_references` | list of logical references | Optional | [Job Records](job-record.schema.md) tracking specific roles at this company, when discovered. | `["job:northbridge-systems:senior-backend-engineer:2026-07-20"]` |
+| `related_company_state_references` | list of logical references | Optional | [Company State Records](company-state-record.schema.md) describing recent organizational developments at this company. | `["company-state:northbridge-systems:2026-06-01-layoff"]` |
 
-A company appearing in the target map must not imply that it is currently hiring; `hiring_signal_status` carries that determination explicitly.
+A company appearing in the target map must not imply that it is currently hiring; `hiring_signal_status` carries that determination explicitly. `hiring_signal_status` remains a company-wide summary; it is not authoritative for any single role's current availability — that determination belongs to the referenced [Job Record(s)](job-record.schema.md). See [Migration and Compatibility: Job Record](../core/data-model.md#migration-and-compatibility-job-record).
 
 ## Evidence and Lifecycle
 
@@ -109,6 +111,8 @@ A company appearing in the target map must not imply that it is currently hiring
 8. Company suitability does not prove current hiring.
 9. `stale_reason` is required whenever `record_status` is Stale.
 10. `refresh_required` does not imply automatic refresh; a refresh occurs only after an explicit user request — see [freshness-policy.md](../core/freshness-policy.md), rule 9.
+11. This record stays authoritative for stable company facts and general hiring signal; it is not authoritative for a specific role's current availability — see [job-record.schema.md](job-record.schema.md) and [Migration and Compatibility: Job Record](../core/data-model.md#migration-and-compatibility-job-record).
+12. A Company State Record must never silently change this record's `company_status` or classification fields — see [company-state-record.schema.md](company-state-record.schema.md).
 
 ## Example Record
 
@@ -131,5 +135,8 @@ checked_at: "2026-07-20T09:00:00Z"
 ## Related documents
 
 - [../core/data-model.md](../core/data-model.md)
+- [../core/job-verification-policy.md](../core/job-verification-policy.md)
 - [person-record.schema.md](person-record.schema.md)
 - [activity-record.schema.md](activity-record.schema.md)
+- [job-record.schema.md](job-record.schema.md)
+- [company-state-record.schema.md](company-state-record.schema.md)

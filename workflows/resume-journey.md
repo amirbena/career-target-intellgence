@@ -26,7 +26,8 @@ Using the [Stage Statuses](../schemas/research-state.schema.md#stage-statuses) e
 ## Refreshing Only Stale Public Research
 
 - Refresh only the specific stage(s) marked Stale or flagged via `refresh_required`/`refresh_reason`, not the entire journey.
-- Candidate Profile and Search Criteria are not refreshed just because downstream public research (companies, people, activity) is stale — see [freshness-policy.md](../core/freshness-policy.md), rule 8.
+- Candidate Profile and Search Criteria are not refreshed just because downstream public research (companies, jobs, people, activity, company state) is stale — see [freshness-policy.md](../core/freshness-policy.md), rule 8.
+- `job_discovery_status`, `job_verification_status`, `job_fit_evaluation_status`, and `company_state_verification_status` each refresh independently — a stale job verification does not force a Candidate Profile rebuild, and a stale company-state event does not auto-invalidate stable Company Record identity data — see [Research State Rules](../schemas/research-state.schema.md#research-state-rules), rule 11.
 
 ## Avoiding Rebuilds of Stable Candidate Information
 
@@ -49,5 +50,6 @@ Using the [Stage Statuses](../schemas/research-state.schema.md#stage-statuses) e
 
 - [../core/workflow.md](../core/workflow.md)
 - [full-journey.md](full-journey.md)
+- [job-search-journey.md](job-search-journey.md)
 - [focused-task-routing.md](focused-task-routing.md)
 - [../schemas/research-state.schema.md](../schemas/research-state.schema.md)

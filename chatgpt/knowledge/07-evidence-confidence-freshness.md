@@ -89,6 +89,28 @@ Sources are listed from strongest to weakest. Stronger sources are preferred whe
 - **Typical freshness risk:** unknown.
 - **Corroboration recommended:** not applicable — must not be represented as evidence.
 
+## Current Job Availability Source Hierarchy
+
+Current job availability has its own dedicated source hierarchy and cross-check rule, defined canonically in [job-verification-policy.md](job-verification-policy.md#source-hierarchy-for-current-availability) — summarized here for completeness:
+
+1. Official company careers site.
+2. Official ATS or job page the company controls or explicitly links.
+3. Other official company recruitment source.
+
+LinkedIn Jobs, Glassdoor, Indeed, other job boards/aggregators, recruiter posts, and search-result snippets may discover a role; none of them may alone produce a "verified open" determination. **If a job is discovered on LinkedIn, Glassdoor, Indeed, another job board, recruiter activity, or another secondary source, attempt to verify it against the employer's official careers site or official ATS whenever publicly accessible. Treat the external listing as discovery evidence, not sufficient proof of current availability.** Absence from an official careers search is evidence that verification failed or the listing may be stale; it is not automatically proof of closure unless the official source or other direct evidence establishes closure. See [job-verification-policy.md](job-verification-policy.md) for the full outcome table and rules.
+
+## Company State Source Hierarchy
+
+Time-sensitive organizational developments (layoffs, freezes, restructuring, acquisitions, funding, expansion, leadership changes) use their own preference order, from strongest to weakest:
+
+1. Official company announcements or filings.
+2. Regulatory filings, where applicable.
+3. Direct executive/company communications.
+4. Highly reputable business/news reporting.
+5. Other credible secondary sources.
+
+A social-media rumor or unsupported post must not become a verified company-state event. Corroborate significant negative events (layoffs, closures, insolvency) with a second independent source when practical. See [schemas/company-state-record.schema.md](../schemas/company-state-record.schema.md) and [workflows/verify-company-state.md](../workflows/verify-company-state.md).
+
 ## Claim-Specific Source Rules
 
 | Claim | Preferred sources | Notes |
@@ -102,7 +124,8 @@ Sources are listed from strongest to weakest. Stronger sources are preferred whe
 | Current employment | Person's own profile, checked recently | An old title is not current employment. |
 | Public activity | The person's own posts | An Activity URL alone does not prove recent activity. |
 | Hiring activity | A dated post from the person or company | Must include a date; otherwise treat as unverified. |
-| Current job availability | Careers page or job board, checked recently | A post existing does not prove the role is still open. |
+| Current job availability | Official careers site/ATS preferred; job board discovery requires official cross-check | A post or listing existing does not prove the role is still open — see [job-verification-policy.md](job-verification-policy.md). |
+| Company state / organizational change | Official announcement/filing preferred; reputable reporting acceptable, corroborated for negative events | A single social post is not sufficient — see [Company State Source Hierarchy](#company-state-source-hierarchy). |
 | Commute estimate | Mapping/transit source appropriate to the request | Must be labeled as an estimate unless a live source was used. |
 
 ## Source Policy Rules
@@ -117,6 +140,8 @@ Sources are listed from strongest to weakest. Stronger sources are preferred whe
 8. Conflicting sources must remain visible.
 9. Inaccessible or private content must not be represented as verified.
 10. Every time-sensitive claim must include `checked_at`.
+11. A LinkedIn, Glassdoor, Indeed, other job-board, or recruiter-post discovery of a role must be cross-checked against the official careers site/ATS whenever accessible, before being treated as verified — see [job-verification-policy.md](job-verification-policy.md).
+12. A social-media rumor or unsupported post must not become a verified company-state event.
 
 ## Related documents
 
@@ -124,9 +149,12 @@ Sources are listed from strongest to weakest. Stronger sources are preferred whe
 - [confidence-model.md](confidence-model.md)
 - [freshness-policy.md](freshness-policy.md)
 - [quality-gates.md](quality-gates.md)
+- [job-verification-policy.md](job-verification-policy.md)
 - [../schemas/company-record.schema.md](../schemas/company-record.schema.md)
 - [../schemas/person-record.schema.md](../schemas/person-record.schema.md)
 - [../schemas/activity-record.schema.md](../schemas/activity-record.schema.md)
+- [../schemas/job-record.schema.md](../schemas/job-record.schema.md)
+- [../schemas/company-state-record.schema.md](../schemas/company-state-record.schema.md)
 
 
 ---
@@ -235,8 +263,28 @@ There is no single universal expiration period that applies to every field. Fres
 | Current employment | Current evidence required |
 | Public activity | Must fall inside the user-requested lookback window |
 | Hiring signal | Recent evidence required |
-| Job availability | Current verification required |
+| Job availability | Current verification required — see [Job Availability Freshness](#job-availability-freshness) |
+| Company state (organizational event) | Event-specific — see [Company State Freshness](#company-state-freshness) |
 | Commute estimate | Depends on transport mode and traffic assumptions |
+
+## Job Availability Freshness
+
+Job availability is highly time-sensitive. A role used as a current recommendation (entering the [Verified Jobs Map](../outputs/verified-jobs-map-template.md)) must have:
+
+- a current verification attempt (`official_verification_attempted`, `official_verification_result` on the [Job Record](../schemas/job-record.schema.md));
+- an exact `job_status_checked_at`.
+
+Do not rely on the listing's own publication date (`source_date`) alone as proof the role remains open — a listing can remain posted long after a role closes. See [job-verification-policy.md](job-verification-policy.md).
+
+## Company State Freshness
+
+Company State evidence uses event-specific freshness, distinguishing three separate questions that must not be collapsed into one:
+
+1. **When did the event happen** — `source_date` on the [Company State Record](../schemas/company-state-record.schema.md).
+2. **When was it last checked** — `checked_at`.
+3. **Is the impact still relevant to the decision at hand** — `currency_assessment` (`Current`, `Materially Relevant Though Older`, `Likely Superseded`, `Unknown`).
+
+A months-old layoff may still be materially relevant and must not be auto-expired just because it falls outside the (much shorter) job-verification freshness window — the two freshness clocks are independent. `currency_assessment` of `Likely Superseded` is the only case that should be treated like an expired claim, and it requires a `stale_reason`.
 
 ## Key Concepts
 
@@ -259,6 +307,8 @@ There is no single universal expiration period that applies to every field. Fres
 8. Refresh only the affected public research, not stable candidate information.
 9. Refresh activity or hiring information only after an explicit user request.
 10. Do not imply continuous monitoring.
+11. Job-status freshness and company-state freshness are independent clocks; a stale company-state event does not invalidate a fresh job verification, and a stale job verification does not invalidate a still-relevant company-state event.
+12. Refreshing a stale job verification must not force a Candidate Profile rebuild; refreshing a stale company-state event must not auto-invalidate stable company identity data.
 
 ## Related documents
 
@@ -266,7 +316,10 @@ There is no single universal expiration period that applies to every field. Fres
 - [confidence-model.md](confidence-model.md)
 - [quality-gates.md](quality-gates.md)
 - [data-model.md](data-model.md)
+- [job-verification-policy.md](job-verification-policy.md)
 - [../schemas/research-state.schema.md](../schemas/research-state.schema.md)
+- [../schemas/job-record.schema.md](../schemas/job-record.schema.md)
+- [../schemas/company-state-record.schema.md](../schemas/company-state-record.schema.md)
 
 
 ---
@@ -276,6 +329,32 @@ There is no single universal expiration period that applies to every field. Fres
 # Quality Gates
 
 This document defines the minimum checks that must pass before returning each research output. It is downstream of [source-policy.md](source-policy.md), [confidence-model.md](confidence-model.md), and [freshness-policy.md](freshness-policy.md), and applies to the outputs described in [product-definition.md](product-definition.md).
+
+## Verified Jobs Map
+
+Before returning a Verified Jobs Map, confirm:
+
+- every entry has `record_disposition` of `Primary Candidate` — see [job-eligibility-gate.md](../ranking/job-eligibility-gate.md);
+- `job_status` is `Verified Open` or `Likely Open / Partially Verified`, never `Closed`, `Unable to Verify`, `Not Found on Official Site`, `Historical`, or `Stale`;
+- `Likely Open / Partially Verified` entries appear in a clearly separate, lower-confidence section, never merged with `Verified Open`;
+- `official_verification_attempted` and `official_verification_result` are present for every entry;
+- a LinkedIn/Glassdoor/Indeed/other-board/recruiter-post listing alone never produced `Verified Open` when official verification was possible but not performed;
+- a recruiter's hiring post alone never produced `Verified Open`;
+- a search-result snippet alone never produced `Verified Open`;
+- no entry violates a hard candidate constraint (`fit_gate_result` of `Passes` for every entry);
+- `job_status_checked_at` is present and exact on every entry;
+- company-state context is shown separately from availability and fit, never merged into either;
+- recruiter/hiring-manager references are shown when discovered, or explicitly noted as not yet identified.
+
+## Unverified and Rejected Job Leads
+
+Before returning this output, confirm:
+
+- every role with `record_disposition` of `Rejected Lead` is included, not silently dropped;
+- each entry has a specific `rejection_reason` from the canonical list — see [Job Record schema](../schemas/job-record.schema.md#evidence-and-lifecycle);
+- `Not Found on Official Site` is never presented as equivalent to `Closed`;
+- `Closed` entries carry direct closure evidence and an exact verification date;
+- a missing official-verification attempt is visible, not hidden.
 
 ## Company Map
 
@@ -288,7 +367,19 @@ Before returning a Company Map, confirm:
 - suitability is separated from current hiring;
 - exclusions include reasons;
 - mutable claims include `checked_at`;
-- confidence is claim-specific.
+- confidence is claim-specific;
+- under the Company Targeting Journey, a company with no current matching role is explicitly labeled as such — it must not masquerade as a current job result (see [job-eligibility-gate.md](../ranking/job-eligibility-gate.md), rule 7).
+
+## Company State Verification
+
+Before returning company-state evidence, confirm:
+
+- `event_description` (Fact) and `candidate_impact_assessment` (Fact or Supported Inference) are separated and each explicitly labeled via `impact_assessment_type`;
+- a social-media rumor or unsupported post alone did not produce a Verified `evidence_state`;
+- a significant negative event (layoffs, closures, insolvency) is corroborated when practical, and `corroborated` reflects that;
+- conflicting evidence remains visible via `conflicting_evidence`, not silently resolved;
+- this evidence did not automatically mark a Job Record `Closed` — a layoff does not automatically close every job at the company;
+- `source_date` (when available) and `checked_at` are both present.
 
 ## People Map
 
@@ -301,7 +392,8 @@ Before returning a People Map, confirm:
 - duplicate-name risk is considered;
 - profile URL is not fabricated;
 - activity status is not inferred from an Activity URL alone;
-- mutable claims include `checked_at`.
+- mutable claims include `checked_at`;
+- current employment verification for a recruiter or manager is kept separate from any job's `job_status` — verifying that a person currently works at a company is not the same claim as verifying that a specific role is open.
 
 ## Activity Verification
 
@@ -326,11 +418,20 @@ Before returning an Outreach Queue, confirm:
 - suggested action matches the evidence level;
 - unsupported certainty is avoided;
 - users are not instructed to automate outreach;
-- no private-contact enrichment is included.
+- no private-contact enrichment is included;
+- when a Job Record is referenced, the association is disclosed as a suggestion only — no automatic outreach is implied by the association itself.
+
+## Cross-Platform Package Alignment
+
+Before treating a generated ChatGPT Knowledge bundle, Claude Project Knowledge/Instructions, or Claude Skill package as up to date, confirm:
+
+- it was produced by the repository's own build/packaging scripts, never hand-edited;
+- it reflects the current canonical `core/`, `schemas/`, `ranking/`, `workflows/`, and `outputs/` content, including the Job Record, Company State Record, job-verification policy, and eligibility gate;
+- the three platform surfaces remain semantically aligned — none defines a rule, enum, or threshold the others don't share.
 
 ## Universal Final Check
 
-Every factual public-data claim must either have supporting evidence, be explicitly labeled as inference, or be marked as unverified.
+Every factual public-data claim must either have supporting evidence, be explicitly labeled as inference, or be marked as unverified. This applies equally to job-status claims, company-state claims, and candidate-fit claims — see [job-verification-policy.md](job-verification-policy.md) and [job-eligibility-gate.md](../ranking/job-eligibility-gate.md).
 
 ## Related documents
 
@@ -339,7 +440,11 @@ Every factual public-data claim must either have supporting evidence, be explici
 - [freshness-policy.md](freshness-policy.md)
 - [data-model.md](data-model.md)
 - [product-definition.md](product-definition.md)
+- [job-verification-policy.md](job-verification-policy.md)
 - [../schemas/company-record.schema.md](../schemas/company-record.schema.md)
 - [../schemas/person-record.schema.md](../schemas/person-record.schema.md)
 - [../schemas/activity-record.schema.md](../schemas/activity-record.schema.md)
+- [../schemas/job-record.schema.md](../schemas/job-record.schema.md)
+- [../schemas/company-state-record.schema.md](../schemas/company-state-record.schema.md)
+- [../ranking/job-eligibility-gate.md](../ranking/job-eligibility-gate.md)
 

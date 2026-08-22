@@ -78,6 +78,28 @@ Sources are listed from strongest to weakest. Stronger sources are preferred whe
 - **Typical freshness risk:** unknown.
 - **Corroboration recommended:** not applicable — must not be represented as evidence.
 
+## Current Job Availability Source Hierarchy
+
+Current job availability has its own dedicated source hierarchy and cross-check rule, defined canonically in [job-verification-policy.md](job-verification-policy.md#source-hierarchy-for-current-availability) — summarized here for completeness:
+
+1. Official company careers site.
+2. Official ATS or job page the company controls or explicitly links.
+3. Other official company recruitment source.
+
+LinkedIn Jobs, Glassdoor, Indeed, other job boards/aggregators, recruiter posts, and search-result snippets may discover a role; none of them may alone produce a "verified open" determination. **If a job is discovered on LinkedIn, Glassdoor, Indeed, another job board, recruiter activity, or another secondary source, attempt to verify it against the employer's official careers site or official ATS whenever publicly accessible. Treat the external listing as discovery evidence, not sufficient proof of current availability.** Absence from an official careers search is evidence that verification failed or the listing may be stale; it is not automatically proof of closure unless the official source or other direct evidence establishes closure. See [job-verification-policy.md](job-verification-policy.md) for the full outcome table and rules.
+
+## Company State Source Hierarchy
+
+Time-sensitive organizational developments (layoffs, freezes, restructuring, acquisitions, funding, expansion, leadership changes) use their own preference order, from strongest to weakest:
+
+1. Official company announcements or filings.
+2. Regulatory filings, where applicable.
+3. Direct executive/company communications.
+4. Highly reputable business/news reporting.
+5. Other credible secondary sources.
+
+A social-media rumor or unsupported post must not become a verified company-state event. Corroborate significant negative events (layoffs, closures, insolvency) with a second independent source when practical. See [schemas/company-state-record.schema.md](../schemas/company-state-record.schema.md) and [workflows/verify-company-state.md](../workflows/verify-company-state.md).
+
 ## Claim-Specific Source Rules
 
 | Claim | Preferred sources | Notes |
@@ -91,7 +113,8 @@ Sources are listed from strongest to weakest. Stronger sources are preferred whe
 | Current employment | Person's own profile, checked recently | An old title is not current employment. |
 | Public activity | The person's own posts | An Activity URL alone does not prove recent activity. |
 | Hiring activity | A dated post from the person or company | Must include a date; otherwise treat as unverified. |
-| Current job availability | Careers page or job board, checked recently | A post existing does not prove the role is still open. |
+| Current job availability | Official careers site/ATS preferred; job board discovery requires official cross-check | A post or listing existing does not prove the role is still open — see [job-verification-policy.md](job-verification-policy.md). |
+| Company state / organizational change | Official announcement/filing preferred; reputable reporting acceptable, corroborated for negative events | A single social post is not sufficient — see [Company State Source Hierarchy](#company-state-source-hierarchy). |
 | Commute estimate | Mapping/transit source appropriate to the request | Must be labeled as an estimate unless a live source was used. |
 
 ## Source Policy Rules
@@ -106,6 +129,8 @@ Sources are listed from strongest to weakest. Stronger sources are preferred whe
 8. Conflicting sources must remain visible.
 9. Inaccessible or private content must not be represented as verified.
 10. Every time-sensitive claim must include `checked_at`.
+11. A LinkedIn, Glassdoor, Indeed, other job-board, or recruiter-post discovery of a role must be cross-checked against the official careers site/ATS whenever accessible, before being treated as verified — see [job-verification-policy.md](job-verification-policy.md).
+12. A social-media rumor or unsupported post must not become a verified company-state event.
 
 ## Related documents
 
@@ -113,6 +138,9 @@ Sources are listed from strongest to weakest. Stronger sources are preferred whe
 - [confidence-model.md](confidence-model.md)
 - [freshness-policy.md](freshness-policy.md)
 - [quality-gates.md](quality-gates.md)
+- [job-verification-policy.md](job-verification-policy.md)
 - [../schemas/company-record.schema.md](../schemas/company-record.schema.md)
 - [../schemas/person-record.schema.md](../schemas/person-record.schema.md)
 - [../schemas/activity-record.schema.md](../schemas/activity-record.schema.md)
+- [../schemas/job-record.schema.md](../schemas/job-record.schema.md)
+- [../schemas/company-state-record.schema.md](../schemas/company-state-record.schema.md)

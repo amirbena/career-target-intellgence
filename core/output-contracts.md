@@ -26,6 +26,28 @@ This document defines the canonical outputs produced by the product, downstream 
 - **Draft/Verified/Approved:** Mirrors `criteria_status` (Draft, Ready, Superseded).
 - **May be produced partially:** Yes — a Draft set of criteria may be shown before it is Ready.
 
+### Verified Jobs Map
+
+- **Purpose:** Present the primary result for job-search intent: currently open, candidate-fit roles that passed the [Primary Job Eligibility Gate](../ranking/job-eligibility-gate.md), with availability evidence, candidate-fit assessment, and company-state context.
+- **Required source records:** [Job Records](../schemas/job-record.schema.md) with `record_disposition` of `Primary Candidate`, and any linked [Company State Records](../schemas/company-state-record.schema.md) and [Person Records](../schemas/person-record.schema.md).
+- **Required sections:** See [outputs/verified-jobs-map-template.md](../outputs/verified-jobs-map-template.md).
+- **Minimum verification requirements:** `job_status` of `Verified Open` or `Likely Open / Partially Verified` only; `official_verification_attempted`/`official_verification_result`/`job_status_checked_at` present on every entry; `fit_gate_result` of `Passes`.
+- **Unknown/unavailable handling:** A missing recruiter/hiring-manager reference is shown as "Not yet identified"; missing company-state evidence is shown as "No current company-state evidence found" — never omitted from the row.
+- **Ordering:** Verified Open section before Likely Open / Partially Verified section; within each, candidate-fit strength, then company priority, then `job_status_checked_at` descending.
+- **Draft/Verified/Approved:** Mirrors the underlying Job Record's `record_status`.
+- **May be produced partially:** Yes — grows as Current Job Discovery/Verification/Fit continue, clearly labeled as partial while in progress.
+
+### Unverified and Rejected Job Leads
+
+- **Purpose:** Keep every role that did not pass the Job Eligibility Gate visible with an explicit reason, rather than silently dropped.
+- **Required source records:** Job Records with `record_disposition` of `Rejected Lead`.
+- **Required sections:** See [outputs/unverified-job-leads-template.md](../outputs/unverified-job-leads-template.md).
+- **Minimum verification requirements:** A `rejection_reason` from the canonical list is required for every entry.
+- **Unknown/unavailable handling:** `Not Found on Official Site` is never conflated with `Closed`; the distinction must be visible in the row.
+- **Ordering:** By `rejection_reason` (grouped), then by company name.
+- **Draft/Verified/Approved:** Mirrors the underlying Job Record's `record_status`.
+- **May be produced partially:** Yes — grows incrementally as verification/fit evaluation proceeds.
+
 ### Target Company Map
 
 - **Purpose:** Present ranked, Included/Needs-Review companies for outreach planning.
@@ -72,8 +94,8 @@ This document defines the canonical outputs produced by the product, downstream 
 
 ### Outreach Priority Queue
 
-- **Purpose:** Present a prioritized, advisory list of manual outreach actions.
-- **Required source records:** Ranked Company Records, Person Records, and (when available) Activity Records, combined per the [Outreach Priority Model](../ranking/outreach-priority-model.md).
+- **Purpose:** Present a prioritized, advisory list of manual outreach actions. A verified matching job may be explicitly associated with the recommended contact — no automatic outreach is implied by that association.
+- **Required source records:** Ranked Company Records, Person Records, and (when available) Activity Records and primary [Job Records](../schemas/job-record.schema.md), combined per the [Outreach Priority Model](../ranking/outreach-priority-model.md).
 - **Required sections/columns:** See [outputs/outreach-queue-template.md](../outputs/outreach-queue-template.md).
 - **Minimum verification requirements:** Recommendations reflect the evidence level actually available; stale evidence never presented as current.
 - **Unknown/unavailable handling:** When employment or activity is unresolved, the recommended action is capped accordingly (see [build-outreach-queue.md](../workflows/build-outreach-queue.md)).
@@ -104,11 +126,17 @@ This document defines the canonical outputs produced by the product, downstream 
 8. Output generation does not create new evidence.
 9. CSV-compatible output must preserve the same meaning as Markdown output.
 10. Shared templates must contain only synthetic examples.
+11. The Verified Jobs Map contains only roles that passed the [Primary Job Eligibility Gate](../ranking/job-eligibility-gate.md); job availability, company health/state, and candidate fit remain three distinct, visibly labeled claims and are never merged into one silent score.
+12. A company appearing under the Company Targeting Journey without a verified open role must say so explicitly, not imply a current opening.
 
 ## Related documents
 
 - [data-model.md](data-model.md)
 - [workflow.md](workflow.md)
 - [quality-gates.md](quality-gates.md)
+- [job-verification-policy.md](job-verification-policy.md)
 - [../ranking/outreach-priority-model.md](../ranking/outreach-priority-model.md)
+- [../ranking/job-eligibility-gate.md](../ranking/job-eligibility-gate.md)
 - [../outputs/csv-column-contracts.md](../outputs/csv-column-contracts.md)
+- [../outputs/verified-jobs-map-template.md](../outputs/verified-jobs-map-template.md)
+- [../outputs/unverified-job-leads-template.md](../outputs/unverified-job-leads-template.md)

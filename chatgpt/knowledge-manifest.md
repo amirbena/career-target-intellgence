@@ -1,9 +1,9 @@
 # Knowledge Manifest
 
-Defines the eight Knowledge bundles for the Career Targeting Intelligence
+Defines the nine Knowledge bundles for the Career Targeting Intelligence
 Custom GPT: what each contains, which canonical repository files it's
 generated from, and what Knowledge must never contain. A Custom GPT
-currently accepts up to 10 Knowledge files — this package uses 8,
+currently accepts up to 10 Knowledge files — this package uses 9,
 comfortably inside that limit.
 
 Knowledge bundles are generated, not hand-written. Rebuild them with
@@ -83,6 +83,9 @@ repository. It will be added to this bundle once a future task creates it.
 - `core/workflow.md`
 - `schemas/research-state.schema.md`
 - `workflows/full-journey.md`
+- `workflows/job-search-journey.md` — the default full journey for
+  job-discovery intent, added alongside the pre-existing Company Targeting
+  full journey (`full-journey.md`).
 - `workflows/focused-task-routing.md` — **mapped** from the filename
   `workflows/focused-task.md` used in earlier task descriptions; the
   tracked repository file is `focused-task-routing.md`.
@@ -104,6 +107,8 @@ repository. It will be added to this bundle once a future task creates it.
 - `core/output-contracts.md`
 - `outputs/candidate-profile-template.md`
 - `outputs/search-criteria-template.md`
+- `outputs/verified-jobs-map-template.md`
+- `outputs/unverified-job-leads-template.md`
 - `outputs/company-map-template.md`
 - `outputs/excluded-companies-template.md`
 - `outputs/people-map-template.md`
@@ -117,9 +122,30 @@ for Research State; it is defined only as a schema
 (`schemas/research-state.schema.md`, already included in
 `06-workflow-and-state.md`) and packaged as a Skill template
 (`claude/skill/templates/research-state.md`) rather than as a repository
-`outputs/*-template.md` file. This bundle therefore covers the eight
+`outputs/*-template.md` file. This bundle therefore covers all ten
 `outputs/*-template.md` files that actually exist, plus
 `core/output-contracts.md` and `outputs/csv-column-contracts.md`.
+
+### `09-job-and-company-state.md`
+
+- `schemas/job-record.schema.md`
+- `schemas/company-state-record.schema.md`
+- `core/job-verification-policy.md`
+- `ranking/job-eligibility-gate.md`
+- `workflows/discover-jobs.md`
+- `workflows/verify-job.md`
+- `workflows/evaluate-candidate-job-fit.md`
+- `workflows/verify-company-state.md`
+
+This is the newest bundle, added for the job-first verification and
+company-state refactor. It covers the first-class Job Record and Company
+State Record schemas, the canonical current-job verification policy, the
+Primary Job Eligibility Gate, and the four workflow modules specific to job
+discovery, job verification, candidate–job fit evaluation, and company-state
+verification. `workflows/job-search-journey.md`, the journey that
+orchestrates these modules, lives in `06-workflow-and-state.md` instead,
+alongside the other full-journey and routing files, to keep all
+journey-level orchestration together in one bundle.
 
 ## A note on synthetic example names
 

@@ -2,6 +2,8 @@
 
 Applies the A0–A4 activity levels to discovered people, producing [Activity Records](../schemas/activity-record.schema.md). This module runs only when explicitly requested — never automatically.
 
+**Distinct from Current Job Verification:** this module verifies what a *person* publicly posted or did. It is not a precondition for verifying whether a specific *job* is currently open — the official careers page can settle that question on its own, per [core/job-verification-policy.md](../core/job-verification-policy.md) and [verify-job.md](verify-job.md). Do not require this module to run merely to prove a job exists.
+
 ## Purpose
 
 Establish specific, dated, verifiable evidence of a person's public activity and hiring-related posts, within an explicit lookback window.
@@ -60,6 +62,10 @@ Establish specific, dated, verifiable evidence of a person's public activity and
 
 - [../schemas/activity-record.schema.md](../schemas/activity-record.schema.md)
 - [../schemas/person-record.schema.md](../schemas/person-record.schema.md)
+- [../schemas/job-record.schema.md](../schemas/job-record.schema.md)
 - [../core/freshness-policy.md](../core/freshness-policy.md)
+- [../core/job-verification-policy.md](../core/job-verification-policy.md)
 - [discover-people.md](discover-people.md)
+- [verify-job.md](verify-job.md)
 - [full-journey.md](full-journey.md)
+- [job-search-journey.md](job-search-journey.md)

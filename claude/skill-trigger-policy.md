@@ -17,13 +17,18 @@ or updated evidence, scoring, or a new record:
 
 - Candidate analysis (building or rebuilding a Candidate Profile).
 - Search criteria (building or updating Search Criteria).
+- Current job discovery.
+- Current job verification (the default whenever job discovery is
+  requested — not optional the way Activity Verification is).
+- Candidate–job fit evaluation.
+- Company-state verification.
 - Company discovery.
 - Company classification.
 - Company ranking.
 - Recruiter discovery.
 - Hiring-manager discovery.
-- Activity verification.
-- Job-status verification.
+- Activity verification (a person's own public posts — optional, separate
+  from job-status verification).
 - Outreach prioritization.
 - Producing a new artifact or CSV-compatible output from underlying
   records.

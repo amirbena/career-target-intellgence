@@ -37,9 +37,11 @@ career-targeting-intelligence-claude-kit/
     freshness-policy.md
     quality-gates.md
     output-contracts.md
+    job-verification-policy.md
     company-ranking-model.md
     person-ranking-model.md
     exclusion-policy.md
+    job-eligibility-gate.md
     outreach-priority-model.md
 ```
 

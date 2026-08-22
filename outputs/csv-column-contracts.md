@@ -51,6 +51,43 @@ This document defines stable, snake_case CSV-compatible column sets for each can
 | `criteria_status` | `criteria_status` | enum | Required | n/a | n/a | n/a |
 | `last_updated_at` | `last_updated_at` | timestamp | Required | n/a | n/a | ISO 8601 |
 
+## Verified Jobs Map
+
+| Column | Source field | Value shape | Required | List handling | Unknown handling | Date format |
+|---|---|---|---|---|---|---|
+| `section` | Verified Open vs. Likely Open / Partially Verified | enum | Required | n/a | n/a | n/a |
+| `job_title` | `job_title` | string | Required | n/a | n/a | n/a |
+| `company_name` | `company_name` | string | Required | n/a | n/a | n/a |
+| `job_location` | `job_location` | string | Optional | n/a | `Unknown` | n/a |
+| `work_model` | `work_model` | enum | Required | n/a | n/a | n/a |
+| `fit_gate_result` | `fit_gate_result` | enum | Required | n/a | n/a | n/a |
+| `fit_notes` | `fit_notes` | string | Optional | n/a | empty | n/a |
+| `job_status` | `job_status` | enum | Required | n/a | n/a | n/a |
+| `job_status_evidence` | `job_status_evidence` | semicolon-separated | Optional | semicolon-separated | empty | n/a |
+| `discovery_source_type` | `discovery_source_type` | enum | Required | n/a | n/a | n/a |
+| `official_verification_result` | `official_verification_result` | enum | Required | n/a | n/a | n/a |
+| `official_verification_url` | `official_verification_url` | URL | Optional | n/a | empty | n/a |
+| `job_status_checked_at` | `job_status_checked_at` | timestamp | Required | n/a | n/a | ISO 8601 |
+| `company_state_summary` | Linked Company State Record `event_description` + `candidate_impact_assessment` | string | Optional | n/a | `No current company-state evidence found` | n/a |
+| `company_state_checked_at` | Linked Company State Record `checked_at` | timestamp | Optional | n/a | empty | ISO 8601 |
+| `recruiter_hiring_manager_refs` | `related_person_references` | semicolon-separated | Optional | semicolon-separated | `Not yet identified` | n/a |
+| `uncertainty_caveats` | Written caveats | string | Optional | n/a | empty | n/a |
+| `record_status` | `record_status` | enum | Required | n/a | n/a | n/a |
+
+## Unverified and Rejected Job Leads
+
+| Column | Source field | Value shape | Required | List handling | Unknown handling | Date format |
+|---|---|---|---|---|---|---|
+| `job_title` | `job_title` | string | Required | n/a | n/a | n/a |
+| `company_name` | `company_name` | string | Required | n/a | n/a | n/a |
+| `discovery_source_type` | `discovery_source_type` | enum | Required | n/a | n/a | n/a |
+| `rejection_reason` | `rejection_reason` | enum | Required | n/a | n/a | n/a |
+| `reason_detail` | `job_status_evidence`, `fit_gate_reason`, or `stale_reason` | string | Optional | n/a | empty | n/a |
+| `official_verification_attempted` | `official_verification_attempted` | boolean | Required | n/a | n/a | n/a |
+| `official_verification_result` | `official_verification_result` | enum | Required | n/a | n/a | n/a |
+| `job_status_checked_at` | `job_status_checked_at` | timestamp | Required | n/a | n/a | ISO 8601 |
+| `reconsideration_note` | Written note | string | Optional | n/a | empty | n/a |
+
 ## Company Map
 
 Surfaces all eight [Company Ranking Model](../ranking/company-ranking-model.md) scoring dimensions as separate numeric columns, matching the [Company Map Markdown template](company-map-template.md) exactly.
@@ -158,6 +195,7 @@ Surfaces all eight [Company Ranking Model](../ranking/company-ranking-model.md) 
 | `duplicate_contact_group` | `duplicate_contact_group` | string | Optional | n/a | empty | n/a |
 | `confidence` | Overall confidence | enum | Required | n/a | n/a | n/a |
 | `checked_at` | `checked_at` | timestamp | Required | n/a | n/a | ISO 8601 |
+| `associated_job_id` | `job_id` | string | Optional | n/a | `Not associated with a specific job` | n/a |
 
 ## Related documents
 
@@ -167,3 +205,5 @@ Surfaces all eight [Company Ranking Model](../ranking/company-ranking-model.md) 
 - [people-map-template.md](people-map-template.md)
 - [activity-verification-template.md](activity-verification-template.md)
 - [outreach-queue-template.md](outreach-queue-template.md)
+- [verified-jobs-map-template.md](verified-jobs-map-template.md)
+- [unverified-job-leads-template.md](unverified-job-leads-template.md)

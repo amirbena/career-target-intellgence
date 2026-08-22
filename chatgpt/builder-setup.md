@@ -12,7 +12,7 @@ package.
    the GPT's Instructions field.
 4. Add the Conversation Starters from
    [`conversation-starters.md`](conversation-starters.md).
-5. Upload the eight generated Knowledge bundles under `knowledge/`.
+5. Upload the nine generated Knowledge bundles under `knowledge/`.
 6. Configure the recommended Capabilities from
    [`builder-config.md`](builder-config.md) — enable what your account and
    workspace expose; leave the rest at their defaults.

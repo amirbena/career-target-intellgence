@@ -18,9 +18,11 @@ currently exist in the repository.
 | `core/freshness-policy.md` | `knowledge/freshness-policy.md` |
 | `core/quality-gates.md` | `knowledge/quality-gates.md` |
 | `core/output-contracts.md` | `knowledge/output-contracts.md` |
+| `core/job-verification-policy.md` | `knowledge/job-verification-policy.md` |
 | `ranking/company-ranking-model.md` | `knowledge/company-ranking-model.md` |
 | `ranking/person-ranking-model.md` | `knowledge/person-ranking-model.md` |
 | `ranking/exclusion-policy.md` | `knowledge/exclusion-policy.md` |
+| `ranking/job-eligibility-gate.md` | `knowledge/job-eligibility-gate.md` |
 | `ranking/outreach-priority-model.md` | `knowledge/outreach-priority-model.md` |
 
 `core/terminology.md` is intentionally **not** included — it does not
@@ -40,6 +42,8 @@ team Knowledge base:
 - `candidate-profile.md`
 - `search-criteria.md`
 - `research-state.md`
+- `verified-jobs-map.md`
+- `unverified-job-leads.md`
 - `company-map.md`
 - `people-map.md`
 - `activity-verification.md`

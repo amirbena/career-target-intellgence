@@ -39,6 +39,10 @@ A company marked Excluded:
 - Insufficient evidence
 - User-requested exclusion
 
+## Relationship to Job-Level Rejection
+
+`exclusion_status` on the Company Record governs whether a **company** participates in the [Company Targeting Journey](../workflows/full-journey.md)'s ranking. It is a separate concept from `record_disposition`/`rejection_reason` on a [Job Record](../schemas/job-record.schema.md), which governs whether one **specific role** enters the [Verified Jobs Map](../outputs/verified-jobs-map-template.md) — see [job-eligibility-gate.md](job-eligibility-gate.md). A company can be `Included` here (a legitimate target) while every discovered Job Record at that company is a `Rejected Lead` (no currently open, candidate-fit role) — that combination must be disclosed explicitly, per [Company Map quality gate](../core/quality-gates.md#company-map), rather than implied as a current job match.
+
 ## Rules
 
 1. Exclusion is not the same as a zero score. A zero-scoring company that remains Included is still visible in ranked results at the bottom; an Excluded company is removed from the ranked set entirely and reported separately.

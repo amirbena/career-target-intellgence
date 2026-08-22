@@ -40,6 +40,7 @@ claude/skill/
   references/
     candidate-intelligence.md
     company-intelligence.md
+    job-intelligence.md
     people-intelligence.md
     activity-verification.md
     ranking-and-exclusions.md
@@ -49,6 +50,8 @@ claude/skill/
   templates/
     candidate-profile.md
     search-criteria.md
+    verified-jobs-map.md
+    unverified-job-leads.md
     company-map.md
     excluded-companies.md
     people-map.md
@@ -86,12 +89,13 @@ Summary:
 |---|---|
 | `candidate-intelligence.md` | `schemas/candidate-profile.schema.md`, `schemas/search-criteria.schema.md`, `workflows/analyze-candidate.md`, `workflows/build-search-criteria.md` |
 | `company-intelligence.md` | `schemas/company-record.schema.md`, `workflows/discover-companies.md`, `workflows/classify-and-rank-companies.md` |
+| `job-intelligence.md` | `schemas/job-record.schema.md`, `schemas/company-state-record.schema.md`, `core/job-verification-policy.md`, `workflows/job-search-journey.md`, `workflows/discover-jobs.md`, `workflows/verify-job.md`, `workflows/evaluate-candidate-job-fit.md`, `workflows/verify-company-state.md` |
 | `people-intelligence.md` | `schemas/person-record.schema.md`, `workflows/discover-people.md` |
 | `activity-verification.md` | `schemas/activity-record.schema.md`, `workflows/verify-activity.md` |
-| `ranking-and-exclusions.md` | `ranking/company-ranking-model.md`, `ranking/person-ranking-model.md`, `ranking/exclusion-policy.md`, `ranking/outreach-priority-model.md` |
-| `workflow-routing.md` | `core/workflow.md`, `workflows/full-journey.md`, `workflows/focused-task-routing.md`, `workflows/resume-journey.md`, `schemas/research-state.schema.md` |
+| `ranking-and-exclusions.md` | `ranking/company-ranking-model.md`, `ranking/person-ranking-model.md`, `ranking/exclusion-policy.md`, `ranking/job-eligibility-gate.md`, `ranking/outreach-priority-model.md` |
+| `workflow-routing.md` | `core/workflow.md`, `workflows/job-search-journey.md`, `workflows/full-journey.md`, `workflows/focused-task-routing.md`, `workflows/resume-journey.md`, `schemas/research-state.schema.md` |
 | `output-generation.md` | `core/output-contracts.md`, `outputs/*-template.md`, `outputs/csv-column-contracts.md` |
-| `quality-and-trust.md` | `core/source-policy.md`, `core/confidence-model.md`, `core/freshness-policy.md`, `core/quality-gates.md` |
+| `quality-and-trust.md` | `core/source-policy.md`, `core/confidence-model.md`, `core/freshness-policy.md`, `core/quality-gates.md`, `core/job-verification-policy.md` |
 
 Templates in `claude/skill/templates/` mirror the placeholder structure of
 the matching file in `outputs/*-template.md`, with all synthetic example

@@ -1,9 +1,10 @@
 # Workflow Routing
 
-Adapts the three operating modes and the module routing logic for execution
+Adapts the operating modes and the module routing logic for execution
 inside Claude.
 
 **Canonical sources:** [`core/workflow.md`](../../../core/workflow.md),
+[`workflows/job-search-journey.md`](../../../workflows/job-search-journey.md),
 [`workflows/full-journey.md`](../../../workflows/full-journey.md),
 [`workflows/focused-task-routing.md`](../../../workflows/focused-task-routing.md),
 [`workflows/resume-journey.md`](../../../workflows/resume-journey.md),
@@ -15,13 +16,34 @@ inside Claude.
 > request while preserving all applicable evidence, freshness, ranking, and
 > quality-gate rules.
 
-## Full Journey
+## Job Search Journey (default for job-discovery intent)
 
-The complete, ordered pipeline:
+For "find me jobs" and equivalents, the default full journey is:
+
+Candidate Input / Existing Candidate Profile → Search Criteria → Current Job
+Discovery → Current Job Verification → Candidate–Job Fit → Company State
+Verification → Recruiter/Hiring-Manager Discovery → Outreach Prioritization.
+
+The primary result is the Verified Jobs Map — only roles passing the Job
+Eligibility Gate (see [`job-intelligence.md`](job-intelligence.md) and
+[`ranking-and-exclusions.md`](ranking-and-exclusions.md)). Do not require
+Activity Verification of a person's posts merely to prove a job exists — the
+official careers page can settle availability on its own. A role failing
+either gate routes to the Unverified and Rejected Job Leads output with a
+specific reason, not silent removal.
+
+## Company Targeting Journey (preserved focused full journey)
+
+The complete, ordered, company-first pipeline — use when the user
+explicitly wants company-first exploration, or wants companies worth
+targeting even without a verified role today:
 
 Candidate Input → Candidate Analysis → Search Criteria → Company Discovery →
 Company Classification → Company Ranking → Company Selection → People
 Discovery → Activity Verification → Outreach Queue → Optional Export.
+
+A company appearing here without a verified open role must say so
+explicitly — never implying a current opening exists.
 
 Cross-cutting rules:
 
@@ -51,12 +73,20 @@ governed by the routing principle above.
 | Request | Route to |
 |---|---|
 | "Analyze this resume" | Analyze Candidate |
+| "Find me jobs" | Search Criteria → Discover Jobs → Verify Job → Evaluate Candidate–Job Fit → Verify Company State → Discover People → Build Outreach Queue |
 | "Find 30 companies" | Search Criteria → Discover Companies → Classify and Rank Companies |
+| "Check whether these roles are still open" | Verify Job only |
+| "Verify these jobs" | Verify Job → Evaluate Candidate–Job Fit |
+| "Assess company state for these companies" | Verify Company State only |
+| "Refresh only stale job statuses" | Verify Job, scoped to the affected Job Records |
+| "Refresh only company-state claims" | Verify Company State, scoped to the affected Company State Records |
 | "Find recruiters at these companies" | Discover People |
+| "Find recruiters for these verified roles" | Discover People, scoped to the employers of the given Job Records |
 | "Find managers who may manage this profile" | Discover People, scoped to Engineering Manager / Group Manager / Director of Engineering / Head of R&D / VP R&D |
 | "Check who posted jobs recently" | Verify Activity |
 | "Why is this Priority 2?" | Explain the existing ranking only — do not re-run the module |
-| "Change commute to 20 minutes" | Update Search Criteria, then refresh only the location-dependent Company Record fields |
+| "Why isn't this job in the Verified Jobs Map?" | Explain the existing `job_status`/`fit_gate_result`/`rejection_reason` only — do not re-run the module |
+| "Change commute to 20 minutes" | Update Search Criteria, then refresh only the location-dependent Company Record and Job Record fields |
 | "Create an outreach list" | Build Outreach Queue |
 | "Export this to CSV" | Export the existing approved output only — do not re-run the module |
 
@@ -69,8 +99,8 @@ trigger a module the user did not ask for.
 
 Continues from the latest valid Research State present in the active
 conversation context. No cross-chat persistence is assumed — if no Research
-State is visible in context, do not fabricate one; proceed as a fresh Full
-Journey or Focused Task instead.
+State is visible in context, do not fabricate one; proceed as a fresh Job
+Search Journey, Company Targeting Journey, or Focused Task instead.
 
 When a Research State is present, read `current_stage`, `overall_status`,
 and every stage-specific status field. Each stage status uses the shared
@@ -116,9 +146,14 @@ research has gone stale.
 | Build Search Criteria | `workflows/build-search-criteria.md` | Search Criteria schema |
 | Discover Companies | `workflows/discover-companies.md` | Company Record schema |
 | Classify and Rank Companies | `workflows/classify-and-rank-companies.md` | Exclusion Policy, Company Ranking Model |
+| Discover Jobs | `workflows/discover-jobs.md` | Job Record schema |
+| Verify Job | `workflows/verify-job.md` | Job Record schema, Current Job Verification Policy |
+| Evaluate Candidate–Job Fit | `workflows/evaluate-candidate-job-fit.md` | Job Eligibility Gate |
+| Verify Company State | `workflows/verify-company-state.md` | Company State Record schema |
 | Discover People | `workflows/discover-people.md` | Person Record schema, Person Ranking Model |
 | Verify Activity | `workflows/verify-activity.md` | Activity Record schema |
 | Build Outreach Queue | `workflows/build-outreach-queue.md` | Outreach Priority Model |
 
-Company Selection and Export are decision points inside the Full Journey and
-Focused Task Routing logic, not independent modules.
+Company Selection and Export are decision points inside the Job Search
+Journey, Company Targeting Journey, and Focused Task Routing logic, not
+independent modules.

@@ -54,9 +54,11 @@ KNOWLEDGE_FILES=(
   "${CORE_DIR}/freshness-policy.md:freshness-policy.md"
   "${CORE_DIR}/quality-gates.md:quality-gates.md"
   "${CORE_DIR}/output-contracts.md:output-contracts.md"
+  "${CORE_DIR}/job-verification-policy.md:job-verification-policy.md"
   "${RANKING_DIR}/company-ranking-model.md:company-ranking-model.md"
   "${RANKING_DIR}/person-ranking-model.md:person-ranking-model.md"
   "${RANKING_DIR}/exclusion-policy.md:exclusion-policy.md"
+  "${RANKING_DIR}/job-eligibility-gate.md:job-eligibility-gate.md"
   "${RANKING_DIR}/outreach-priority-model.md:outreach-priority-model.md"
 )
 

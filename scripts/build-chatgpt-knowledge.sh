@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Deterministically generates the 8 ChatGPT Custom GPT Knowledge bundles
+# Deterministically generates the 9 ChatGPT Custom GPT Knowledge bundles
 # under chatgpt/knowledge/ from an explicit allowlist of canonical
 # repository sources. See chatgpt/knowledge-manifest.md for the full
 # bundle-to-source mapping and rationale.
@@ -37,9 +37,10 @@ BUNDLES=(
   "03-company-intelligence.md:schemas/company-record.schema.md,workflows/discover-companies.md,workflows/classify-and-rank-companies.md,ranking/company-ranking-model.md"
   "04-people-and-activity.md:schemas/person-record.schema.md,schemas/activity-record.schema.md,workflows/discover-people.md,workflows/verify-activity.md"
   "05-ranking-and-exclusions.md:ranking/person-ranking-model.md,ranking/exclusion-policy.md,ranking/outreach-priority-model.md"
-  "06-workflow-and-state.md:core/workflow.md,schemas/research-state.schema.md,workflows/full-journey.md,workflows/focused-task-routing.md,workflows/resume-journey.md,workflows/build-outreach-queue.md"
+  "06-workflow-and-state.md:core/workflow.md,schemas/research-state.schema.md,workflows/full-journey.md,workflows/job-search-journey.md,workflows/focused-task-routing.md,workflows/resume-journey.md,workflows/build-outreach-queue.md"
   "07-evidence-confidence-freshness.md:core/source-policy.md,core/confidence-model.md,core/freshness-policy.md,core/quality-gates.md"
-  "08-output-contracts.md:core/output-contracts.md,outputs/candidate-profile-template.md,outputs/search-criteria-template.md,outputs/company-map-template.md,outputs/excluded-companies-template.md,outputs/people-map-template.md,outputs/activity-verification-template.md,outputs/outreach-queue-template.md,outputs/csv-column-contracts.md"
+  "08-output-contracts.md:core/output-contracts.md,outputs/candidate-profile-template.md,outputs/search-criteria-template.md,outputs/verified-jobs-map-template.md,outputs/unverified-job-leads-template.md,outputs/company-map-template.md,outputs/excluded-companies-template.md,outputs/people-map-template.md,outputs/activity-verification-template.md,outputs/outreach-queue-template.md,outputs/csv-column-contracts.md"
+  "09-job-and-company-state.md:schemas/job-record.schema.md,schemas/company-state-record.schema.md,core/job-verification-policy.md,ranking/job-eligibility-gate.md,workflows/discover-jobs.md,workflows/verify-job.md,workflows/evaluate-candidate-job-fit.md,workflows/verify-company-state.md"
 )
 
 # Validate every canonical source exists before generating anything.

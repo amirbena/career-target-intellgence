@@ -39,7 +39,7 @@ done
 [ -x "${SCRIPT_DIR}/build-chatgpt-knowledge.sh" ] || fail "required build script not found or not executable: ${SCRIPT_DIR}/build-chatgpt-knowledge.sh"
 "${SCRIPT_DIR}/build-chatgpt-knowledge.sh" >/dev/null
 
-KNOWLEDGE_FILES=(01-product-and-terminology.md 02-candidate-and-search.md 03-company-intelligence.md 04-people-and-activity.md 05-ranking-and-exclusions.md 06-workflow-and-state.md 07-evidence-confidence-freshness.md 08-output-contracts.md)
+KNOWLEDGE_FILES=(01-product-and-terminology.md 02-candidate-and-search.md 03-company-intelligence.md 04-people-and-activity.md 05-ranking-and-exclusions.md 06-workflow-and-state.md 07-evidence-confidence-freshness.md 08-output-contracts.md 09-job-and-company-state.md)
 for kf in "${KNOWLEDGE_FILES[@]}"; do
   [ -f "${KNOWLEDGE_DIR}/${kf}" ] || fail "Knowledge build did not produce: ${KNOWLEDGE_DIR}/${kf}"
 done

@@ -21,6 +21,10 @@ Each stage uses the shared status enum: Not Started, Draft, Completed, Approved,
 - **Company classification:** {{company_classification_status}}
 - **Company ranking:** {{company_ranking_status}}
 - **Company selection:** {{company_selection_status}}
+- **Job discovery:** {{job_discovery_status}}
+- **Job verification:** {{job_verification_status}}
+- **Job fit evaluation:** {{job_fit_evaluation_status}}
+- **Company state verification:** {{company_state_verification_status}}
 - **People discovery:** {{people_discovery_status}}
 - **Activity verification:** {{activity_verification_status}}
 - **Outreach queue:** {{outreach_queue_status}}

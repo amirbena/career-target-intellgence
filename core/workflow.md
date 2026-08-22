@@ -12,9 +12,40 @@ The workflow is **structured but flexible**. It must:
 
 ## Operating Modes
 
-### Full Journey
+There are two full, end-to-end journeys, plus Focused Task and Resume Journey modes that apply to both. Which full journey applies depends on user intent:
 
-The complete, ordered path from candidate input to an outreach-ready result:
+- **Job Search Journey (default for job-discovery intent)** — "find me jobs," "what roles should I apply to," and equivalents. See [Job Search Journey](#job-search-journey) below.
+- **Company Targeting Journey (preserved focused mode)** — "which companies should I target," "find companies that match me even if there is no role today," "find recruiters at these companies." See [Company Targeting Journey](#company-targeting-journey) below.
+
+Company-first research remains fully supported; it is simply not the default when the user is asking to find jobs. See [core/product-definition.md](product-definition.md#primary-user-journey) for the product-level framing.
+
+### Job Search Journey
+
+The default, complete, ordered path from candidate input to a verified, outreach-ready job result:
+
+```text
+Candidate Input / Existing Candidate Profile
+        ↓
+Search Criteria
+        ↓
+Current Job Discovery
+        ↓
+Current Job Verification
+        ↓
+Candidate–Job Fit
+        ↓
+Company State Verification
+        ↓
+Recruiter/Hiring-Manager Discovery
+        ↓
+Outreach Prioritization
+```
+
+See [workflows/job-search-journey.md](../workflows/job-search-journey.md) for the per-stage definition. This journey applies the [Primary Job Eligibility Gate](../ranking/job-eligibility-gate.md): company attractiveness alone never substitutes for a verified, candidate-fit role.
+
+### Company Targeting Journey
+
+The complete, ordered path from candidate input to an outreach-ready result, company-first:
 
 ```text
 Candidate Input
@@ -40,7 +71,7 @@ Outreach Queue
 Optional Export
 ```
 
-See [workflows/full-journey.md](../workflows/full-journey.md) for the per-stage definition.
+See [workflows/full-journey.md](../workflows/full-journey.md) for the per-stage definition. A company may appear here without a verified open role; the output must say so explicitly rather than implying a current opening exists — see [ranking/exclusion-policy.md](../ranking/exclusion-policy.md).
 
 ### Focused Task
 
@@ -58,11 +89,11 @@ See [workflows/resume-journey.md](../workflows/resume-journey.md) for details.
 
 > Use the minimum required workflow modules needed to satisfy the current request while preserving all applicable evidence, freshness, ranking, and quality-gate rules.
 
-This principle governs all three operating modes. It means:
+This principle governs both full journeys and both remaining operating modes. It means:
 
 - a focused task never triggers unrelated modules;
 - a resumed journey never rebuilds approved, still-fresh work;
-- even a Full Journey may skip a module when its preconditions are already satisfied by approved, non-stale state — see [Research State Rules](../schemas/research-state.schema.md#research-state-rules).
+- even a full journey may skip a module when its preconditions are already satisfied by approved, non-stale state — see [Research State Rules](../schemas/research-state.schema.md#research-state-rules).
 
 ## Workflow Modules
 
@@ -74,11 +105,15 @@ Each module below is documented independently in [workflows/](../workflows/) and
 | Build Search Criteria | [workflows/build-search-criteria.md](../workflows/build-search-criteria.md) | [Search Criteria schema](../schemas/search-criteria.schema.md) |
 | Discover Companies | [workflows/discover-companies.md](../workflows/discover-companies.md) | [Company Record schema](../schemas/company-record.schema.md) |
 | Classify and Rank Companies | [workflows/classify-and-rank-companies.md](../workflows/classify-and-rank-companies.md) | [Exclusion Policy](../ranking/exclusion-policy.md), [Company Ranking Model](../ranking/company-ranking-model.md) |
+| Discover Jobs | [workflows/discover-jobs.md](../workflows/discover-jobs.md) | [Job Record schema](../schemas/job-record.schema.md) |
+| Verify Job | [workflows/verify-job.md](../workflows/verify-job.md) | [Job Record schema](../schemas/job-record.schema.md), [job-verification-policy.md](job-verification-policy.md) |
+| Evaluate Candidate–Job Fit | [workflows/evaluate-candidate-job-fit.md](../workflows/evaluate-candidate-job-fit.md) | [Job Eligibility Gate](../ranking/job-eligibility-gate.md) |
+| Verify Company State | [workflows/verify-company-state.md](../workflows/verify-company-state.md) | [Company State Record schema](../schemas/company-state-record.schema.md) |
 | Discover People | [workflows/discover-people.md](../workflows/discover-people.md) | [Person Record schema](../schemas/person-record.schema.md), [Person Ranking Model](../ranking/person-ranking-model.md) |
 | Verify Activity | [workflows/verify-activity.md](../workflows/verify-activity.md) | [Activity Record schema](../schemas/activity-record.schema.md) |
 | Build Outreach Queue | [workflows/build-outreach-queue.md](../workflows/build-outreach-queue.md) | [Outreach Priority Model](../ranking/outreach-priority-model.md) |
 
-Company Selection and Export are decision points within [full-journey.md](../workflows/full-journey.md) and [focused-task-routing.md](../workflows/focused-task-routing.md) rather than independent modules — selection is a user review step on already-ranked output, and export packages an already-approved output rather than producing new evidence.
+Company Selection and Export are decision points within [full-journey.md](../workflows/full-journey.md), [job-search-journey.md](../workflows/job-search-journey.md), and [focused-task-routing.md](../workflows/focused-task-routing.md) rather than independent modules — selection is a user review step on already-ranked output, and export packages an already-approved output rather than producing new evidence.
 
 ## Related documents
 
@@ -87,8 +122,13 @@ Company Selection and Export are decision points within [full-journey.md](../wor
 - [confidence-model.md](confidence-model.md)
 - [freshness-policy.md](freshness-policy.md)
 - [quality-gates.md](quality-gates.md)
+- [job-verification-policy.md](job-verification-policy.md)
 - [../ranking/company-ranking-model.md](../ranking/company-ranking-model.md)
 - [../ranking/person-ranking-model.md](../ranking/person-ranking-model.md)
 - [../ranking/exclusion-policy.md](../ranking/exclusion-policy.md)
 - [../ranking/outreach-priority-model.md](../ranking/outreach-priority-model.md)
+- [../ranking/job-eligibility-gate.md](../ranking/job-eligibility-gate.md)
 - [../schemas/research-state.schema.md](../schemas/research-state.schema.md)
+- [../schemas/job-record.schema.md](../schemas/job-record.schema.md)
+- [../schemas/company-state-record.schema.md](../schemas/company-state-record.schema.md)
+- [../workflows/job-search-journey.md](../workflows/job-search-journey.md)

@@ -53,7 +53,7 @@ if (-not (Test-Path -LiteralPath $KnowledgeBuilder -PathType Leaf)) {
 $KnowledgeFiles = @(
     "01-product-and-terminology.md", "02-candidate-and-search.md", "03-company-intelligence.md",
     "04-people-and-activity.md", "05-ranking-and-exclusions.md", "06-workflow-and-state.md",
-    "07-evidence-confidence-freshness.md", "08-output-contracts.md"
+    "07-evidence-confidence-freshness.md", "08-output-contracts.md", "09-job-and-company-state.md"
 )
 foreach ($kf in $KnowledgeFiles) {
     $kfPath = Join-Path $KnowledgeDir $kf
