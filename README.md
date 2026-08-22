@@ -1,29 +1,66 @@
 # Career Targeting Intelligence
 
-Career Targeting Intelligence finds currently open roles that meaningfully match a candidate, verifies their current availability using the strongest available public evidence, evaluates relevant company-state signals, identifies appropriate recruiters or potential hiring managers, and produces an evidence-based manual outreach queue — without relying on background automation or scraping. Company-first research remains a fully supported focused journey.
+Career Targeting Intelligence finds currently open roles that meaningfully
+match a candidate, verifies their current availability using the
+strongest available public evidence, evaluates relevant company-state
+signals, identifies appropriate recruiters or potential hiring managers,
+and produces an evidence-based manual outreach queue — without relying on
+background automation or scraping.
 
-## Problem
+Job searching at a senior level is usually either too broad (spraying
+applications with no prioritization) or too manual (hours of unstructured
+research per company). A job board listing, a recruiter's post, or a
+company's general attractiveness is routinely mistaken for proof that a
+role is actually open today. This project is a structured, on-demand
+research method for going from "who am I and what do I want" to "here are
+the specific, currently verified roles and outreach actions worth my time
+this week" — built for individual job seekers who review and act on
+findings manually rather than automate them away.
 
-Job searching at a senior level is usually either too broad (spraying applications with no prioritization) or too manual (hours of unstructured research per company). A job board listing, a recruiter's post, or a company's general attractiveness is routinely mistaken for proof that a specific role is actually open today. There is no lightweight, repeatable method for going from "who am I and what do I want" to "here are the specific, currently verified roles and outreach actions worth my time this week."
+## Core journeys
 
-## Intended users
+- **Job Search Journey** (default for job-discovery intent) — Candidate
+  Profile → Search Criteria → Job Discovery → Job Verification →
+  Candidate/Job Fit → Company State → Recruiter/Hiring-Manager Discovery
+  → Outreach Prioritization. See
+  [workflows/job-search-journey.md](workflows/job-search-journey.md).
+- **Company Targeting Journey** — a focused mode for requests like "which
+  companies should I target?" that don't require a currently open role.
+  See [workflows/full-journey.md](workflows/full-journey.md).
+- **Focused Tasks** — a single module (verify one job, refresh company
+  state, find recruiters for already-verified roles, ...) without
+  re-running the rest of the journey. See
+  [workflows/focused-task-routing.md](workflows/focused-task-routing.md).
 
-Individual job seekers — particularly experienced professionals — who want a structured, on-demand research assistant for their own job search, and who are willing to review and act on findings manually rather than automate them away.
+## Product surfaces
 
-## Planned product surfaces
+- **ChatGPT Custom GPT** — a conversational interface to the same
+  methodology, built for the ChatGPT ecosystem.
+- **Claude Project with a Claude Skill** — a conversational interface to
+  the same methodology, built for the Claude ecosystem.
 
-- **ChatGPT Custom GPT** — a conversational interface to the same methodology, built for the ChatGPT ecosystem.
-- **Claude Project with a Claude Skill** — a conversational interface to the same methodology, built for the Claude ecosystem.
+Both are thin, platform-specific wrappers. The methodology itself lives
+once, in `core/`.
 
-Both surfaces are thin, platform-specific wrappers. The methodology itself lives once, in `core/`.
+## Repository structure
 
-## Core principle
+| Path | Contents |
+| --- | --- |
+| `core/` | Platform-independent source of truth: product definition, scope, workflow, source/confidence/freshness policy, quality gates, output contracts |
+| `schemas/` | The canonical data model (Candidate Profile, Search Criteria, Job Record, Company State Record, Company Record, Person Record, Activity Record, Research State) |
+| `ranking/` | Weighted scoring models and the job eligibility gate |
+| `workflows/` | Step-by-step modules for each journey and focused task |
+| `outputs/` | Canonical output templates and CSV column contracts |
+| `claude/` | Claude Skill, Claude Project instructions, and the external self-install kit |
+| `chatgpt/` | ChatGPT Custom GPT instructions and Knowledge bundles |
+| `scripts/` | Build, packaging, and validation scripts for every platform |
+| `tests/` | Synthetic verification scenarios and packaging/quality-gate checklists |
+| `examples/tova/` | The fully synthetic Golden Journey example |
 
-`core/` is the platform-independent source of truth. Anything that describes *what the product does* — its methodology, outputs, and scope — belongs in `core/`. Platform folders (`claude/`, `chatgpt/`) only adapt that shared definition to a specific product surface; they should not redefine or duplicate business rules.
-
-## Current project status
-
-Foundation stage. This repository currently defines project structure, working rules, high-level scope, and the core candidate, company, person, activity, and research-state data model. The Claude Skill, Claude Project instructions, ChatGPT GPT instructions, detailed workflows, ranking models, and research examples have not been implemented yet.
+`core/` is the platform-independent source of truth: anything describing
+*what the product does* belongs there. Platform folders (`claude/`,
+`chatgpt/`) only adapt that shared definition — they never redefine or
+duplicate business rules.
 
 ## Core model
 
@@ -83,76 +120,62 @@ The canonical outputs the product produces — what they contain, how they're or
 - [outputs/outreach-queue-template.md](outputs/outreach-queue-template.md) — the Outreach Priority Queue
 - [outputs/csv-column-contracts.md](outputs/csv-column-contracts.md) — stable CSV-compatible column definitions for every output
 
-## Claude Skill
+## Build / package
 
-A packaged, installable Claude Skill adapts the shared methodology for
-execution inside Claude, while `core/`, `schemas/`, `ranking/`, `workflows/`,
-and `outputs/` remain the canonical source of truth:
+Every package is generated from the canonical sources above by a build
+script — never hand-edit a generated file. Each build script also runs
+that platform's length validator before packaging.
 
-- [claude/skill/SKILL.md](claude/skill/SKILL.md) — the Skill entry point
-- [claude/skill-manifest.md](claude/skill-manifest.md) — package contents, canonical source mappings, and expected ZIP structure
-- [claude/packaging.md](claude/packaging.md) — the packaging guide
+### ChatGPT GPT
 
-Build the installable package:
+- Canonical source: [chatgpt/instructions.md](chatgpt/instructions.md) (behavior) + [chatgpt/knowledge-manifest.md](chatgpt/knowledge-manifest.md)-mapped Knowledge bundles (reference material)
+- Build:
+  ```bash
+  ./scripts/build-chatgpt-knowledge.sh
+  ./scripts/package-chatgpt-gpt.sh
+  ```
+  (`.ps1` equivalents on Windows)
+- Output: `dist/career-targeting-intelligence-chatgpt.zip` — no Actions, Apps, or external APIs configured
+- Limit: packaged Instructions must be `< 8000` characters (prefer `<= 7600`); enforced by `scripts/validate-chatgpt-instructions.sh`
+- More: [chatgpt/builder-config.md](chatgpt/builder-config.md) (Builder setup), [chatgpt/testing-guide.md](chatgpt/testing-guide.md) (smoke tests), [chatgpt/package-manifest.md](chatgpt/package-manifest.md) (package structure)
 
-```bash
-./scripts/package-claude-skill.sh
-```
+### Claude Project
 
-```powershell
-.\scripts\package-claude-skill.ps1
-```
+- Canonical source: [claude/project-instructions.md](claude/project-instructions.md) (full) / [claude/project-instructions.compact.md](claude/project-instructions.compact.md) (compact, must stay behaviorally aligned) + [claude/knowledge-manifest.md](claude/knowledge-manifest.md)
+- Setup: [claude/project-setup.md](claude/project-setup.md); artifact behavior: [claude/artifact-policy.md](claude/artifact-policy.md)
+- For teammates outside the creator's Claude organization, a portable
+  [external self-install kit](claude/external-install/README.md) bundles
+  the Skill, Instructions, and approved Knowledge:
+  ```bash
+  ./scripts/package-claude-external-kit.sh
+  ```
+  producing `dist/career-targeting-intelligence-claude-kit.zip`
 
-Both produce `dist/career-targeting-intelligence.skill.zip`.
+### Claude Skill
 
-## Claude Project experience
+- Canonical source: [claude/skill/SKILL.md](claude/skill/SKILL.md) entry point, packaged via an explicit allowlist ([claude/skill-manifest.md](claude/skill-manifest.md)) — never a recursive repository copy
+- Build:
+  ```bash
+  ./scripts/package-claude-skill.sh
+  ```
+  (`.ps1` equivalent on Windows)
+- Output: `dist/career-targeting-intelligence.skill.zip`
+- Limit: the packaged Skill `description` (SKILL.md YAML frontmatter) must be `< 2400` characters (prefer `<= 2200`); enforced by `scripts/validate-skill-description.sh`
+- Packaging guide: [claude/packaging.md](claude/packaging.md)
 
-A Claude Project layer turns the packaged Skill into a guided
-conversational product — routing requests, reusing active context, and
-presenting canonical outputs, without duplicating the Skill or `core/`
-methodology:
+## Validation
 
-- [claude/project-instructions.md](claude/project-instructions.md) — full Project Instructions
-- [claude/project-instructions.compact.md](claude/project-instructions.compact.md) — compact Project Instructions
-- [claude/project-setup.md](claude/project-setup.md) — setup guide
-- [claude/knowledge-manifest.md](claude/knowledge-manifest.md) — recommended Project Knowledge
-- [claude/artifact-policy.md](claude/artifact-policy.md) — when Claude should produce a dedicated artifact
+- `scripts/validate-chatgpt-instructions.sh` / `.ps1` — ChatGPT Instructions length gate, run automatically by `package-chatgpt-gpt.sh`
+- `scripts/validate-skill-description.sh` / `.ps1` — Claude Skill description length gate, run automatically by `package-claude-skill.sh`
+- [tests/README.md](tests/README.md) — synthetic job-verification scenarios, quality-gate checklist, and package-alignment checklist (this repository is documentation-driven; these are reviewed synthetic scenarios rather than executable unit tests)
 
-For teammates outside the creator's Claude organization, a portable
-[external self-install kit](claude/external-install/README.md) packages the
-Skill, Instructions, and approved Knowledge into one distributable archive:
-`dist/career-targeting-intelligence-claude-kit.zip`, built with
-`./scripts/package-claude-external-kit.sh` or
-`.\scripts\package-claude-external-kit.ps1`.
+## Development workflow
 
-## ChatGPT Custom GPT
-
-A deployable ChatGPT Custom GPT package adapts the same shared methodology
-for ChatGPT, using GPT Instructions for behavior and generated Knowledge
-bundles for reference material:
-
-- [chatgpt/instructions.md](chatgpt/instructions.md) — deployment-ready GPT Instructions
-- [chatgpt/builder-config.md](chatgpt/builder-config.md) — Builder configuration (name, description, capabilities)
-- [chatgpt/knowledge-manifest.md](chatgpt/knowledge-manifest.md) — Knowledge bundle-to-source mapping
-- [chatgpt/builder-setup.md](chatgpt/builder-setup.md) — setup guide
-- [chatgpt/testing-guide.md](chatgpt/testing-guide.md) — smoke tests
-- [chatgpt/sharing-and-publishing.md](chatgpt/sharing-and-publishing.md) — sharing and publishing guide
-- [chatgpt/package-manifest.md](chatgpt/package-manifest.md) — package structure
-
-Build the Knowledge bundles and the deployable archive:
-
-```bash
-./scripts/build-chatgpt-knowledge.sh
-./scripts/package-chatgpt-gpt.sh
-```
-
-```powershell
-.\scripts\build-chatgpt-knowledge.ps1
-.\scripts\package-chatgpt-gpt.ps1
-```
-
-Both produce `dist/career-targeting-intelligence-chatgpt.zip`. This
-package configures no Actions, Apps, or external APIs.
+All implementation work — including documentation-only changes — happens
+on a dedicated task branch created from an up-to-date `main`; never
+implement directly on `main`. See
+[AGENTS.md](AGENTS.md#git-and-pr-workflow) for the full branch-safety,
+stash, and merge policy.
 
 ## Golden example
 
@@ -160,7 +183,7 @@ A complete, end-to-end worked example — using a fully synthetic candidate ("To
 
 - [examples/tova/](examples/tova/) — the full journey from source profile through Candidate Profile, Search Criteria, Company Map, Excluded Companies, People Map, Activity Verification, Outreach Queue, Research State, and evaluation notes
 
-## Further reading
+## Additional documentation
 
 - [ROADMAP.md](ROADMAP.md)
 - [core/product-definition.md](core/product-definition.md)

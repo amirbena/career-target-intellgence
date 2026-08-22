@@ -13,6 +13,28 @@ and engineering managers, verified public activity, and a manual outreach
 queue — a research and prioritization assistant the user reviews and acts
 on themselves, not an automation system.
 
+## Canonical source and how to regenerate
+
+This archive is generated, not hand-authored. Do not edit
+`instructions.md` or any file under `knowledge/` inside a built archive —
+edit the canonical source (`chatgpt/instructions.md` and the canonical
+files listed in [`knowledge-manifest.md`](knowledge-manifest.md)) and
+rebuild:
+
+```bash
+./scripts/build-chatgpt-knowledge.sh   # regenerates knowledge/*.md
+./scripts/package-chatgpt-gpt.sh       # validates and builds the archive
+```
+
+(`.ps1` equivalents on Windows, run from the repository root.) This
+produces `dist/career-targeting-intelligence-chatgpt.zip`.
+
+**Instructions length limit:** the packaged `instructions.md` payload
+must be `< 8000` characters (prefer `<= 7600`). `package-chatgpt-gpt.sh`
+runs `scripts/validate-chatgpt-instructions.sh` before building and fails
+the build if the limit is exceeded — this is an automated constraint, not
+a manual check.
+
 ## What this archive contains
 
 ```text

@@ -163,6 +163,97 @@ Read-only inspection may occur before branch creation. File creation,
 modification, deletion, formatting, or generated committed output may
 not.
 
+### Safe branch switching and stash policy
+
+Never implement changes directly on `main`. This applies to every kind of
+change, however small: features, fixes, refactors, docs, packaging,
+tests, and maintenance. Always create or switch to a dedicated task
+branch first, even for a one-line edit.
+
+**Case A — working tree is clean.** Switch to the base branch, update it,
+and create the task branch normally:
+
+```bash
+git status --short
+git switch main
+git pull --ff-only
+git switch -c <task-branch>
+```
+
+Use the repository's actual default base branch if it is not `main`.
+
+**Case B — uncommitted work is present.** Do not checkout, reset, clean,
+or otherwise discard it. Inspect first:
+
+```bash
+git status --short
+git diff
+git diff --staged
+```
+
+Determine whether the changes belong to the user's current work, to the
+new task, or are unrelated/generated artifacts. Preserve user work first.
+When the existing work should stay on its current branch, stash it with a
+descriptive, recoverable message before switching:
+
+```bash
+git stash push -u -m "preserve/<original-branch>/<YYYY-MM-DD>-before-<task>"
+```
+
+Do not use `git stash --all`/`-a` by default — ignored/generated files may
+be large or intentionally unmanaged. Use `-a` only for a concrete,
+inspected reason.
+
+**Case C — the uncommitted changes are actually part of the requested
+task.** Do not stash them away unnecessarily. If Git allows it, create
+the task branch directly on top of the current working tree
+(`git switch -c <task-branch>`), which carries the changes forward safely.
+Verify this is actually safe by inspection; never assume it.
+
+**Case D — the switch itself is blocked by conflicts.** Do not force the
+switch, reset, or delete anything to make it succeed. Preserve the work
+with a stash (or a commit, if that fits the context) first, then switch.
+
+### Stash lifecycle rules
+
+A stash created only to protect existing work must not silently
+disappear:
+
+- Record the stash reference/message and confirm it exists with
+  `git stash list`.
+- Do not `pop` a protective stash automatically onto an unrelated task
+  branch.
+- Restore it only when returning to the original work context.
+- Prefer `git stash apply` over `git stash pop` when conflict risk
+  matters, and drop the stash only after the restored work has been
+  verified.
+- Never `git stash drop` or `git stash clear` unless the preserved work
+  has been explicitly verified as safely restored or is confirmed no
+  longer needed.
+- If applying a stash conflicts, preserve the conflict state and report
+  it — do not discard either side automatically.
+
+### Branch creation rules
+
+- Start from the correct, updated base branch unless the task explicitly
+  depends on another branch.
+- Create one dedicated branch per scoped task.
+- Name branches for intent: `feat/...`, `fix/...`, `chore/...`,
+  `docs/...`.
+- Never reuse `main` as an implementation workspace.
+- Do not overwrite unrelated branches, and never force-switch or
+  force-delete work that has not been verified as safe to discard.
+- If the requested branch name already exists, inspect it before use. Use
+  it only when it clearly belongs to the same task; otherwise choose a
+  non-conflicting name.
+
+### Keep main clean
+
+`main` is normally used only for: syncing/fetching/pulling, reviewing
+merged state, final package builds when explicitly requested, and
+creating new task branches. All implementation changes — including tiny
+edits — happen on a dedicated branch.
+
 ### Merge strategy
 
 Prefer squash merge into `main`. Default flow:
