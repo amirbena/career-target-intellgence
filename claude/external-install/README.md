@@ -51,6 +51,25 @@ Each step is under your control, in your own Claude account. See
 steps, and [`verification-guide.md`](verification-guide.md) to confirm the
 install worked before relying on it.
 
+## Building this kit (maintainers)
+
+The kit is generated, not hand-authored — do not edit an extracted
+archive's contents directly. Edit the canonical sources it packages
+(`claude/project-instructions.compact.md`, the Knowledge files listed in
+[`knowledge-files.md`](knowledge-files.md), and the Skill source under
+[`claude/skill/`](../skill/)) and rebuild:
+
+```bash
+./scripts/package-claude-external-kit.sh
+```
+
+(`.ps1` equivalent on Windows, run from the repository root.) This
+produces `dist/career-targeting-intelligence-claude-kit.zip`, which
+embeds the packaged Skill ZIP. Since it embeds the Skill package, the
+Skill's `description` length limit (`< 2400` characters, prefer
+`<= 2200`, enforced by `scripts/validate-skill-description.sh`) applies
+transitively.
+
 ## Related documents
 
 - [`installation-checklist.md`](installation-checklist.md)
