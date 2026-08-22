@@ -205,16 +205,32 @@ Insufficient evidence, User-requested exclusion.
 
 **Recommended Action Order (highest priority first):**
 
-1. Relevant hiring manager with an A4 matching job post.
-2. Relevant technical recruiter with an A4 matching job post.
-3. Relevant hiring manager with A3 hiring activity.
-4. Relevant recruiter with A3 hiring activity.
-5. Direct application to a currently verified open role.
-6. Relevant manager with verified employment but no hiring signal.
-7. Relevant recruiter with verified employment but no hiring signal.
-8. Follow public activity manually.
-9. Perform additional research.
-10. Skip.
+1. Relevant hiring manager with a qualifying Job Record (Verified Open,
+   matching role, current `job_status_checked_at`).
+2. Relevant technical recruiter with a qualifying Job Record (same
+   condition).
+3. Relevant hiring manager with an A4 matching job post but no qualifying
+   Job Record — matching activity exists, availability unverified.
+4. Relevant technical recruiter with an A4 matching job post but no
+   qualifying Job Record — matching activity exists, availability
+   unverified.
+5. Relevant hiring manager with A3 hiring activity.
+6. Relevant recruiter with A3 hiring activity.
+7. Direct application to a currently verified open role.
+8. Relevant manager with verified employment but no hiring signal.
+9. Relevant recruiter with verified employment but no hiring signal.
+10. Follow public activity manually.
+11. Perform additional research.
+12. Skip.
+
+**Job Record required for "Apply Now":** a Job Record must exist,
+must be authoritative for current availability, must carry `job_status`
+of Verified Open (normally) for the matching role, and must carry a
+current `job_status_checked_at`. Activity Record evidence — including
+A4 — may strengthen relevance, hiring-activity signal, and outreach
+personalization, but never substitutes for Job Record verification. An
+A4 post with no qualifying Job Record downgrades the recommendation to
+Verify Role, not Apply Now.
 
 **Supported Actions:** Apply Now, Connect, Send Direct Message, Follow
 Activity, Verify Role, Research Team, Revisit Later, Skip. No action outside
@@ -240,7 +256,9 @@ avoidance may change the order.
 
 1. Matching job evidence — a Job Record `job_status` of Verified Open for a
    matching role outranks anything weaker, regardless of person type;
-   absent a Job Record, an A4 matching job post is next-strongest.
+   absent a qualifying Job Record, an A4 matching job post is
+   next-strongest *for ordering purposes only* — it never makes Apply Now
+   eligible on its own.
 2. Current job status — Job Record Verified Open > Likely Open / Partially
    Verified > Activity Record Post Found, Current Status Unknown > all
    others.

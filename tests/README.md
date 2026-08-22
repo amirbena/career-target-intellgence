@@ -6,7 +6,7 @@ All names, companies, people, and events in this directory are synthetic. None r
 
 ## Files
 
-- [`job-verification-scenarios.md`](job-verification-scenarios.md) — the 8 required synthetic scenarios exercising the current-job verification policy and the Primary Job Eligibility Gate, each with its expected outcome per the canonical policy.
+- [`job-verification-scenarios.md`](job-verification-scenarios.md) — the 9 required synthetic scenarios exercising the current-job verification policy, the Primary Job Eligibility Gate, and the Job-Record-required-for-Apply-Now outreach rule, each with its expected outcome per the canonical policy.
 - [`quality-gate-checklist.md`](quality-gate-checklist.md) — a checklist mapping every rule in [`core/quality-gates.md`](../core/quality-gates.md) to a pass/fail check, focused on the new Verified Jobs Map, Unverified/Rejected Job Leads, and Company State Verification gates.
 - [`package-alignment-checklist.md`](package-alignment-checklist.md) — a checklist confirming the ChatGPT Knowledge bundles, Claude Project Instructions/Knowledge, and Claude Skill package all reflect the same canonical rules with no manual edits and no drift between surfaces.
 

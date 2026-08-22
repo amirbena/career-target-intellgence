@@ -712,7 +712,7 @@ Combine company ranking, person relevance, and activity evidence into an ordered
 
 ## Procedure
 
-1. For each company/person pairing, determine the recommended action using the [Recommended Action Order](../ranking/outreach-priority-model.md#recommended-action-order) — from an A4 matching job post down to Skip.
+1. For each company/person pairing, determine the recommended action using the [Recommended Action Order](../ranking/outreach-priority-model.md#recommended-action-order) — from a qualifying Job Record-verified open role down to Skip. An A4 matching job post without a qualifying Job Record is not sufficient for "Apply Now" — see [Job Record required for "Apply Now"](../ranking/outreach-priority-model.md#recommended-action-order).
 2. Select from the [Supported Actions](../ranking/outreach-priority-model.md#supported-actions) list only.
 3. Apply the [Outreach Queue Inputs](../ranking/outreach-priority-model.md#outreach-queue-inputs): company priority, person relevance, activity level, current job status, company state, evidence confidence, user preferences, and duplicate-contact avoidance.
 4. Avoid generating multiple redundant entries for the same person across overlapping roles at one company.

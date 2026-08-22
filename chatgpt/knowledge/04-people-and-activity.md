@@ -309,10 +309,11 @@ hiring_related: true
 matching_role: "Senior Backend Engineer"
 role_relevance_notes: "Matches candidate's target role and stack"
 verification_status: "Verified"
-job_status: "Verified Open"
+job_status: "Post Found, Current Status Unknown"
+job_status_checked_at: "2026-07-19T00:00:00Z"
 checked_at: "2026-07-19T00:00:00Z"
 ```
-A dated post announces a specific role that has been verified as meaningfully matching the candidate and currently open.
+A dated post announces a specific role that has been verified as meaningfully matching the candidate — the post itself, its date, and its hiring relevance are confirmed (`verification_status: Verified`), and `activity_level` reaches `A4` on that basis alone. This record does **not** assert the role is currently open: no `related_job_record_reference` exists yet, so `job_status` reflects only what the post itself claimed (`Post Found, Current Status Unknown`), not a current-availability determination. Current availability remains unresolved until a [Job Record](job-record.schema.md) is created and verified per [job-verification-policy.md](../core/job-verification-policy.md) — at which point that Job Record's `job_status`, not this field, becomes authoritative. See [outreach-priority-model.md](../ranking/outreach-priority-model.md#recommended-action-order) for how this state maps to a recommended action (Verify Role, not Apply Now).
 
 ## Related documents
 

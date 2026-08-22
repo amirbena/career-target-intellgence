@@ -1,6 +1,6 @@
 # Job Verification Scenarios
 
-Eight fully synthetic scenarios exercising [`core/job-verification-policy.md`](../core/job-verification-policy.md) and [`ranking/job-eligibility-gate.md`](../ranking/job-eligibility-gate.md). Every company, person, and role below is fictional. Each scenario states the fixture, the canonical rule(s) it exercises, and the expected outcome.
+Nine fully synthetic scenarios exercising [`core/job-verification-policy.md`](../core/job-verification-policy.md), [`ranking/job-eligibility-gate.md`](../ranking/job-eligibility-gate.md), and [`ranking/outreach-priority-model.md`](../ranking/outreach-priority-model.md). Every company, person, and role below is fictional. Each scenario states the fixture, the canonical rule(s) it exercises, and the expected outcome.
 
 ## Scenario 1 — LinkedIn discovery confirmed on the official site → Verified Open
 
@@ -66,10 +66,19 @@ Eight fully synthetic scenarios exercising [`core/job-verification-policy.md`](.
 
 **Expected outcome:** The Activity Record remains valid and useful: `activity_level: A3 — Hiring-related Post Found` (or `A4` if the post itself meaningfully matches the candidate), `verification_status: Verified` for the post's own existence and content. However, the corresponding Job Record's `job_status` does **not** become `Verified Open` from the recruiter post alone — official verification was attempted and failed, so `job_status: Unable to Verify`. The recruiter relationship and the post remain valid, separately-tracked evidence; they are not treated as job verification.
 
+## Scenario 9 — A4 recruiter post with no qualifying Job Record → matching activity valid, but no Apply Now
+
+**Fixture:** A synthetic recruiter, "Dana Kimhi" (Technical Recruiter, "Coastal Freight Partners", current employment verified), posts a dated LinkedIn post announcing a "Senior Backend Engineer" opening that meaningfully matches the candidate's target role and stack. No Job Record exists yet for this role at Coastal Freight Partners (no discovery/verification against the official careers site has been performed).
+
+**Exercises:** [ranking/outreach-priority-model.md — Job Record required for "Apply Now"](../ranking/outreach-priority-model.md#recommended-action-order); [schemas/activity-record.schema.md — Example Records, A4](../schemas/activity-record.schema.md#example-records).
+
+**Expected outcome:** The Activity Record is valid, `activity_level: A4 — Matching Job Post Found`, `verification_status: Verified` (the post's own existence, date, and hiring relevance are confirmed), `job_status: Post Found, Current Status Unknown`, `related_job_record_reference` absent. Because no qualifying Job Record exists with `job_status: Verified Open` and a current `job_status_checked_at`, the Outreach Priority Model must **not** recommend "Apply Now." The recommended action is "Verify Role" — the A4 evidence elevates Dana Kimhi above general A3 hiring activity and remains useful for outreach personalization, but current availability stays unresolved until a Job Record verifies it. This must hold even though the recruiter's current employment is separately verified — employment verification does not substitute for job verification.
+
 ## Related documents
 
 - [../core/job-verification-policy.md](../core/job-verification-policy.md)
 - [../ranking/job-eligibility-gate.md](../ranking/job-eligibility-gate.md)
+- [../ranking/outreach-priority-model.md](../ranking/outreach-priority-model.md)
 - [../schemas/job-record.schema.md](../schemas/job-record.schema.md)
 - [../schemas/company-state-record.schema.md](../schemas/company-state-record.schema.md)
 - [quality-gate-checklist.md](quality-gate-checklist.md)

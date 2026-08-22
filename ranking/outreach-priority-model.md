@@ -6,18 +6,29 @@ This document defines how the [Company Ranking Model](company-ranking-model.md),
 
 ## Recommended Action Order
 
-1. Relevant hiring manager, with a Job Record `job_status` of Verified Open for a matching role (or, absent a Job Record, an A4 matching job post).
-2. Relevant technical recruiter, with a Job Record `job_status` of Verified Open for a matching role (or, absent a Job Record, an A4 matching job post).
-3. Relevant hiring manager with A3 hiring activity, role not independently Verified Open.
-4. Relevant recruiter with A3 hiring activity, role not independently Verified Open.
-5. Direct application to a currently verified open role (Job Record `job_status`: Verified Open) with no identified relevant contact yet.
-6. Relevant manager with verified employment but no hiring signal.
-7. Relevant recruiter with verified employment but no hiring signal.
-8. Follow public activity manually.
-9. Perform additional research.
-10. Skip.
+1. Relevant hiring manager, with a qualifying Job Record (`job_status` of Verified Open for a matching role, with a current `job_status_checked_at`).
+2. Relevant technical recruiter, with a qualifying Job Record (`job_status` of Verified Open for a matching role, with a current `job_status_checked_at`).
+3. Relevant hiring manager with an A4 matching job post but no qualifying Job Record (absent, or not yet Verified Open) — matching hiring activity exists, but current availability is unverified.
+4. Relevant technical recruiter with an A4 matching job post but no qualifying Job Record (absent, or not yet Verified Open) — matching hiring activity exists, but current availability is unverified.
+5. Relevant hiring manager with A3 hiring activity, role not independently Verified Open.
+6. Relevant recruiter with A3 hiring activity, role not independently Verified Open.
+7. Direct application to a currently verified open role (Job Record `job_status`: Verified Open) with no identified relevant contact yet.
+8. Relevant manager with verified employment but no hiring signal.
+9. Relevant recruiter with verified employment but no hiring signal.
+10. Follow public activity manually.
+11. Perform additional research.
+12. Skip.
 
 This order reflects evidence strength, from strongest (a specific matching role, confirmed by the most relevant person) to weakest (insufficient evidence to justify an action). It is a default ordering, not a rigid rule that overrides evidence-specific judgment — see the boundaries below.
+
+**Job Record required for "Apply Now":** an outreach action that depends on a role being currently open — most importantly "Apply Now" — requires all of the following:
+
+- a corresponding Job Record exists for the role;
+- that Job Record is authoritative for current availability (per [Migration and Compatibility: Job Record](../core/data-model.md#migration-and-compatibility-job-record));
+- its `job_status` satisfies the required state (normally `Verified Open`, per [job-eligibility-gate.md — Gate A](job-eligibility-gate.md#gate-a--availability));
+- it carries a current `job_status_checked_at`.
+
+Activity Record evidence — including `A4 — Matching Job Post Found` — may strengthen recruiter/manager relevance, hiring-activity signal, and outreach personalization, but it must never substitute for Job Record verification. When only an A4 Activity Record exists with no qualifying Job Record, the recommended action downgrades to "Verify Role" (see [Supported Actions](#supported-actions)) — communicating that matching hiring activity exists, but current availability has not been verified through an authoritative Job Record.
 
 ## Supported Actions
 
@@ -36,6 +47,7 @@ This order reflects evidence strength, from strongest (a specific matching role,
 - Stale hiring activity must not appear as a current opportunity; a `Stale` or historical Activity Record should route to "Follow Activity," "Research Team," or "Revisit Later," not "Apply Now" or "Send Direct Message."
 - Unresolved employment (Person Record `current_employment_status` of Unclear or Unable to Verify) must remain visible in the recommendation and generally caps the recommended action at "Research Team" or lower until resolved.
 - Unsupported certainty must be avoided — no recommendation should imply a role is open, or a person will respond, without evidence at the corresponding confidence level.
+- "Apply Now" (or any action that asserts a role is currently open) requires a qualifying Job Record — see [Job Record required for "Apply Now"](#recommended-action-order). Activity Record evidence, at any activity level including A4, must never substitute for Job Record verification of current availability; it may only strengthen relevance, hiring-activity signal, or personalization.
 - No automatic messages, connection requests, monitoring, or scheduled follow-up. The queue is a prioritized list of suggested next actions for the user to perform manually.
 - The system recommends actions but does not perform them.
 
@@ -54,7 +66,7 @@ When two candidate outreach entries are otherwise equivalent under the [Recommen
 
 **Complete tie-break sequence**, applied in order until the tie is resolved:
 
-1. Matching job evidence (a Job Record `job_status` of `Verified Open` for a matching role outranks anything weaker, regardless of person type; absent a Job Record, an `A4` matching job post is the next-strongest signal).
+1. Matching job evidence — a Job Record `job_status` of `Verified Open` for a matching role outranks anything weaker, regardless of person type. Absent a qualifying Job Record, an `A4` matching job post is the next-strongest evidence signal *for ordering purposes only*; it never makes "Apply Now" eligible on its own — see [Job Record required for "Apply Now"](#recommended-action-order).
 2. Current job status (Job Record `job_status` of `Verified Open` outranks `Likely Open / Partially Verified`, which outranks Activity Record `Post Found, Current Status Unknown`, which outranks the rest).
 3. Current employment verification (`Current` outranks `Unclear`/`Unable to Verify`, which outranks `Former`).
 4. Company priority (Priority 1 outranks Priority 2 outranks Priority 3).
@@ -81,7 +93,10 @@ Each entry in the Outreach Queue should consider:
 ## Worked Examples
 
 **Apply Now**
-A Priority 1 company has a hiring manager (`person_type`: Engineering Manager, `current_employment_status`: Current) linked to an Activity Record at `A4 — Matching Job Post Found`, `job_status`: Verified Open. Recommended action: Apply Now, with a note to also consider connecting with the manager.
+A Priority 1 company has a hiring manager (`person_type`: Engineering Manager, `current_employment_status`: Current) linked to an Activity Record at `A4 — Matching Job Post Found` (`matching_role` confirmed, `hiring_related: true`) whose `related_job_record_reference` points to a Job Record with `job_status`: Verified Open and a current `job_status_checked_at`. Recommended action: Apply Now, with a note to also consider connecting with the manager.
+
+**Verify Role**
+A Priority 1 company has a hiring manager (`person_type`: Engineering Manager, `current_employment_status`: Current) linked to an Activity Record at `A4 — Matching Job Post Found` (`matching_role` confirmed as meaningfully matching the candidate, `hiring_related: true`), but no Job Record exists yet for the role (or an existing Job Record has not reached `job_status`: Verified Open). Recommended action: Verify Role — the matching activity is valid evidence of hiring interest and elevates this contact above general A3 activity, but "Apply Now" is not justified until an authoritative Job Record confirms current availability.
 
 **Send Direct Message**
 A Priority 2 company has a Technical Recruiter, currently employed, linked to an `A3 — Hiring-related Post Found` Activity Record with `hiring_related: true` but no specific matching role identified. Recommended action: Send Direct Message, referencing the hiring post, without claiming a specific open role.

@@ -16,6 +16,7 @@ A pass/fail checklist mirroring [`core/quality-gates.md`](../core/quality-gates.
 | 10 | A company with no current matching role may still appear in Company Targeting mode, but never masquerades as a current job result. | [exclusion-policy.md — Relationship to Job-Level Rejection](../ranking/exclusion-policy.md#relationship-to-job-level-rejection) | Scenario 7's company appearing in, or implied to be in, the Verified Jobs Map. |
 | 11 | Current employment verification for a recruiter/manager stays separate from job availability. | [core/quality-gates.md — People Map](../core/quality-gates.md#people-map) | Scenario 8 treating Jordan Ashkenazi's verified current employment as also proving the role is open. |
 | 12 | Generated ChatGPT/Claude/Skill packages remain semantically aligned with canonical sources. | [core/quality-gates.md — Cross-Platform Package Alignment](../core/quality-gates.md#cross-platform-package-alignment) | See [`package-alignment-checklist.md`](package-alignment-checklist.md). |
+| 13 | An `A4 — Matching Job Post Found` Activity Record, without a qualifying Job Record (`job_status: Verified Open` with a current `job_status_checked_at`), never produces an "Apply Now" recommendation. | [ranking/outreach-priority-model.md — Job Record required for "Apply Now"](../ranking/outreach-priority-model.md#recommended-action-order) | Scenario 9's recruiter (or the Apply Now worked example) producing "Apply Now" from A4 evidence alone, with no linked Job Record confirming Verified Open. |
 
 ## Additional output-specific checks
 
