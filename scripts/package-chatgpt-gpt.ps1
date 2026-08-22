@@ -25,6 +25,14 @@ $RepoRoot = Split-Path -Parent $PSScriptRoot
 $ChatGptDir = Join-Path $RepoRoot "chatgpt"
 $KnowledgeDir = Join-Path $ChatGptDir "knowledge"
 
+# Validate the Instructions field payload stays within the Custom GPT
+# character limit before packaging anything.
+$InstructionsValidator = Join-Path $PSScriptRoot "validate-chatgpt-instructions.ps1"
+if (-not (Test-Path -LiteralPath $InstructionsValidator -PathType Leaf)) {
+    Fail "required validation script not found: $InstructionsValidator"
+}
+& $InstructionsValidator
+
 $DistDir = Join-Path $RepoRoot "dist"
 $BuildDir = Join-Path $RepoRoot ".build\chatgpt-gpt-package"
 $PackageName = "career-targeting-intelligence-chatgpt"
