@@ -45,6 +45,7 @@ body:
         - Core Methodology & Policy
         - Schemas & Output Contracts
         - Platform Packaging & Distribution
+        - Repository / Tooling
         - Documentation
     validations:
       required: true
@@ -118,9 +119,9 @@ body:
       label: Dependencies
       description: Supports parent/sub-issue structure. Use GitHub native sub-issues when available.
       value: |
-        Depends on: none
-        Blocks: none
-        Parent: none
+        Depends on: None
+        Blocks: None
+        Parent: None
     validations:
       required: false
 
