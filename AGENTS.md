@@ -254,6 +254,40 @@ merged state, final package builds when explicitly requested, and
 creating new task branches. All implementation changes — including tiny
 edits — happen on a dedicated branch.
 
+### Issue descriptions
+
+Issues are human-facing planning artifacts, not agent execution reports
+or full design documents, whether authored by a person or by a coding
+agent. Write them in concise, natural language for whoever will
+eventually implement or review the work. Explain the problem, the desired
+outcome, concrete scope, observable acceptance criteria, and meaningful
+validation expectations. Describe what must be true when the work is
+complete rather than prescribing every implementation step, unless a
+specific constraint genuinely matters. Keep each Issue on one coherent
+outcome. Do not paste research transcripts, command or
+repository-inspection logs, or agent-style deliverable reports into an
+Issue. Avoid oversized background sections, repetitive bullets, needless
+validation matrices, and filler; add technical context, dependencies,
+constraints, or examples only when they materially reduce ambiguity. Use
+`None` for optional sections such as dependencies or non-goals when there
+is nothing useful to add. The Issue must make sense to someone who was
+not present when the work was discovered. `.github/ISSUE_TEMPLATE/`
+carries the structure.
+
+### Pull request descriptions
+
+Pull request descriptions are reviewer-facing communication, whether the
+PR is prepared by a person or by a coding agent. Write them in concise,
+natural language that explains what changed, why it matters, and how it
+was meaningfully validated. Summarize outcomes rather than narrating
+commands or producing agent-style execution reports. Mention files or
+implementation details only when they help a reviewer understand the
+change or its risk. Avoid unnecessary boilerplate: exhaustive command
+logs, validation matrices, repeated scope confirmations, and filler in
+optional sections — use `None` when a section has nothing useful to add.
+The description must make sense to a reviewer who did not watch the work
+happen. `.github/pull_request_template.md` carries the structure.
+
 ### Merge strategy
 
 Prefer squash merge into `main`. Default flow:
