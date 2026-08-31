@@ -254,6 +254,20 @@ merged state, final package builds when explicitly requested, and
 creating new task branches. All implementation changes — including tiny
 edits — happen on a dedicated branch.
 
+### Pull request descriptions
+
+Pull request descriptions are reviewer-facing communication, whether the
+PR is prepared by a person or by a coding agent. Write them in concise,
+natural language that explains what changed, why it matters, and how it
+was meaningfully validated. Summarize outcomes rather than narrating
+commands or producing agent-style execution reports. Mention files or
+implementation details only when they help a reviewer understand the
+change or its risk. Avoid unnecessary boilerplate: exhaustive command
+logs, validation matrices, repeated scope confirmations, and filler in
+optional sections — use `None` when a section has nothing useful to add.
+The description must make sense to a reviewer who did not watch the work
+happen. `.github/pull_request_template.md` carries the structure.
+
 ### Merge strategy
 
 Prefer squash merge into `main`. Default flow:
