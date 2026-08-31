@@ -10,6 +10,11 @@ body:
         deliverables, split it. Keep each field short — this is a ticket,
         not a design document.
 
+        Write for the person who will pick this up later, not as a record
+        of how the issue was found. Concise natural prose; no research
+        transcripts, command logs, or agent-style reports. Use `None` for
+        an optional section rather than inventing filler.
+
   - type: dropdown
     id: type
     attributes:
