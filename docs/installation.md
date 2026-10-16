@@ -9,8 +9,9 @@ Release artifacts are attached to each
 | Method | Status |
 | --- | --- |
 | [Claude Code marketplace](#claude-code-marketplace) | Verified locally with `claude plugin validate` and `marketplace add` / `install`; the GitHub form works once this change is on `main` |
+| [Codex CLI marketplace](#codex-cli-marketplace) | **Verified** from GitHub (marketplace add, plugin add, plugin list) |
 | [Claude Plugin ZIP](#claude-plugin-zip) | Available |
-| [ChatGPT Plugin (local marketplace)](#chatgpt-plugin) | Per OpenAI docs; **not verified end-to-end** |
+| [ChatGPT Plugin (local marketplace)](#chatgpt-plugin) | Plugin invocation in ChatGPT verified; the Desktop local-marketplace steps below are per OpenAI docs and **not verified end-to-end** |
 | [npx skills (skills.sh)](#npx-skills-skillssh) | Verified |
 | [Cursor](#cursor) | Install verified; in-app steps follow Cursor's docs |
 | [Claude Skill ZIP](#claude-skill-zip) | Available |
@@ -40,6 +41,30 @@ Update with `claude plugin marketplace update career-targeting-intelligence`; th
 Local test from a checkout: `claude plugin validate .` then `claude plugin marketplace add .`.
 
 Docs: [Create and distribute a plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces).
+
+## Codex CLI marketplace
+
+Codex CLI reads the same marketplace file as Claude Code
+([`.claude-plugin/marketplace.json`](../.claude-plugin/marketplace.json)), so no separate
+packaging is needed. From a shell:
+
+```bash
+codex plugin marketplace add amirbena/career-target-intellgence
+codex plugin add career-targeting-intelligence@career-targeting-intelligence
+```
+
+Claude Code uses the same marketplace; see [Claude Code marketplace](#claude-code-marketplace).
+
+### Verification status
+
+| Item | Status |
+| --- | --- |
+| Codex CLI: `marketplace add` from GitHub, `marketplace list`, `plugin add`, `plugin list` | **Verified.** The plugin was installed and enabled; Codex CLI `codex-cli 0.160.0`; the plugin's reported version was `local`. A remote catalog lookup printed a network warning, but local plugin verification succeeded. |
+| ChatGPT: plugin invocation | **Verified.** The plugin appeared as installed in ChatGPT, its instructions loaded, its nine Knowledge reference files were accessible, and the Candidate Profile intake workflow ran in conversation. |
+| Codex CLI install propagating to ChatGPT Desktop | **Not verified.** That integration path was not tested; do not assume a Codex CLI install makes the plugin available in ChatGPT Desktop. |
+
+For ChatGPT Desktop, use the separate [ChatGPT Plugin](#chatgpt-plugin) steps. A
+ChatGPT-specific marketplace is only warranted if a concrete compatibility or behavior gap is shown.
 
 ## Claude Plugin ZIP
 
