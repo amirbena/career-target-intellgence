@@ -120,13 +120,39 @@ disappear:
 - If applying a stash conflicts, preserve the conflict state and report
   it — do not discard either side automatically.
 
+## Branch naming
+
+Branches are named `<type>/<issue-number>-<short-description>`, for
+example `feat/42-codex-marketplace`, `fix/38-skip-release-bot`,
+`docs/40-readme-cleanup`, `chore/43-organize-scripts`.
+
+- `type` is one of `feat`, `fix`, `docs`, `chore`, `ci`, `refactor`,
+  `test`, matching the Conventional Commit types used in PR titles.
+- `issue-number` is the GitHub Issue the branch implements. Create an
+  Issue first when the task has none.
+- `short-description` is lowercase kebab-case (`a-z`, `0-9`, `-`).
+
+**Exemptions.** `main`, and branches under `claude/` created by the
+Claude app's worktrees, are not checked. Release automation commits to
+`main` directly and opens no PR, so it is unaffected. Existing branches
+are not renamed; the check applies to PRs opened or updated after it
+lands.
+
+**Agents** verify the name before the first `git push` and again before
+opening a PR (`scripts/validate-branch-name.sh "$(git branch --show-current)"`).
+A non-compliant, unpushed branch is renamed with `git branch -m`. Do not
+rename a branch that already has an open PR; report it instead.
+
+**PR check.** The `PR branch name` workflow runs the same script on the
+PR's head branch and fails with the expected pattern and an example.
+
 ## Branch creation rules
 
 - Start from the correct, updated base branch unless the task explicitly
   depends on another branch.
 - Create one dedicated branch per scoped task.
-- Name branches for intent: `feat/...`, `fix/...`, `chore/...`,
-  `docs/...`.
+- Name branches `<type>/<issue-number>-<short-description>` (see
+  [Branch naming](#branch-naming)).
 - Never reuse `main` as an implementation workspace.
 - Do not overwrite unrelated branches, and never force-switch or
   force-delete work that has not been verified as safe to discard.

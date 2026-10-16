@@ -15,6 +15,8 @@ Detailed policy lives in linked documents; every rule has one home.
 - Always inspect the repository before changing files.
 - Start feature work from the latest `main`.
 - Create one dedicated branch per task.
+- Name branches `<type>/<issue-number>-<short-description>` and verify the name
+  before pushing or opening a PR (see the Git workflow).
 - Do not modify unrelated files.
 - Treat `core/` as the platform-independent source of truth.
 - Keep `claude/` and `chatgpt/` platform-specific.
@@ -31,7 +33,7 @@ Detailed policy lives in linked documents; every rule has one home.
 
 | Topic | Document |
 | --- | --- |
-| Branches, up-to-date `main`, pre-edit gate, stash policy, Issue and PR descriptions, release classification (`release:` labels), merge strategy, admin merge fallback, post-merge sync, local cleanup | [docs/git-workflow.md](docs/git-workflow.md) |
+| Branches and branch naming, up-to-date `main`, pre-edit gate, stash policy, Issue and PR descriptions, release classification (`release:` labels), merge strategy, admin merge fallback, post-merge sync, local cleanup | [docs/git-workflow.md](docs/git-workflow.md) |
 | Claude Skill packaging, Claude Project experience, Claude external kit, ChatGPT packaging (allowlists, length limits, script parity, privacy exclusions) | [docs/packaging-rules.md](docs/packaging-rules.md) |
 | Issue label taxonomy | [docs/issue-labels.md](docs/issue-labels.md) |
 | Scope and non-goals | [core/scope-and-non-goals.md](core/scope-and-non-goals.md) |
