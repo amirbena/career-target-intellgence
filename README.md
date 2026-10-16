@@ -9,14 +9,14 @@ background automation, or automated outreach.
 
 ## Installation
 
-**Claude Code** (marketplace; verified):
+**Claude Code** (terminal; marketplace):
 
-```text
-/plugin marketplace add amirbena/career-target-intellgence
-/plugin install career-targeting-intelligence@career-targeting-intelligence
+```bash
+claude plugin marketplace add amirbena/career-target-intellgence
+claude plugin install career-targeting-intelligence@career-targeting-intelligence
 ```
 
-Then run `/reload-plugins`.
+Then start a new session or run `/reload-plugins`. The interactive `/plugin` equivalents are in the [detailed guide](docs/installation.md#claude-code-marketplace).
 
 **Codex CLI** (same marketplace; verified from GitHub with `codex-cli 0.160.0`):
 

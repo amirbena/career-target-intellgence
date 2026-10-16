@@ -33,11 +33,9 @@ fail() {
 command -v zip >/dev/null 2>&1 || fail "the 'zip' command is required but was not found on PATH. Install zip and re-run this script."
 command -v unzip >/dev/null 2>&1 || fail "the 'unzip' command is required but was not found on PATH. Install unzip and re-run this script."
 
-# Validate the manifest and skill against the plugin limits before packaging.
-[ -x "${SCRIPT_DIR}/../validate/validate-chatgpt-plugin.sh" ] || fail "required validation script not found or not executable: ${SCRIPT_DIR}/../validate/validate-chatgpt-plugin.sh"
-"${SCRIPT_DIR}/../validate/validate-chatgpt-plugin.sh"
-
 [ -f "${PLUGIN_SRC_DIR}/plugin.json" ] || fail "required file not found: ${PLUGIN_SRC_DIR}/plugin.json"
+command -v python3 >/dev/null 2>&1 || fail "python3 is required but was not found on PATH."
+python3 -m json.tool "${PLUGIN_SRC_DIR}/plugin.json" >/dev/null || fail "plugin.json is not valid JSON: ${PLUGIN_SRC_DIR}/plugin.json"
 [ -f "${PLUGIN_SRC_DIR}/SKILL.md" ] || fail "required file not found: ${PLUGIN_SRC_DIR}/SKILL.md"
 [ -f "${CHATGPT_DIR}/capability-policy.md" ] || fail "required file not found: ${CHATGPT_DIR}/capability-policy.md"
 

@@ -27,15 +27,14 @@ source and rebuild:
 
 ```bash
 ./scripts/package/build-chatgpt-knowledge.sh    # regenerates knowledge/*.md
-./scripts/validate/validate-chatgpt-plugin.sh    # checks manifest and skill limits
-./scripts/package/package-chatgpt-plugin.sh     # validates and builds the archive
+./scripts/package/package-chatgpt-plugin.sh     # builds the archive
 ```
 
 (`.ps1` equivalents on Windows, run from the repository root.) Packaging
 produces `dist/career-targeting-intelligence-chatgpt-plugin.zip`. The
-packager runs the Knowledge builder and the validator itself and fails the
-build on any violation — these are automated constraints, not manual
-checks.
+packager runs the Knowledge builder itself, checks that `plugin.json` is
+valid JSON, and verifies the archive allowlist. OpenAI's manifest limits
+([plugin-config.md](plugin-config.md)) are not automatically enforced.
 
 ## What the archive contains
 

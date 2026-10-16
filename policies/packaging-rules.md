@@ -32,9 +32,9 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
 - Do not work around the limit by moving required runtime behavior into
   the description. It is concise activation metadata; canonical behavior
   belongs in `SKILL.md` body content and `references/`.
-- These packaging length limits (ChatGPT Instructions and Skill
-  description) are automated build constraints, enforced by dedicated
-  validator scripts wired into packaging, not manual review conventions.
+- The Claude Skill `description` length limit is an automated build
+  constraint, enforced by a validator script wired into packaging. ChatGPT
+  manifest limits are documented, not automatically enforced.
 
 ## Claude Project experience rules
 
@@ -74,12 +74,12 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
   `references/*.md`, and `templates/*.md` allowlist as the Skill ZIP.
 - It is a skills-only plugin: no hooks, MCP servers, commands, or agents.
 - The packagers verify the exact archive file list (forward-slash paths, no
-  directory entries) and run `claude plugin validate` when the `claude` CLI
-  is available.
+  directory entries) and run `scripts/validate/validate-claude-plugin.sh`
+  on the built plugin; neither needs the `claude` CLI.
 - No Golden Journey content or personal data.
-- `scripts/package/package-claude-plugin.sh` / `.ps1` and
-  `scripts/validate/validate-claude-plugin.sh` / `.ps1` must remain logically
-  equivalent.
+- `scripts/package/package-claude-plugin.sh` / `.ps1` must remain logically
+  equivalent (the `.ps1` packager does not run the Bash-only
+  `validate-claude-plugin.sh`).
 
 ## Claude marketplace rules
 
@@ -87,9 +87,12 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
   marketplace. Its single entry uses the repository root as the plugin
   source and points `skills` at the canonical
   `skills/career-targeting-intelligence/` directory; it copies no Skill
-  files and declares no `version` (the commit identifies the version).
+  files. Its `version` is written by `scripts/release/release.sh` in the
+  `chore(release)` commit and must equal `claude/plugin/plugin.json`.
 - Keep the entry `name` equal to the plugin name and run
-  `claude plugin validate .` after any edit.
+  `scripts/validate/validate-claude-plugin.sh` after any edit. CI does not
+  invoke the `claude` CLI; installing and updating in Claude is verified
+  manually ([docs/installation.md](../docs/installation.md#manual-verification)).
 - Keep the plugin skills-only; the marketplace adds no hooks, MCP servers,
   commands, or agents.
 - The ChatGPT plugin has no repository marketplace: OpenAI marketplaces
@@ -105,7 +108,7 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
   manifest or metadata: `metadata.version` in the packaged `SKILL.md`
   frontmatter, `version` in each `plugin.json`, and a top-level `VERSION`
   file in the external kit. Without it, local builds keep today's behavior.
-- `scripts/validate/verify-archive-versions.sh` / `.ps1` compare every archive's
+- `scripts/validate/verify-archive-versions.sh` (Bash only) compares every archive's
   embedded version to the tag; the release fails on any mismatch.
 - Version literals in source files are not banned; they are placeholders and
   are overridden at packaging time.
@@ -120,8 +123,8 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
 - Knowledge bundles derive only from explicit canonical source allowlists
   and ship as the skill's `references/` files.
 - Manifest fields must stay within OpenAI's documented plugin limits
-  (see `chatgpt/plugin-config.md`), enforced by
-  `scripts/validate/validate-chatgpt-plugin.sh` / `.ps1` and run by the packagers.
+  (see `chatgpt/plugin-config.md`). This is checked by hand before
+  submission; the packagers only check that `plugin.json` is valid JSON.
 - The plugin archive is built from an explicit allowlist, and the
   packagers verify the archive's exact file list, with forward-slash
   paths and no directory entries.
@@ -131,9 +134,11 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
   automation.
 - Apps (`.app.json`), MCP servers, lifecycle hooks, external APIs,
   monitoring, and outreach execution remain out of scope.
-- macOS/Linux and Windows validators, builders, and packagers must
-  remain logically equivalent.
-- Every ChatGPT package change must validate the manifest and skill,
+- Scripts that explicitly support both Windows and macOS/Linux (builders,
+  packagers, and the validators they call) must remain logically
+  equivalent. CI-only validators run on Linux and may be Bash-only; do not
+  recreate PowerShell counterparts for them.
+- Every ChatGPT package change must check the manifest against the documented limits,
   reference parity, normalized archive paths, and privacy exclusions.
 - Claude-only files must not be changed unless shared documentation
   genuinely requires it.

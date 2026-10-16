@@ -169,8 +169,8 @@ claude.ai **Upload plugin** and `claude --plugin-dir`.
 
 ### Layout decision
 
-Checked against `claude plugin validate` (Claude Code CLI) when this was
-added; re-check Claude's current plugin documentation before changing it.
+Checked once by hand with the Claude Code CLI when this was added (CI does
+not run the CLI); re-check Claude's current plugin documentation before changing it.
 
 - The manifest lives at `.claude-plugin/plugin.json` at the archive root.
   Only `name` is required; this package sets `name`, `version`,
@@ -190,5 +190,5 @@ added; re-check Claude's current plugin documentation before changing it.
 Set `RELEASE_VERSION` to write that version into `plugin.json` and the
 packaged `SKILL.md` (`metadata.version`); this applies to all four packagers.
 The GitHub Release tag is the single source of truth.
-`scripts/validate/verify-archive-versions.sh` / `.ps1` check every archive against
+`scripts/validate/verify-archive-versions.sh` (Bash only; release CI runs on Linux) checks every archive against
 the tag. See [../policies/packaging-rules.md](../policies/packaging-rules.md).

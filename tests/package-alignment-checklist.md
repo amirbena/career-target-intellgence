@@ -43,7 +43,7 @@ export RELEASE_VERSION=9.9.9   # any MAJOR.MINOR.PATCH
 
 | # | Check |
 |---|---|
-| 11 | `dist/career-targeting-intelligence-claude-plugin.zip` contains `.claude-plugin/plugin.json` and `skills/career-targeting-intelligence/` with the same `SKILL.md`, `references/`, and `templates/` file list as the Skill ZIP, passes `claude plugin validate`, and contains no Golden Journey or personal data. |
+| 11 | `dist/career-targeting-intelligence-claude-plugin.zip` contains `.claude-plugin/plugin.json` and `skills/career-targeting-intelligence/` with the same `SKILL.md`, `references/`, and `templates/` file list as the Skill ZIP, passes `scripts/validate/validate-claude-plugin.sh`, and contains no Golden Journey or personal data. |
 | 12 | With `RELEASE_VERSION` set, the Skill ZIP, Claude Project Kit, Claude Plugin, and ChatGPT Plugin each embed that version; without it, packagers behave as before. |
 | 13 | The `.sh` and `.ps1` packagers and validators list the same normalized files. |
 
