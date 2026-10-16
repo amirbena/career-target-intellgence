@@ -7,60 +7,47 @@ and potential hiring managers, and produces an evidence-based **manual**
 outreach queue. It runs on demand inside your AI assistant: no scraping,
 background automation, or automated outreach.
 
-## Quick Start
+## Installation
 
-**Claude Code** (marketplace):
+**Claude Code** (marketplace; verified):
 
 ```text
 /plugin marketplace add amirbena/career-target-intellgence
 /plugin install career-targeting-intelligence@career-targeting-intelligence
 ```
 
-Run `/reload-plugins`, then ask: *"Here is my resume. Build my Candidate Profile."*
+Then run `/reload-plugins`.
 
-**Codex CLI** (same marketplace; verified from GitHub):
+**Codex CLI** (same marketplace; verified from GitHub with `codex-cli 0.160.0`):
 
 ```bash
 codex plugin marketplace add amirbena/career-target-intellgence
 codex plugin add career-targeting-intelligence@career-targeting-intelligence
 ```
 
-The plugin was also verified working inside ChatGPT. That a Codex CLI install propagates to ChatGPT Desktop is *not verified*. Details: [Codex install](docs/installation.md#codex-cli-marketplace).
-
-**ChatGPT** (local plugin marketplace, desktop app; *not verified end-to-end*): download the ChatGPT Plugin ZIP from [Releases](https://github.com/amirbena/career-target-intellgence/releases/latest), register it in `~/.agents/plugins/marketplace.json`, restart the app, then install **Career Targeting** from the Plugins directory and start a chat with `@`. Exact steps and account notes: [ChatGPT install](docs/installation.md#chatgpt-plugin). The public directory listing needs OpenAI review and is not done yet.
-
-**Cursor:**
+**Cursor** (verified):
 
 ```bash
 npx skills add amirbena/career-target-intellgence -a cursor -y
 ```
 
-**Any other skills-compatible agent** (Claude Code included, as an alternative to the marketplace):
+**Any other skills-compatible agent:**
 
 ```bash
 npx skills add amirbena/career-target-intellgence
 ```
 
-**Claude.ai / Cowork plugin, Claude Skill, and Claude Project:** download the ZIPs from [Releases](https://github.com/amirbena/career-target-intellgence/releases/latest). The Project kit has its own guide: [claude/external-install/README.md](claude/external-install/README.md).
+**Claude Desktop / Claude.ai / Cowork** (plugin or Skill ZIP from [Releases](https://github.com/amirbena/career-target-intellgence/releases/latest)): see [Claude Plugin ZIP](docs/installation.md#claude-plugin-zip) and [Claude Skill ZIP](docs/installation.md#claude-skill-zip). For a Claude Project, use the [external kit](claude/external-install/README.md).
 
-All steps, activation, and verification: [docs/installation.md](docs/installation.md).
+**ChatGPT Desktop** (local plugin marketplace): see [ChatGPT install](docs/installation.md#chatgpt-plugin). The plugin has been verified working inside ChatGPT, but these Desktop steps are *not verified end-to-end*, and a Codex CLI install is not verified to carry over to ChatGPT Desktop.
 
-## Usage Examples
+All steps, activation, and verification status: [docs/installation.md](docs/installation.md).
 
+## Usage
+
+- *Here is my resume. Build my Candidate Profile.*
 - *Find currently open Senior Backend roles that match my experience.*
-- *Identify product companies worth targeting for me.*
 - *Find relevant recruiters for this verified open role: [job URL].*
-
-## Supported Platforms
-
-| Platform | Install |
-| --- | --- |
-| Claude Code | Marketplace, `npx skills`, or plugin ZIP |
-| Claude.ai / Cowork | Plugin ZIP, Skill ZIP |
-| Claude Project | [External kit](claude/external-install/README.md) |
-| ChatGPT | Skills-only plugin (local marketplace) |
-| Cursor | `npx skills` |
-| Other agents | `npx skills` |
 
 ## How It Works
 
@@ -72,33 +59,10 @@ gate, every time-sensitive claim carries a source and check date, and
 rejected leads stay visible with a reason. Focused requests (verify one
 job, refresh a company) run only the modules they need.
 
-See [core/workflow.md](core/workflow.md), [core/job-verification-policy.md](core/job-verification-policy.md), and [docs/architecture.md](docs/architecture.md).
-
-## Architecture
-
-The methodology lives once, in `core/`; the Claude and ChatGPT packages are
-thin wrappers built from it.
-
-| Path | Contents |
-| --- | --- |
-| `core/` | Canonical methodology: policies, workflow, quality gates, output contracts |
-| `schemas/`, `ranking/`, `workflows/`, `outputs/` | Data model, scoring models, step-by-step modules, output templates |
-| `skills/` | The canonical Claude Skill (also used by `npx skills` and the marketplace) |
-| `claude/`, `chatgpt/` | Platform wrappers: plugin manifests, Project instructions, Knowledge bundles |
-| `scripts/` | Scripts grouped by purpose: `package/` (archives, generated knowledge), `validate/` (CI and packaging checks), `release/` (release orchestration); `.sh`/`.ps1` pairs sit together |
-| `policies/` | Repository maintenance rules for coding agents |
-| `docs/` | Human documentation |
-| `examples/tova/` | Fully synthetic end-to-end example |
-
-## Development
-
-Build and validation commands are in [docs/development.md](docs/development.md). Contributors and coding agents follow [AGENTS.md](AGENTS.md), which points to the rules in [policies/](policies/). Packages are generated from canonical sources; never hand-edit generated files.
-
 ## Documentation
 
 - [Installation](docs/installation.md)
-- [Architecture](docs/architecture.md): journeys, data model, trust, ranking, workflow, output contracts
-- [Development](docs/development.md)
-- [Repository policies](policies/): [Git and PR workflow](policies/git-workflow.md), [packaging rules](policies/packaging-rules.md), [issue labels](policies/issue-labels.md)
-- [Product definition](core/product-definition.md), [scope and non-goals](core/scope-and-non-goals.md), [ROADMAP](ROADMAP.md)
-- [Tests and scenarios](tests/README.md), [Golden example](examples/tova/)
+- [Architecture](docs/architecture.md) and [Development](docs/development.md)
+- [Workflow](core/workflow.md), [job verification policy](core/job-verification-policy.md), [scope and non-goals](core/scope-and-non-goals.md)
+- [Repository policies](policies/) (contributors and coding agents start at [AGENTS.md](AGENTS.md))
+- [ROADMAP](ROADMAP.md), [tests](tests/README.md), [golden example](examples/tova/)
