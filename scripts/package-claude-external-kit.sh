@@ -90,6 +90,12 @@ cp -- "${EXTERNAL_INSTALL_DIR}/privacy-guide.md" "${PACKAGE_ROOT}/privacy-guide.
 # Canonical compact instructions, copied byte-for-byte — never a separately maintained fork.
 cp -- "${PROJECT_INSTRUCTIONS_COMPACT}" "${PACKAGE_ROOT}/project-instructions.md"
 
+# With RELEASE_VERSION set, record it in a top-level VERSION file. The embedded
+# Skill ZIP (built above with the same RELEASE_VERSION) carries it as well.
+if [ -n "${RELEASE_VERSION:-}" ]; then
+  printf '%s\n' "${RELEASE_VERSION}" > "${PACKAGE_ROOT}/VERSION"
+fi
+
 # The built Skill ZIP, embedded unchanged.
 cp -- "${SKILL_ZIP_PATH}" "${PACKAGE_ROOT}/skill/${SKILL_ZIP_NAME}"
 

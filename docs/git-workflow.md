@@ -300,9 +300,14 @@ Releases are automated by `.github/workflows/release.yml` running
 "Skill Release Automation" GitHub App. The script derives the next version
 from commits since the last `v*` tag, prepends a section to `CHANGELOG.md`,
 commits it as `chore(release): vX.Y.Z`, tags that commit, and creates a
-GitHub Release with the Claude Skill ZIP and Claude External Kit ZIP
-attached. Both ZIPs are built from the tagged revision with the existing
-packaging scripts. Do not edit `CHANGELOG.md` by hand for released versions.
+GitHub Release with four archives attached: the Claude Skill ZIP, Claude
+External Kit ZIP, Claude Plugin ZIP, and ChatGPT Plugin ZIP. All are built
+from the tagged revision with the packaging scripts and `RELEASE_VERSION`
+set to the release version, then checked with
+`scripts/verify-archive-versions.sh`, which fails the release if any
+archive's embedded version differs from the tag. The GitHub Release is the
+single source of truth for versions; version literals in source manifests
+are placeholders for local builds. Do not edit `CHANGELOG.md` by hand for released versions.
 
 What each version component means for this docs/methodology repo:
 

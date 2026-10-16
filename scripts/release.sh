@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Compute the next semantic version from Conventional Commits since the last
 # tag, update CHANGELOG.md, tag, and publish a GitHub Release with the Claude
-# Skill and Claude External Kit ZIPs attached. Safe to re-run: existing tags,
+# Skill, Claude External Kit, Claude Plugin and ChatGPT Plugin ZIPs attached,
+# each built with RELEASE_VERSION so its embedded version matches the tag. Safe to re-run: existing tags,
 # changelog sections, and release assets are never duplicated, and a missing
 # Release or missing assets for the latest tag are recovered.
 #
@@ -15,7 +16,21 @@ DRY_RUN=0
 
 cd "$(git rev-parse --show-toplevel)"
 BASELINE="1.0.0"
-ASSETS=(career-targeting-intelligence.skill.zip career-targeting-intelligence-claude-kit.zip)
+ASSETS=(
+  career-targeting-intelligence.skill.zip
+  career-targeting-intelligence-claude-kit.zip
+  career-targeting-intelligence-claude-plugin.zip
+  career-targeting-intelligence-chatgpt-plugin.zip
+)
+# asset -> packaging script (run from the tagged revision)
+packager_for() {
+  case "$1" in
+    career-targeting-intelligence.skill.zip) echo package-claude-skill.sh ;;
+    career-targeting-intelligence-claude-kit.zip) echo package-claude-external-kit.sh ;;
+    career-targeting-intelligence-claude-plugin.zip) echo package-claude-plugin.sh ;;
+    career-targeting-intelligence-chatgpt-plugin.zip) echo package-chatgpt-plugin.sh ;;
+  esac
+}
 WT=""
 trap '[ -z "$WT" ] || git worktree remove --force "$WT" >/dev/null 2>&1 || true' EXIT
 if [ "$DRY_RUN" = 0 ]; then  # identity for the release commit and the annotated tag
@@ -44,9 +59,21 @@ ensure_release() { # $1=version
   fi
   WT="$(mktemp -d)"
   git worktree add --detach "$WT" "refs/tags/$tag" >/dev/null
-  "$WT/scripts/package-claude-skill.sh" >/dev/null
-  "$WT/scripts/package-claude-external-kit.sh" >/dev/null
-  local files=(); for a in "${missing[@]}"; do files+=("$WT/dist/$a"); done
+  # Build from the tagged revision with RELEASE_VERSION. A tag that predates a
+  # packager cannot produce that asset; it is skipped rather than built from
+  # newer sources. Archives for the whole tag are verified before any upload.
+  local files=() a pk built=()
+  for a in "${missing[@]}"; do
+    pk="$(packager_for "$a")"
+    if [ ! -x "$WT/scripts/$pk" ]; then echo "warning: $tag has no $pk; skipping $a" >&2; continue; fi
+    RELEASE_VERSION="$1" "$WT/scripts/$pk" >/dev/null
+    files+=("$WT/dist/$a"); built+=("$a")
+  done
+  # Fail the release if any built archive's embedded version differs from the tag.
+  if [ -x "$WT/scripts/verify-archive-versions.sh" ] && [ "${#built[@]}" -gt 0 ]; then
+    "$WT/scripts/verify-archive-versions.sh" "$1" "$WT/dist" "${built[@]}"
+  fi
+  [ "${#files[@]}" -gt 0 ] || { echo "No buildable assets for $tag."; return 0; }
   if gh release view "$tag" >/dev/null 2>&1; then
     gh release upload "$tag" "${files[@]}" --clobber
   else

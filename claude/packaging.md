@@ -152,3 +152,43 @@ directory.
   documentation. Distribute this to external users; do not distribute the
   Skill ZIP alone and expect it to include Project setup, since the Skill
   ZIP intentionally contains only Skill source.
+
+## Packaging the Claude Plugin
+
+A third archive, `dist/career-targeting-intelligence-claude-plugin.zip`,
+distributes the same Skill as a Claude Plugin, which installs through
+claude.ai **Upload plugin** and `claude --plugin-dir`.
+
+```bash
+./scripts/package-claude-plugin.sh
+```
+
+```powershell
+.\scripts\package-claude-plugin.ps1
+```
+
+### Layout decision
+
+Checked against `claude plugin validate` (Claude Code CLI) when this was
+added; re-check Claude's current plugin documentation before changing it.
+
+- The manifest lives at `.claude-plugin/plugin.json` at the archive root.
+  Only `name` is required; this package sets `name`, `version`,
+  `description`, `author`, `repository`, and `keywords`. The source is
+  [`plugin/plugin.json`](plugin/plugin.json).
+- Skills live at `skills/<skill-name>/SKILL.md` at the archive root (not
+  inside `.claude-plugin/`). The skill folder holds the same `SKILL.md`,
+  `references/`, and `templates/` as the Skill ZIP, copied from
+  `claude/skill/` with the same allowlist — the Skill is not forked.
+- Skills-only: no hooks, MCP servers, commands, or agents.
+- The plugin and Skill name match (`career-targeting-intelligence`), so the
+  Skill is invoked as `/career-targeting-intelligence:career-targeting-intelligence`
+  or by description-based activation.
+
+### Versions
+
+Set `RELEASE_VERSION` to write that version into `plugin.json` and the
+packaged `SKILL.md` (`metadata.version`); this applies to all four packagers.
+The GitHub Release tag is the single source of truth.
+`scripts/verify-archive-versions.sh` / `.ps1` check every archive against
+the tag. See [../docs/packaging-rules.md](../docs/packaging-rules.md).

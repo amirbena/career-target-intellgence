@@ -153,6 +153,12 @@ that platform's validator before packaging.
   ```
   producing `dist/career-targeting-intelligence-claude-kit.zip`
 
+### Claude Plugin
+
+- Canonical source: [claude/plugin/plugin.json](claude/plugin/plugin.json) (manifest) + the Claude Skill sources — the Skill is not forked
+- Build: `./scripts/package-claude-plugin.sh` (`.ps1` on Windows), producing `dist/career-targeting-intelligence-claude-plugin.zip`
+- Versions: set `RELEASE_VERSION` when packaging; the GitHub Release tag is the single source of truth ([claude/packaging.md](claude/packaging.md))
+
 ### Claude Skill
 
 - Canonical source: [claude/skill/SKILL.md](claude/skill/SKILL.md) entry point, packaged via an explicit allowlist ([claude/skill-manifest.md](claude/skill-manifest.md)) — never a recursive repository copy

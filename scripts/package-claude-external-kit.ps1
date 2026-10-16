@@ -105,6 +105,12 @@ foreach ($doc in $RequiredDocs) {
 # Canonical compact instructions, copied byte-for-byte — never a separately maintained fork.
 Copy-Item -LiteralPath $ProjectInstructionsCompact -Destination (Join-Path $PackageRoot "project-instructions.md") -Force
 
+# With RELEASE_VERSION set, record it in a top-level VERSION file. The embedded
+# Skill ZIP (built above with the same RELEASE_VERSION) carries it as well.
+if ($env:RELEASE_VERSION) {
+    [System.IO.File]::WriteAllText((Join-Path $PackageRoot "VERSION"), "$($env:RELEASE_VERSION)`n", (New-Object System.Text.UTF8Encoding($false)))
+}
+
 # The built Skill ZIP, embedded unchanged.
 Copy-Item -LiteralPath $SkillZipPath -Destination (Join-Path $PackageRoot "skill\$SkillZipName") -Force
 

@@ -26,7 +26,7 @@ describes.
 ## Skill identity
 
 - **Skill name:** `career-targeting-intelligence`
-- **Version:** 1.0.0
+- **Version:** set at release time from the GitHub Release tag (`RELEASE_VERSION`), written to `metadata.version` in the packaged `SKILL.md`; the source file carries no version
 - **Package root (source):** [`claude/skill/`](skill/)
 - **Top-level directory inside the ZIP:** `career-targeting-intelligence/`
 
