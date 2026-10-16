@@ -15,8 +15,10 @@ Detailed policy lives in linked documents; every rule has one home.
 - Always inspect the repository before changing files.
 - Start feature work from the latest `main`.
 - Create one dedicated branch per task.
-- Name branches `<type>/<issue-number>-<short-description>` and verify the name
-  before pushing or opening a PR (see the Git workflow).
+- Auto-generated local branch names (e.g. `claude/<slug>-<id>`) are fine while
+  developing. Before the first push or PR, rename the branch to
+  `<type>/<issue-number>-<short-description>` and run
+  `scripts/validate-branch-name.sh` (see the Git workflow).
 - Do not modify unrelated files.
 - Treat `core/` as the platform-independent source of truth.
 - Keep `claude/` and `chatgpt/` platform-specific.

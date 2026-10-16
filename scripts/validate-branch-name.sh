@@ -7,8 +7,9 @@
 # Types: feat, fix, docs, chore, ci, refactor, test. The description is
 # lowercase kebab-case, e.g. feat/42-codex-marketplace.
 #
-# Exempt (always accepted): main, and agent-harness branches under claude/
-# (documented in docs/git-workflow.md). Pure string check; it reads no
+# Exempt: main only. Every other branch, including auto-generated names such
+# as claude/<slug>-<id>, must be renamed to this convention before it is
+# pushed (see docs/git-workflow.md). Pure string check; it reads no
 # repository files and never touches Git.
 #
 # Usage: validate-branch-name.sh [branch]
@@ -24,7 +25,7 @@ if [ -z "$BRANCH" ]; then
 fi
 
 case "$BRANCH" in
-  main|claude/*) echo "ok: '$BRANCH' is exempt from the branch naming convention."; exit 0 ;;
+  main) echo "ok: '$BRANCH' is exempt from the branch naming convention."; exit 0 ;;
 esac
 
 re='^(feat|fix|docs|chore|ci|refactor|test)/[0-9]+-[a-z0-9]+(-[a-z0-9]+)*$'

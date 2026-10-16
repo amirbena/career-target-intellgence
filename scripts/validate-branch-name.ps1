@@ -6,8 +6,8 @@
 .DESCRIPTION
     Convention: <type>/<issue-number>-<short-description>, with type one of
     feat, fix, docs, chore, ci, refactor, test and a lowercase kebab-case
-    description, e.g. feat/42-codex-marketplace. `main` and agent-harness
-    branches under claude/ are exempt. Pure string check.
+    description, e.g. feat/42-codex-marketplace. Only `main` is exempt;
+    auto-generated names such as claude/<slug>-<id> must be renamed first. Pure string check.
 
     Falls back to the BRANCH_NAME environment variable.
     Compatible with Windows PowerShell 5.1 and PowerShell 7+.
@@ -24,7 +24,7 @@ if ([string]::IsNullOrEmpty($Branch)) {
     exit 1
 }
 
-if ($Branch -ceq "main" -or $Branch.StartsWith("claude/")) {
+if ($Branch -ceq "main") {
     Write-Output "ok: '$Branch' is exempt from the branch naming convention."
     exit 0
 }
