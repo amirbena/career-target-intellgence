@@ -32,6 +32,7 @@ Each script must exit successfully and print its packaged file list. None of the
 
 - [../AGENTS.md](../AGENTS.md)
 - [../docs/packaging-rules.md](../docs/packaging-rules.md)
+- [../docs/packaging-rules.md](../docs/packaging-rules.md)
 - [../core/quality-gates.md](../core/quality-gates.md)
 - [../claude/skill-manifest.md](../claude/skill-manifest.md)
 - [../claude/external-install/package-manifest.md](../claude/external-install/package-manifest.md)
