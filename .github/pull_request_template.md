@@ -22,4 +22,4 @@ Describe the meaningful checks performed.
 Anything reviewers should know — tradeoffs, limitations, follow-up work — or `None`.
 
 ## Release impact
-State the single `release:` label (`major`, `minor`, `patch`, or `none`) and why, in a sentence. Agents propose it; the reviewer decides. See `docs/git-workflow.md`.
+State the single `release:` label (`major`, `minor`, `patch`, or `none`) and why, in a sentence. Agents propose it; the reviewer decides. See `policies/git-workflow.md`.

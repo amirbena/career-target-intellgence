@@ -1,0 +1,16 @@
+{
+  "name": "career-targeting-intelligence",
+  "description": "Career Targeting Intelligence: evidence-based job targeting, verification, and manual outreach research.",
+  "owner": {
+    "name": "Amir Ben-Assayag"
+  },
+  "plugins": [
+    {
+      "name": "career-targeting-intelligence",
+      "source": ".",
+      "description": "Builds a Candidate Profile, verifies open jobs against employer sources, ranks target companies, finds relevant recruiters and engineering managers, and prepares a manual outreach queue you review and act on yourself.",
+      "category": "productivity",
+      "skills": ["./skills/career-targeting-intelligence"]
+    }
+  ]
+}
