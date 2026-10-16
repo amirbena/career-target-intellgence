@@ -20,6 +20,8 @@ permissions:
 
 jobs:
   release:
+    # Skip the run triggered by the release App's own chore(release) push.
+    if: github.actor != 'skill-release-automation[bot]'
     runs-on: ubuntu-latest
     environment: release
     steps:
