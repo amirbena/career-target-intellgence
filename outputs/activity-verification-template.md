@@ -2,6 +2,10 @@
 
 This is the Markdown presentation template for the Activity Verification Report, built from [Activity Records](../schemas/activity-record.schema.md), per [core/output-contracts.md](../core/output-contracts.md#activity-verification-report). This output is produced only when Activity Verification has been explicitly requested. All values below are synthetic.
 
+## Style
+
+Open the output with a one-to-three sentence plain-language summary (conclusion first), then the canonical structure below. Use prose for reasoning and the canonical table only for multi-record data; state shared caveats once. Required fields, citations, confidence, and freshness markers are unchanged. See the [Readability and Voice Guide](readability-guide.md).
+
 ## Required Columns
 
 | Column | Source field |

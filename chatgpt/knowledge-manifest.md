@@ -115,6 +115,7 @@ repository. It will be added to this bundle once a future task creates it.
 - `outputs/activity-verification-template.md`
 - `outputs/outreach-queue-template.md`
 - `outputs/csv-column-contracts.md`
+- `outputs/readability-guide.md`
 
 `outputs/research-state-template.md` is **not** referenced — no such file
 exists in the repository. There is no standalone Markdown output template
@@ -124,7 +125,8 @@ for Research State; it is defined only as a schema
 (`claude/skill/templates/research-state.md`) rather than as a repository
 `outputs/*-template.md` file. This bundle therefore covers all ten
 `outputs/*-template.md` files that actually exist, plus
-`core/output-contracts.md` and `outputs/csv-column-contracts.md`.
+`core/output-contracts.md`, `outputs/csv-column-contracts.md`, and
+`outputs/readability-guide.md`.
 
 ### `09-job-and-company-state.md`
 

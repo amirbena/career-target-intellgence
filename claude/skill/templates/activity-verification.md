@@ -1,5 +1,9 @@
 # Activity Verification Report — {{candidate_name}}
 
+## Summary
+
+{{summary}} <!-- 1–3 plain sentences: conclusion first, then what needs the user's attention. Keep all required fields, citations, confidence, and checked_at below; state shared caveats once. -->
+
 Produced only when Activity Verification has been explicitly requested.
 
 ## Ordering

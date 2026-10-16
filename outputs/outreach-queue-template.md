@@ -2,6 +2,10 @@
 
 This is the Markdown presentation template for the Outreach Priority Queue output, built from ranked Company, Person, and (when available) Activity Records, per [core/output-contracts.md](../core/output-contracts.md#outreach-priority-queue) and the [Outreach Priority Model](../ranking/outreach-priority-model.md). All values below are synthetic.
 
+## Style
+
+Open the output with a one-to-three sentence plain-language summary (conclusion first), then the canonical structure below. Use prose for reasoning and the canonical table only for multi-record data; state shared caveats once. Required fields, citations, confidence, and freshness markers are unchanged. See the [Readability and Voice Guide](readability-guide.md).
+
 ## Required Columns
 
 | Column | Source field |

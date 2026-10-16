@@ -1,5 +1,9 @@
 # Target Company Map — {{candidate_name}}
 
+## Summary
+
+{{summary}} <!-- 1–3 plain sentences: conclusion first, then what needs the user's attention. Keep all required fields, citations, confidence, and checked_at below; state shared caveats once. -->
+
 ## Disclaimer
 
 > The target-company map is not a claim that every listed company is currently hiring or that every team uses the same technology stack. Team-level technology and current hiring status must be verified before outreach.
