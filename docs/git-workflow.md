@@ -287,3 +287,43 @@ and another active task's artifacts.
 Do not use broad destructive cleanup such as `git clean -fd` unless every
 affected file has been explicitly inspected and confirmed safe.
 
+
+## Commit convention and releases
+
+Commit subjects (and squash-merge PR titles) follow
+[Conventional Commits](https://www.conventionalcommits.org/):
+`type(scope)?: description`, with `!` after the type or a
+`BREAKING CHANGE:` footer for breaking changes.
+
+Releases are automated by `.github/workflows/release.yml` running
+`scripts/release.sh` on every push to `main`, authenticated as the
+"Skill Release Automation" GitHub App. The script derives the next version
+from commits since the last `v*` tag, prepends a section to `CHANGELOG.md`,
+commits it as `chore(release): vX.Y.Z`, tags that commit, and creates a
+GitHub Release with the Claude Skill ZIP and Claude External Kit ZIP
+attached. Both ZIPs are built from the tagged revision with the existing
+packaging scripts. Do not edit `CHANGELOG.md` by hand for released versions.
+
+What each version component means for this docs/methodology repo:
+
+| Component | Commit trigger | Meaning |
+| --- | --- | --- |
+| major | `!` / `BREAKING CHANGE:` | Methodology, schema, or output-contract change that invalidates prior records, outputs, or installed packages |
+| minor | `feat:` | New or extended capability: policy, schema field, workflow, output, or package content |
+| patch | `fix:` | Correction to existing methodology, templates, scripts, or packaging with no new capability |
+
+`docs:`, `chore:`, `ci:`, `test:`, `refactor:`, and non-conventional
+commits produce no release, so changes with no user-facing effect never
+create an empty release. A change to methodology content that users
+consume should therefore use `feat:` or `fix:`, not `docs:`.
+
+The script is idempotent: an existing tag or changelog section is never
+duplicated, and a re-run recovers a missing Release or missing assets for
+the latest tag. With no tags it cuts the baseline `v1.0.0` at `HEAD` from
+the existing `1.0.0` changelog section. Preview with
+`scripts/release.sh --dry-run` or the workflow's manual dry-run input.
+
+Required setup: the App is installed on the repository, its ID is stored
+as the `RELEASE_APP_ID` repository variable and its private key as the
+`RELEASE_APP_PRIVATE_KEY` secret, and it is on the `main` ruleset's bypass
+list so it can push the release commit.
