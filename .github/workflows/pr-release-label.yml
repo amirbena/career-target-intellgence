@@ -1,0 +1,24 @@
+name: PR release label
+
+# Checks the PR's release classification only. It never edits CHANGELOG.md,
+# computes a version, tags, or releases; scripts/release.sh does that after
+# merge, reading the same label.
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize, labeled, unlabeled]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: PR release label
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate release label
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+        run: scripts/validate-pr-release.sh
