@@ -27,7 +27,7 @@ if ($ReleaseVersion -and $ReleaseVersion -notmatch '^\d+\.\d+\.\d+$') {
     Fail "RELEASE_VERSION must be MAJOR.MINOR.PATCH, got: $ReleaseVersion"
 }
 
-$RepoRoot = Split-Path -Parent $PSScriptRoot
+$RepoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $PluginSrcDir = Join-Path $RepoRoot "claude\plugin"
 $SkillSourceDir = Join-Path $RepoRoot "skills\career-targeting-intelligence"
 $DistDir = Join-Path $RepoRoot "dist"
@@ -37,12 +37,12 @@ $SkillName = "career-targeting-intelligence"
 $OutputZip = Join-Path $DistDir "$PackageName.zip"
 
 foreach ($v in @("validate-skill-description.ps1", "validate-claude-plugin.ps1")) {
-    if (-not (Test-Path -LiteralPath (Join-Path $PSScriptRoot $v) -PathType Leaf)) {
-        Fail "required validation script not found: $(Join-Path $PSScriptRoot $v)"
+    if (-not (Test-Path -LiteralPath (Join-Path (Join-Path $PSScriptRoot "../validate") $v) -PathType Leaf)) {
+        Fail "required validation script not found: $(Join-Path (Join-Path $PSScriptRoot "../validate") $v)"
     }
 }
-& (Join-Path $PSScriptRoot "validate-skill-description.ps1")
-& (Join-Path $PSScriptRoot "validate-claude-plugin.ps1")
+& (Join-Path $PSScriptRoot "../validate/validate-skill-description.ps1")
+& (Join-Path $PSScriptRoot "../validate/validate-claude-plugin.ps1")
 
 $PluginManifest = Join-Path $PluginSrcDir "plugin.json"
 $SkillMdPath = Join-Path $SkillSourceDir "SKILL.md"
@@ -85,7 +85,7 @@ if ($ReleaseVersion) {
     [System.IO.File]::WriteAllText($PackagedSkill, ($Lines -join "`n"), (New-Object System.Text.UTF8Encoding($false)))
 }
 
-& (Join-Path $PSScriptRoot "validate-claude-plugin.ps1") $PackageRoot | Out-Null
+& (Join-Path $PSScriptRoot "../validate/validate-claude-plugin.ps1") $PackageRoot | Out-Null
 
 # Strip platform artifacts if any slipped in via the source tree.
 Get-ChildItem -LiteralPath $BuildDir -Recurse -Force -File |

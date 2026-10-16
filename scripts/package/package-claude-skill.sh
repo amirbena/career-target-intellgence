@@ -10,7 +10,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd -P)"
-REPO_ROOT="$(cd -- "${SCRIPT_DIR}/.." >/dev/null 2>&1 && pwd -P)"
+REPO_ROOT="$(cd -- "${SCRIPT_DIR}/../.." >/dev/null 2>&1 && pwd -P)"
 
 SKILL_SOURCE_DIR="${REPO_ROOT}/skills/career-targeting-intelligence"
 DIST_DIR="${REPO_ROOT}/dist"
@@ -32,8 +32,8 @@ command -v zip >/dev/null 2>&1 || fail "the 'zip' command is required but was no
 
 # Validate the Skill description field payload stays within the Claude
 # Skill description character limit before packaging anything.
-[ -x "${SCRIPT_DIR}/validate-skill-description.sh" ] || fail "required validation script not found or not executable: ${SCRIPT_DIR}/validate-skill-description.sh"
-"${SCRIPT_DIR}/validate-skill-description.sh"
+[ -x "${SCRIPT_DIR}/../validate/validate-skill-description.sh" ] || fail "required validation script not found or not executable: ${SCRIPT_DIR}/../validate/validate-skill-description.sh"
+"${SCRIPT_DIR}/../validate/validate-skill-description.sh"
 
 [ -f "${SKILL_SOURCE_DIR}/SKILL.md" ] || fail "required file not found: ${SKILL_SOURCE_DIR}/SKILL.md"
 [ -d "${SKILL_SOURCE_DIR}/references" ] || fail "required directory not found: ${SKILL_SOURCE_DIR}/references"

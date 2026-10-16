@@ -5,13 +5,13 @@
 # Exits non-zero on the first mismatch so a release cannot ship inconsistent
 # archives.
 #
-# Usage: scripts/verify-archive-versions.sh <version> [dist-dir [archive-name...]]
+# Usage: scripts/validate/verify-archive-versions.sh <version> [dist-dir [archive-name...]]
 # With no archive names, all four published archives are checked.
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd -P)"
-REPO_ROOT="$(cd -- "${SCRIPT_DIR}/.." >/dev/null 2>&1 && pwd -P)"
+REPO_ROOT="$(cd -- "${SCRIPT_DIR}/../.." >/dev/null 2>&1 && pwd -P)"
 
 VERSION="${1:-}"
 DIST_DIR="${2:-${REPO_ROOT}/dist}"

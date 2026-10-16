@@ -20,7 +20,7 @@ function Fail {
     exit 1
 }
 
-$RepoRoot = Split-Path -Parent $PSScriptRoot
+$RepoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $ManifestFile = Join-Path $RepoRoot "claude\plugin\plugin.json"
 $SkillFile = Join-Path $RepoRoot "skills\career-targeting-intelligence\SKILL.md"
 

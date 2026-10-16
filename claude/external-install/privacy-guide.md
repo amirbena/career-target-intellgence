@@ -64,9 +64,9 @@ candidate data.
 Only install a `career-targeting-intelligence.skill.zip` (or an external
 kit containing one) that you obtained from a source you trust — ideally
 this repository directly, or a build you produced yourself with
-[`scripts/package-claude-skill.sh`](../../scripts/package-claude-skill.sh)
+[`scripts/package/package-claude-skill.sh`](../../scripts/package/package-claude-skill.sh)
 or
-[`scripts/package-claude-external-kit.sh`](../../scripts/package-claude-external-kit.sh).
+[`scripts/package/package-claude-external-kit.sh`](../../scripts/package/package-claude-external-kit.sh).
 A Skill package determines how Claude behaves inside your Project; treat
 installing one with the same care you'd give any other executable
 methodology you didn't author yourself.

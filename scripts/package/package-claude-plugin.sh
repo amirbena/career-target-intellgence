@@ -18,7 +18,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd -P)"
-REPO_ROOT="$(cd -- "${SCRIPT_DIR}/.." >/dev/null 2>&1 && pwd -P)"
+REPO_ROOT="$(cd -- "${SCRIPT_DIR}/../.." >/dev/null 2>&1 && pwd -P)"
 
 PLUGIN_SRC_DIR="${REPO_ROOT}/claude/plugin"
 SKILL_SOURCE_DIR="${REPO_ROOT}/skills/career-targeting-intelligence"
@@ -41,10 +41,10 @@ if [ -n "${RELEASE_VERSION:-}" ]; then
   [[ "${RELEASE_VERSION}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || fail "RELEASE_VERSION must be MAJOR.MINOR.PATCH, got: ${RELEASE_VERSION}"
 fi
 
-[ -x "${SCRIPT_DIR}/validate-skill-description.sh" ] || fail "required validation script not found or not executable: ${SCRIPT_DIR}/validate-skill-description.sh"
-"${SCRIPT_DIR}/validate-skill-description.sh"
-[ -x "${SCRIPT_DIR}/validate-claude-plugin.sh" ] || fail "required validation script not found or not executable: ${SCRIPT_DIR}/validate-claude-plugin.sh"
-"${SCRIPT_DIR}/validate-claude-plugin.sh"
+[ -x "${SCRIPT_DIR}/../validate/validate-skill-description.sh" ] || fail "required validation script not found or not executable: ${SCRIPT_DIR}/../validate/validate-skill-description.sh"
+"${SCRIPT_DIR}/../validate/validate-skill-description.sh"
+[ -x "${SCRIPT_DIR}/../validate/validate-claude-plugin.sh" ] || fail "required validation script not found or not executable: ${SCRIPT_DIR}/../validate/validate-claude-plugin.sh"
+"${SCRIPT_DIR}/../validate/validate-claude-plugin.sh"
 
 [ -f "${PLUGIN_SRC_DIR}/plugin.json" ] || fail "required file not found: ${PLUGIN_SRC_DIR}/plugin.json"
 [ -f "${SKILL_SOURCE_DIR}/SKILL.md" ] || fail "required file not found: ${SKILL_SOURCE_DIR}/SKILL.md"
@@ -78,7 +78,7 @@ open(path, "w", encoding="utf-8", newline="").write("\n".join(lines))
 PY
 fi
 
-"${SCRIPT_DIR}/validate-claude-plugin.sh" "${PACKAGE_ROOT}" >/dev/null
+"${SCRIPT_DIR}/../validate/validate-claude-plugin.sh" "${PACKAGE_ROOT}" >/dev/null
 
 # Strip platform artifacts if any slipped in via the source tree.
 find "${BUILD_DIR}" -type f \( -name ".DS_Store" -o -name "Thumbs.db" \) -delete

@@ -6,7 +6,7 @@ Plugin, in order.
 ## Private Install
 
 Use for initial testing. Build the archive with
-`scripts/package-chatgpt-plugin.sh` (or `.ps1`), install it privately, and
+`scripts/package/package-chatgpt-plugin.sh` (or `.ps1`), install it privately, and
 work through [`testing-guide.md`](testing-guide.md). Nothing here should be
 visible to anyone else yet.
 
@@ -17,7 +17,7 @@ OpenAI Platform dashboard (Plugins → Upload new or existing plugin) by an
 organization owner or a member with Apps Management Write, under a
 verified developer identity. Before submitting, confirm:
 
-- `plugin.json` passes `scripts/validate-chatgpt-plugin.sh` (or `.ps1`),
+- `plugin.json` passes `scripts/validate/validate-chatgpt-plugin.sh` (or `.ps1`),
   which enforces the documented manifest limits.
 - The listing text matches [`plugin-config.md`](plugin-config.md).
 - The archive contains only the allowlisted files — no personal records,

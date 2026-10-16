@@ -19,4 +19,4 @@ jobs:
       - name: Validate branch name
         env:
           BRANCH_NAME: ${{ github.head_ref }}
-        run: scripts/validate-branch-name.sh
+        run: scripts/validate/validate-branch-name.sh

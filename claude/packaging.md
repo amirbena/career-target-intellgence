@@ -9,13 +9,13 @@ contains and why, see [`skill-manifest.md`](skill-manifest.md).
 ### macOS / Linux
 
 ```bash
-./scripts/package-claude-skill.sh
+./scripts/package/package-claude-skill.sh
 ```
 
 ### Windows PowerShell
 
 ```powershell
-.\scripts\package-claude-skill.ps1
+.\scripts\package\package-claude-skill.ps1
 ```
 
 Both scripts:
@@ -127,11 +127,11 @@ for its full structure.
 ### Commands
 
 ```bash
-./scripts/package-claude-external-kit.sh
+./scripts/package/package-claude-external-kit.sh
 ```
 
 ```powershell
-.\scripts\package-claude-external-kit.ps1
+.\scripts\package\package-claude-external-kit.ps1
 ```
 
 Both scripts build the Skill ZIP first (by invoking
@@ -160,11 +160,11 @@ distributes the same Skill as a Claude Plugin, which installs through
 claude.ai **Upload plugin** and `claude --plugin-dir`.
 
 ```bash
-./scripts/package-claude-plugin.sh
+./scripts/package/package-claude-plugin.sh
 ```
 
 ```powershell
-.\scripts\package-claude-plugin.ps1
+.\scripts\package\package-claude-plugin.ps1
 ```
 
 ### Layout decision
@@ -190,5 +190,5 @@ added; re-check Claude's current plugin documentation before changing it.
 Set `RELEASE_VERSION` to write that version into `plugin.json` and the
 packaged `SKILL.md` (`metadata.version`); this applies to all four packagers.
 The GitHub Release tag is the single source of truth.
-`scripts/verify-archive-versions.sh` / `.ps1` check every archive against
+`scripts/validate/verify-archive-versions.sh` / `.ps1` check every archive against
 the tag. See [../policies/packaging-rules.md](../policies/packaging-rules.md).

@@ -77,8 +77,8 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
   directory entries) and run `claude plugin validate` when the `claude` CLI
   is available.
 - No Golden Journey content or personal data.
-- `scripts/package-claude-plugin.sh` / `.ps1` and
-  `scripts/validate-claude-plugin.sh` / `.ps1` must remain logically
+- `scripts/package/package-claude-plugin.sh` / `.ps1` and
+  `scripts/validate/validate-claude-plugin.sh` / `.ps1` must remain logically
   equivalent.
 
 ## Claude marketplace rules
@@ -105,7 +105,7 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
   manifest or metadata: `metadata.version` in the packaged `SKILL.md`
   frontmatter, `version` in each `plugin.json`, and a top-level `VERSION`
   file in the external kit. Without it, local builds keep today's behavior.
-- `scripts/verify-archive-versions.sh` / `.ps1` compare every archive's
+- `scripts/validate/verify-archive-versions.sh` / `.ps1` compare every archive's
   embedded version to the tag; the release fails on any mismatch.
 - Version literals in source files are not banned; they are placeholders and
   are overridden at packaging time.
@@ -121,7 +121,7 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
   and ship as the skill's `references/` files.
 - Manifest fields must stay within OpenAI's documented plugin limits
   (see `chatgpt/plugin-config.md`), enforced by
-  `scripts/validate-chatgpt-plugin.sh` / `.ps1` and run by the packagers.
+  `scripts/validate/validate-chatgpt-plugin.sh` / `.ps1` and run by the packagers.
 - The plugin archive is built from an explicit allowlist, and the
   packagers verify the archive's exact file list, with forward-slash
   paths and no directory entries.

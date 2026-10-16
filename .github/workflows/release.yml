@@ -47,7 +47,7 @@ jobs:
           export GIT_USER_NAME="${APP_SLUG}[bot]"
           export GIT_USER_EMAIL="${uid}+${APP_SLUG}[bot]@users.noreply.github.com"
           if [ "$DRY_RUN" = "true" ]; then
-            scripts/release.sh --dry-run
+            scripts/release/release.sh --dry-run
           else
-            scripts/release.sh
+            scripts/release/release.sh
           fi

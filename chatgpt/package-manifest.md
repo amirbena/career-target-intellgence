@@ -46,7 +46,7 @@ from this list.
 | `plugin.json` | [`plugin/plugin.json`](plugin/plugin.json) |
 | `skills/career-targeting-intelligence/SKILL.md` | [`plugin/SKILL.md`](plugin/SKILL.md) |
 | `skills/career-targeting-intelligence/references/capability-policy.md` | [`capability-policy.md`](capability-policy.md) |
-| `skills/career-targeting-intelligence/references/0N-*.md` | The output of `scripts/build-chatgpt-knowledge.sh` / `.ps1`, built first and embedded unchanged |
+| `skills/career-targeting-intelligence/references/0N-*.md` | The output of `scripts/package/build-chatgpt-knowledge.sh` / `.ps1`, built first and embedded unchanged |
 
 ## Excluded from the archive
 
@@ -72,11 +72,11 @@ archive never contains:
 ## Building the package
 
 ```bash
-./scripts/package-chatgpt-plugin.sh
+./scripts/package/package-chatgpt-plugin.sh
 ```
 
 ```powershell
-.\scripts\package-chatgpt-plugin.ps1
+.\scripts\package\package-chatgpt-plugin.ps1
 ```
 
 Both scripts validate the manifest and skill

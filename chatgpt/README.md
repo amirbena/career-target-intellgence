@@ -26,9 +26,9 @@ source and rebuild:
   [`knowledge-manifest.md`](knowledge-manifest.md)
 
 ```bash
-./scripts/build-chatgpt-knowledge.sh    # regenerates knowledge/*.md
-./scripts/validate-chatgpt-plugin.sh    # checks manifest and skill limits
-./scripts/package-chatgpt-plugin.sh     # validates and builds the archive
+./scripts/package/build-chatgpt-knowledge.sh    # regenerates knowledge/*.md
+./scripts/validate/validate-chatgpt-plugin.sh    # checks manifest and skill limits
+./scripts/package/package-chatgpt-plugin.sh     # validates and builds the archive
 ```
 
 (`.ps1` equivalents on Windows, run from the repository root.) Packaging

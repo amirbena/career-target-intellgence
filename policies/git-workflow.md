@@ -142,7 +142,7 @@ opens no PR, so it is unaffected. Historical branches are not renamed.
 
 1. rename an auto-generated or otherwise non-compliant local branch with
    `git branch -m <type>/<issue-number>-<short-description>`;
-2. run `scripts/validate-branch-name.sh "$(git branch --show-current)"` and
+2. run `scripts/validate/validate-branch-name.sh "$(git branch --show-current)"` and
    push only if it passes.
 
 Do not rename a branch that already has an open PR; report it instead.
@@ -234,7 +234,7 @@ sentence or two under "Release impact" in the PR description, and applies
 the label when it has permission. The human reviewer makes the final
 decision; an agent does not change a label a reviewer set.
 
-**PR-time check.** `scripts/validate-pr-release.sh` (run by the
+**PR-time check.** `scripts/validate/validate-pr-release.sh` (run by the
 `PR release label` workflow) requires exactly one `release:` label and that
 it is not lower than the PR title implies (`!` or a `BREAKING CHANGE:`
 footer means major, `feat` at least minor, `fix` at least patch). A higher
@@ -242,7 +242,7 @@ label is allowed, so `docs:` with `release: patch` is the explicit way to
 ship a methodology correction. `release: major` needs the breaking marker.
 The check never edits `CHANGELOG.md`, computes a version, tags, or releases.
 
-**After merge**, `scripts/release.sh` reads the label from the merged PR and
+**After merge**, `scripts/release/release.sh` reads the label from the merged PR and
 uses it in place of the subject-derived level. Commits with no PR or no label
 (direct pushes, the release commit, history before this rule) keep the
 Conventional Commit logic below. A lookup that fails (API error, missing App
@@ -370,7 +370,7 @@ Commit subjects (and squash-merge PR titles) follow
 
 Release levels come from the PR's `release:` label, falling back to the
 conventions below. Releases are automated by `.github/workflows/release.yml` running
-`scripts/release.sh` on every push to `main`, authenticated as the
+`scripts/release/release.sh` on every push to `main`, authenticated as the
 "Skill Release Automation" GitHub App. The script derives the next version
 from the commits since the last `v*` tag, prepends a section to `CHANGELOG.md`,
 commits it as `chore(release): vX.Y.Z`, tags that commit, and creates a
@@ -378,7 +378,7 @@ GitHub Release with four archives attached: the Claude Skill ZIP, Claude
 External Kit ZIP, Claude Plugin ZIP, and ChatGPT Plugin ZIP. All are built
 from the tagged revision with the packaging scripts and `RELEASE_VERSION`
 set to the release version, then checked with
-`scripts/verify-archive-versions.sh`, which fails the release if any
+`scripts/validate/verify-archive-versions.sh`, which fails the release if any
 archive's embedded version differs from the tag. The GitHub Release is the
 single source of truth for versions; version literals in source manifests
 are placeholders for local builds. Do not edit `CHANGELOG.md` by hand for released versions.
@@ -401,7 +401,7 @@ The script is idempotent: an existing tag or changelog section is never
 duplicated, and a re-run recovers a missing Release or missing assets for
 the latest tag. With no tags it cuts the baseline `v1.0.0` at `HEAD` from
 the existing `1.0.0` changelog section. Preview with
-`scripts/release.sh --dry-run` or the workflow's manual dry-run input.
+`scripts/release/release.sh --dry-run` or the workflow's manual dry-run input.
 
 Required setup: the App is installed on the repository, its ID and
 private key are stored as the `RELEASE_APP_ID` and `RELEASE_APP_PRIVATE_KEY`

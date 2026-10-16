@@ -5,7 +5,7 @@
     Logically equivalent to verify-archive-versions.sh.
 
 .EXAMPLE
-    .\scripts\verify-archive-versions.ps1 -Version 1.2.0
+    .\scripts\validate\verify-archive-versions.ps1 -Version 1.2.0
 #>
 param(
     [Parameter(Mandatory = $true)][string]$Version,
@@ -16,7 +16,7 @@ param(
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
-$RepoRoot = Split-Path -Parent $PSScriptRoot
+$RepoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 if (-not $DistDir) { $DistDir = Join-Path $RepoRoot "dist" }
 $Version = $Version.TrimStart("v")
 

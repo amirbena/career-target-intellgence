@@ -76,7 +76,7 @@ thin wrappers built from it.
 | `schemas/`, `ranking/`, `workflows/`, `outputs/` | Data model, scoring models, step-by-step modules, output templates |
 | `skills/` | The canonical Claude Skill (also used by `npx skills` and the marketplace) |
 | `claude/`, `chatgpt/` | Platform wrappers: plugin manifests, Project instructions, Knowledge bundles |
-| `scripts/` | Packaging and validation scripts |
+| `scripts/` | Scripts grouped by purpose: `package/` (archives, generated knowledge), `validate/` (CI and packaging checks), `release/` (release orchestration); `.sh`/`.ps1` pairs sit together |
 | `policies/` | Repository maintenance rules for coding agents |
 | `docs/` | Human documentation |
 | `examples/tova/` | Fully synthetic end-to-end example |

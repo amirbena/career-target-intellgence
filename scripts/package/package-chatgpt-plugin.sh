@@ -13,7 +13,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd -P)"
-REPO_ROOT="$(cd -- "${SCRIPT_DIR}/.." >/dev/null 2>&1 && pwd -P)"
+REPO_ROOT="$(cd -- "${SCRIPT_DIR}/../.." >/dev/null 2>&1 && pwd -P)"
 
 CHATGPT_DIR="${REPO_ROOT}/chatgpt"
 PLUGIN_SRC_DIR="${CHATGPT_DIR}/plugin"
@@ -34,8 +34,8 @@ command -v zip >/dev/null 2>&1 || fail "the 'zip' command is required but was no
 command -v unzip >/dev/null 2>&1 || fail "the 'unzip' command is required but was not found on PATH. Install unzip and re-run this script."
 
 # Validate the manifest and skill against the plugin limits before packaging.
-[ -x "${SCRIPT_DIR}/validate-chatgpt-plugin.sh" ] || fail "required validation script not found or not executable: ${SCRIPT_DIR}/validate-chatgpt-plugin.sh"
-"${SCRIPT_DIR}/validate-chatgpt-plugin.sh"
+[ -x "${SCRIPT_DIR}/../validate/validate-chatgpt-plugin.sh" ] || fail "required validation script not found or not executable: ${SCRIPT_DIR}/../validate/validate-chatgpt-plugin.sh"
+"${SCRIPT_DIR}/../validate/validate-chatgpt-plugin.sh"
 
 [ -f "${PLUGIN_SRC_DIR}/plugin.json" ] || fail "required file not found: ${PLUGIN_SRC_DIR}/plugin.json"
 [ -f "${PLUGIN_SRC_DIR}/SKILL.md" ] || fail "required file not found: ${PLUGIN_SRC_DIR}/SKILL.md"

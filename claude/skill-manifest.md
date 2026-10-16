@@ -134,13 +134,13 @@ root.
 macOS / Linux:
 
 ```bash
-./scripts/package-claude-skill.sh
+./scripts/package/package-claude-skill.sh
 ```
 
 Windows PowerShell:
 
 ```powershell
-.\scripts\package-claude-skill.ps1
+.\scripts\package\package-claude-skill.ps1
 ```
 
 Both produce `dist/career-targeting-intelligence.skill.zip`. See

@@ -24,7 +24,7 @@ function Fail {
     exit 1
 }
 
-$RepoRoot = Split-Path -Parent $PSScriptRoot
+$RepoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $ExternalInstallDir = Join-Path $RepoRoot "claude\external-install"
 $ProjectInstructionsCompact = Join-Path $RepoRoot "claude\project-instructions.compact.md"
 $CoreDir = Join-Path $RepoRoot "core"
