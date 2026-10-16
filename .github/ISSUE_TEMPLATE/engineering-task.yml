@@ -17,7 +17,7 @@ body:
 
         After submitting, apply one `type:`, one `area:`, and one
         `priority:` label matching the answers below — see
-        [docs/issue-labels.md](../blob/main/docs/issue-labels.md).
+        `docs/issue-labels.md`.
 
   - type: dropdown
     id: type
