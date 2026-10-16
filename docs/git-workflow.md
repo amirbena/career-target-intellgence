@@ -323,8 +323,8 @@ the latest tag. With no tags it cuts the baseline `v1.0.0` at `HEAD` from
 the existing `1.0.0` changelog section. Preview with
 `scripts/release.sh --dry-run` or the workflow's manual dry-run input.
 
-Required setup: the App is installed on the repository, its ID is stored
-as the `RELEASE_APP_ID` variable and its private key as the
-`RELEASE_APP_PRIVATE_KEY` secret of the `release` GitHub Actions
-environment, and it is on the `main` ruleset's bypass
-list so it can push the release commit.
+Required setup: the App is installed on the repository, its ID and
+private key are stored as the `RELEASE_APP_ID` and `RELEASE_APP_PRIVATE_KEY`
+secrets of the `release` GitHub Actions environment (not repository-level),
+and it is on the `main` ruleset's bypass list so it can push the release
+commit.

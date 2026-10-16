@@ -22,13 +22,14 @@ jobs:
   release:
     runs-on: ubuntu-latest
     environment: release
+    environment: release
     steps:
       # The "Skill Release Automation" GitHub App is the release identity. It
       # must be installed on this repo and allowed to bypass the main ruleset.
       - id: app
         uses: actions/create-github-app-token@v2
         with:
-          app-id: ${{ vars.RELEASE_APP_ID }}
+          app-id: ${{ secrets.RELEASE_APP_ID }}
           private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
       - uses: actions/checkout@v4
         with:
