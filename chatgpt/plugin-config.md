@@ -30,7 +30,9 @@ Verify both on the first dashboard upload and adjust if it is rejected:
   accepted category list is not documented in the pages this package was
   built from.
 
-## Manifest limits (enforced by `validate-chatgpt-plugin`)
+## Manifest limits (OpenAI-documented; not automatically enforced)
+
+Check these by hand before submitting to OpenAI. The packagers only verify that `plugin.json` is valid JSON.
 
 | Field | Limit |
 |---|---|

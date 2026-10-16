@@ -79,7 +79,6 @@ archive never contains:
 .\scripts\package\package-chatgpt-plugin.ps1
 ```
 
-Both scripts validate the manifest and skill
-(`validate-chatgpt-plugin.sh` / `.ps1`), run the Knowledge builder
+Both scripts check that `plugin.json` is valid JSON, run the Knowledge builder
 (`build-chatgpt-knowledge.sh` / `.ps1`), then assemble the archive using
 the explicit allowlist above.

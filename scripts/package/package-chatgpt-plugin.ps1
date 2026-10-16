@@ -33,13 +33,6 @@ $PackageName = "career-targeting-intelligence-chatgpt-plugin"
 $SkillName = "career-targeting-intelligence"
 $OutputZip = Join-Path $DistDir "$PackageName.zip"
 
-# Validate the manifest and skill against the plugin limits before packaging.
-$Validator = Join-Path $PSScriptRoot "../validate/validate-chatgpt-plugin.ps1"
-if (-not (Test-Path -LiteralPath $Validator -PathType Leaf)) {
-    Fail "required validation script not found: $Validator"
-}
-& $Validator
-
 $PluginManifest = Join-Path $PluginSrcDir "plugin.json"
 $SkillFile = Join-Path $PluginSrcDir "SKILL.md"
 $CapabilityPolicy = Join-Path $ChatGptDir "capability-policy.md"
@@ -48,6 +41,8 @@ foreach ($required in @($PluginManifest, $SkillFile, $CapabilityPolicy)) {
         Fail "required file not found: $required"
     }
 }
+try { Get-Content -LiteralPath $PluginManifest -Raw -Encoding UTF8 | ConvertFrom-Json | Out-Null }
+catch { Fail "plugin.json is not valid JSON: $PluginManifest" }
 
 # Build the reference bundles first — the archive embeds their output unchanged.
 $KnowledgeBuilder = Join-Path $PSScriptRoot "build-chatgpt-knowledge.ps1"

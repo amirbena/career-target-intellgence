@@ -6,7 +6,7 @@ Contributor and agent rules live in [AGENTS.md](../AGENTS.md) and [policies/](..
 
 Every package is generated from the canonical sources above by a build
 script — never hand-edit a generated file. Each build script also runs
-that platform's validator before packaging.
+any platform validator before packaging (the ChatGPT packagers only check `plugin.json` is valid JSON).
 
 ### ChatGPT Plugin
 
@@ -18,7 +18,7 @@ that platform's validator before packaging.
   ```
   (`.ps1` equivalents on Windows)
 - Output: `dist/career-targeting-intelligence-chatgpt-plugin.zip` — skills-only; no apps, MCP servers, hooks, or external APIs
-- Limits: manifest fields must stay within OpenAI's documented plugin limits; enforced by `scripts/validate/validate-chatgpt-plugin.sh`
+- Limits: manifest fields should stay within OpenAI's documented plugin limits ([chatgpt/plugin-config.md](../chatgpt/plugin-config.md)); not automatically enforced, so check them before submitting. The packagers only check that `plugin.json` is valid JSON
 - More: [chatgpt/plugin-config.md](../chatgpt/plugin-config.md) (manifest values and limits), [chatgpt/testing-guide.md](../chatgpt/testing-guide.md) (smoke tests), [chatgpt/package-manifest.md](../chatgpt/package-manifest.md) (package structure)
 
 ### Claude Project
@@ -53,9 +53,8 @@ that platform's validator before packaging.
 
 ## Validation
 
-CI runs on Linux, so CI-only scripts are Bash only: `validate-branch-name.sh`, `validate-pr-release.sh`, and `verify-archive-versions.sh` have no `.ps1` twins (removed because no workflow or Windows packaging path uses them). `validate-claude-plugin.sh` is also Bash only (the Windows plugin packager skips it; run it under Bash or WSL). The validators still called by the `.ps1` packagers (`validate-chatgpt-plugin`, `validate-skill-description`) keep their `.ps1` versions.
+CI runs on Linux, so CI-only scripts are Bash only: `validate-branch-name.sh`, `validate-pr-release.sh`, and `verify-archive-versions.sh` have no `.ps1` twins (removed because no workflow or Windows packaging path uses them). `validate-claude-plugin.sh` is also Bash only (the Windows plugin packager skips it; run it under Bash or WSL). `validate-chatgpt-plugin` was removed (its limits are documented, not enforced). `validate-skill-description` keeps its `.ps1` version because the `.ps1` Skill packagers call it.
 
-- `scripts/validate/validate-chatgpt-plugin.sh` / `.ps1` — ChatGPT Plugin manifest and skill gate, run automatically by `scripts/package/package-chatgpt-plugin.sh`
 - `scripts/validate/validate-claude-plugin.sh` — Claude plugin manifest and marketplace manifest (`.claude-plugin/marketplace.json`): JSON syntax, required fields, source/skill paths, version consistency. Needs only `python3`; CI never invokes the `claude` CLI. Whether Claude can actually install and update the plugin is a [manual check](installation.md#manual-verification)
 - `scripts/validate/validate-skill-description.sh` / `.ps1` — Claude Skill description length gate, run automatically by `scripts/package/package-claude-skill.sh`
 - [tests/README.md](../tests/README.md) — synthetic job-verification scenarios, quality-gate checklist, and package-alignment checklist (this repository is documentation-driven; these are reviewed synthetic scenarios rather than executable unit tests)

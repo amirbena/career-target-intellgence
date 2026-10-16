@@ -17,8 +17,9 @@ OpenAI Platform dashboard (Plugins → Upload new or existing plugin) by an
 organization owner or a member with Apps Management Write, under a
 verified developer identity. Before submitting, confirm:
 
-- `plugin.json` passes `scripts/validate/validate-chatgpt-plugin.sh` (or `.ps1`),
-  which enforces the documented manifest limits.
+- `plugin.json` stays within the documented manifest limits in
+  [`plugin-config.md`](plugin-config.md); check them by hand, as the
+  packagers only check that it is valid JSON.
 - The listing text matches [`plugin-config.md`](plugin-config.md).
 - The archive contains only the allowlisted files — no personal records,
   no Golden Journey content (see [`package-manifest.md`](package-manifest.md)).

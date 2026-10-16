@@ -32,9 +32,9 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
 - Do not work around the limit by moving required runtime behavior into
   the description. It is concise activation metadata; canonical behavior
   belongs in `SKILL.md` body content and `references/`.
-- These packaging length limits (ChatGPT Instructions and Skill
-  description) are automated build constraints, enforced by dedicated
-  validator scripts wired into packaging, not manual review conventions.
+- The Claude Skill `description` length limit is an automated build
+  constraint, enforced by a validator script wired into packaging. ChatGPT
+  manifest limits are documented, not automatically enforced.
 
 ## Claude Project experience rules
 
@@ -123,8 +123,8 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
 - Knowledge bundles derive only from explicit canonical source allowlists
   and ship as the skill's `references/` files.
 - Manifest fields must stay within OpenAI's documented plugin limits
-  (see `chatgpt/plugin-config.md`), enforced by
-  `scripts/validate/validate-chatgpt-plugin.sh` / `.ps1` and run by the packagers.
+  (see `chatgpt/plugin-config.md`). This is checked by hand before
+  submission; the packagers only check that `plugin.json` is valid JSON.
 - The plugin archive is built from an explicit allowlist, and the
   packagers verify the archive's exact file list, with forward-slash
   paths and no directory entries.
@@ -136,7 +136,7 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
   monitoring, and outreach execution remain out of scope.
 - macOS/Linux and Windows validators, builders, and packagers must
   remain logically equivalent.
-- Every ChatGPT package change must validate the manifest and skill,
+- Every ChatGPT package change must check the manifest against the documented limits,
   reference parity, normalized archive paths, and privacy exclusions.
 - Claude-only files must not be changed unless shared documentation
   genuinely requires it.
