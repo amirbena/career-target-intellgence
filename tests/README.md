@@ -12,7 +12,7 @@ All names, companies, people, and events in this directory are synthetic. None r
 
 ## How to use these
 
-1. Walk each scenario in `job-verification-scenarios.md` against the current canonical policy (or against a configured GPT/Project/Skill) and confirm the "Expected outcome" is what's actually produced.
+1. Walk each scenario in `job-verification-scenarios.md` against the current canonical policy (or against a configured ChatGPT Plugin/Project/Skill) and confirm the "Expected outcome" is what's actually produced.
 2. Walk `quality-gate-checklist.md` before treating any Verified Jobs Map, Unverified/Rejected Job Leads, or Company State output as complete.
 3. Run `package-alignment-checklist.md` after any change to `core/`, `schemas/`, `ranking/`, `workflows/`, or `outputs/` and before treating a packaging change as done.
 

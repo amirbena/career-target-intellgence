@@ -6,7 +6,7 @@ Confirms the three distributed platform surfaces stay semantically aligned with 
 
 ```bash
 ./scripts/build-chatgpt-knowledge.sh
-./scripts/package-chatgpt-gpt.sh
+./scripts/package-chatgpt-plugin.sh
 ./scripts/package-claude-skill.sh
 ./scripts/package-claude-external-kit.sh
 ```
@@ -20,7 +20,7 @@ Each script must exit successfully and print its packaged file list. None of the
 | 1 | `chatgpt/knowledge/09-job-and-company-state.md` exists, is generated (carries the generated-content notice), and contains the current `schemas/job-record.schema.md`, `schemas/company-state-record.schema.md`, `core/job-verification-policy.md`, `ranking/job-eligibility-gate.md`, `workflows/discover-jobs.md`, `workflows/verify-job.md`, `workflows/evaluate-candidate-job-fit.md`, and `workflows/verify-company-state.md` content verbatim. |
 | 2 | `chatgpt/knowledge/06-workflow-and-state.md` includes `workflows/job-search-journey.md`. |
 | 3 | `chatgpt/knowledge/08-output-contracts.md` includes `outputs/verified-jobs-map-template.md` and `outputs/unverified-job-leads-template.md`. |
-| 4 | `dist/career-targeting-intelligence-chatgpt.zip` contains exactly nine files under `knowledge/` (`01`–`09`), matching `chatgpt/package-manifest.md`. |
+| 4 | `dist/career-targeting-intelligence-chatgpt-plugin.zip` contains exactly nine bundles `01`–`09` under `skills/career-targeting-intelligence/references/`, plus `capability-policy.md`, `SKILL.md`, and `plugin.json`, matching `chatgpt/package-manifest.md`. |
 | 5 | `dist/career-targeting-intelligence.skill.zip` contains `references/job-intelligence.md`, `templates/verified-jobs-map.md`, and `templates/unverified-job-leads.md`, matching `claude/skill-manifest.md`'s file list. |
 | 6 | `dist/career-targeting-intelligence-claude-kit.zip` contains `knowledge/job-verification-policy.md` and `knowledge/job-eligibility-gate.md`, matching `claude/external-install/package-manifest.md`. |
 | 7 | No Golden Journey content (`examples/tova/`) or real personal data appears in any generated bundle or packaged ZIP. |

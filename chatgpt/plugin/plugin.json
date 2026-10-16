@@ -1,0 +1,27 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "career-targeting-intelligence",
+  "version": "1.0.0",
+  "description": "Turns your background and search constraints into a prioritized map of verified jobs, target companies, relevant recruiters and engineering managers, evidence-based activity verification, and a manual outreach queue you review and act on yourself.",
+  "author": {
+    "name": "Amir Ben-Assayag"
+  },
+  "repository": "https://github.com/amirbena/career-target-intellgence",
+  "keywords": ["career", "job-search", "research", "recruiting"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Career Targeting",
+        "shortDescription": "Evidence-based job targeting",
+        "longDescription": "Career Targeting Intelligence is an evidence-based research assistant. Give it your background and search constraints and it builds a Candidate Profile, verifies open roles against employer sources, ranks target companies, finds relevant recruiters and engineering managers, and prepares a manual outreach queue. Every time-sensitive claim carries a cited source and a check date. It works from public professional information only and never monitors, scrapes, messages, or automates outreach on your behalf.",
+        "developerName": "Amir Ben-Assayag",
+        "category": "Productivity",
+        "defaultPrompt": [
+          "Here is my resume. Build my Candidate Profile.",
+          "Find verified open jobs that match my profile.",
+          "Rank these companies and explain the exclusions."
+        ]
+      }
+    }
+  }
+}

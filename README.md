@@ -34,7 +34,7 @@ findings manually rather than automate them away.
 
 ## Product surfaces
 
-- **ChatGPT Custom GPT** — a conversational interface to the same
+- **ChatGPT Plugin** — a skills-only plugin giving a conversational interface to the same
   methodology, built for the ChatGPT ecosystem.
 - **Claude Project with a Claude Skill** — a conversational interface to
   the same methodology, built for the Claude ecosystem.
@@ -52,7 +52,7 @@ once, in `core/`.
 | `workflows/` | Step-by-step modules for each journey and focused task |
 | `outputs/` | Canonical output templates and CSV column contracts |
 | `claude/` | Claude Skill, Claude Project instructions, and the external self-install kit |
-| `chatgpt/` | ChatGPT Custom GPT instructions and Knowledge bundles |
+| `chatgpt/` | ChatGPT Plugin skill, manifest, and reference bundles |
 | `scripts/` | Build, packaging, and validation scripts for every platform |
 | `tests/` | Synthetic verification scenarios and packaging/quality-gate checklists |
 | `docs/` | Contributor documentation: [Git and PR workflow](docs/git-workflow.md), [packaging rules](docs/packaging-rules.md), [issue label taxonomy](docs/issue-labels.md) |
@@ -126,20 +126,20 @@ The canonical outputs the product produces — what they contain, how they're or
 
 Every package is generated from the canonical sources above by a build
 script — never hand-edit a generated file. Each build script also runs
-that platform's length validator before packaging.
+that platform's validator before packaging.
 
-### ChatGPT GPT
+### ChatGPT Plugin
 
-- Canonical source: [chatgpt/instructions.md](chatgpt/instructions.md) (behavior) + [chatgpt/knowledge-manifest.md](chatgpt/knowledge-manifest.md)-mapped Knowledge bundles (reference material)
+- Canonical source: [chatgpt/plugin/SKILL.md](chatgpt/plugin/SKILL.md) (behavior) + [chatgpt/plugin/plugin.json](chatgpt/plugin/plugin.json) (manifest) + [chatgpt/knowledge-manifest.md](chatgpt/knowledge-manifest.md)-mapped bundles (reference material)
 - Build:
   ```bash
   ./scripts/build-chatgpt-knowledge.sh
-  ./scripts/package-chatgpt-gpt.sh
+  ./scripts/package-chatgpt-plugin.sh
   ```
   (`.ps1` equivalents on Windows)
-- Output: `dist/career-targeting-intelligence-chatgpt.zip` — no Actions, Apps, or external APIs configured
-- Limit: packaged Instructions must be `< 8000` characters (prefer `<= 7600`); enforced by `scripts/validate-chatgpt-instructions.sh`
-- More: [chatgpt/builder-config.md](chatgpt/builder-config.md) (Builder setup), [chatgpt/testing-guide.md](chatgpt/testing-guide.md) (smoke tests), [chatgpt/package-manifest.md](chatgpt/package-manifest.md) (package structure)
+- Output: `dist/career-targeting-intelligence-chatgpt-plugin.zip` — skills-only; no apps, MCP servers, hooks, or external APIs
+- Limits: manifest fields must stay within OpenAI's documented plugin limits; enforced by `scripts/validate-chatgpt-plugin.sh`
+- More: [chatgpt/plugin-config.md](chatgpt/plugin-config.md) (manifest values and limits), [chatgpt/testing-guide.md](chatgpt/testing-guide.md) (smoke tests), [chatgpt/package-manifest.md](chatgpt/package-manifest.md) (package structure)
 
 ### Claude Project
 
@@ -167,7 +167,7 @@ that platform's length validator before packaging.
 
 ## Validation
 
-- `scripts/validate-chatgpt-instructions.sh` / `.ps1` — ChatGPT Instructions length gate, run automatically by `package-chatgpt-gpt.sh`
+- `scripts/validate-chatgpt-plugin.sh` / `.ps1` — ChatGPT Plugin manifest and skill gate, run automatically by `package-chatgpt-plugin.sh`
 - `scripts/validate-skill-description.sh` / `.ps1` — Claude Skill description length gate, run automatically by `package-claude-skill.sh`
 - [tests/README.md](tests/README.md) — synthetic job-verification scenarios, quality-gate checklist, and package-alignment checklist (this repository is documentation-driven; these are reviewed synthetic scenarios rather than executable unit tests)
 

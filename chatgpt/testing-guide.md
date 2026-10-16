@@ -1,7 +1,7 @@
 # Testing Guide
 
-Thirteen smoke tests to run in Preview before saving or sharing the
-configured GPT. Each targets a distinct part of the methodology — scope
+Thirteen smoke tests to run against the installed plugin (as a private
+install) before sharing or submitting it. Each targets a distinct part of the methodology — scope
 discipline, approval checkpoints, focused routing, evidence boundaries,
 freshness, resume behavior, output completeness, capability-unavailable
 behavior, the job-first eligibility gate, company-state handling, and a
@@ -17,19 +17,19 @@ explicitly requested.
 
 ## Test 2 — Search Criteria Approval
 
-Ask the GPT to turn candidate preferences into Search Criteria.
+Ask the plugin to turn candidate preferences into Search Criteria.
 
 **Expected:** constraints the user actually stated are kept separate from
-preferences the GPT inferred. Unresolved decisions stay visible rather
+preferences the plugin inferred. Unresolved decisions stay visible rather
 than silently defaulted. The Draft-to-Ready approval checkpoint is
-preserved — the GPT doesn't treat Search Criteria as final without
+preserved — the plugin doesn't treat Search Criteria as final without
 confirmation.
 
 ## Test 3 — Focused Company Classification
 
 Provide three synthetic companies.
 
-**Expected:** the GPT uses the supplied candidate/search context, runs
+**Expected:** the plugin uses the supplied candidate/search context, runs
 only company classification and ranking (not discovery, not people
 discovery), does not rebuild already-approved candidate work, and
 explains any exclusions with a stated reason.
@@ -54,7 +54,7 @@ unverified, or unable to verify, as appropriate — never assumed open.
 
 Provide a completed Research State where export has not started.
 
-**Expected:** the GPT resumes toward export, does not rebuild any stage
+**Expected:** the plugin resumes toward export, does not rebuild any stage
 already marked Completed or Approved, and preserves any open questions
 recorded in the Research State.
 
@@ -70,7 +70,7 @@ evidence anywhere in the row.
 
 ## Test 8 — Web Unavailable
 
-Explicitly instruct the GPT not to browse (or test in a context where web
+Explicitly instruct the plugin not to browse (or test in a context where web
 search is genuinely unavailable).
 
 **Expected:** no fabricated claim of having done current research.
@@ -80,9 +80,9 @@ needed external verification is labeled `Unverified` or
 
 ## Test 9 — Tova Golden Journey Regression
 
-Walk the GPT through the existing synthetic Tova Golden Journey
+Walk the plugin through the existing synthetic Tova Golden Journey
 (`examples/tova/` in the source repository) as a set of prompts — do not
-paste the Golden Journey's own files into the GPT as Knowledge or as
+paste the Golden Journey's own files into the plugin package or as
 conversation attachments beyond what a normal user prompt would supply.
 
 **Expected:** the same journey decisions the source repository's Golden
@@ -90,7 +90,7 @@ Journey documents, the same approved-stage reuse behavior on resume, the
 same unresolved identity/employment issues surfaced rather than resolved,
 and the same canonical scoring and output contracts applied.
 
-Do not copy Tova records into the packaged Knowledge files — this test
+Do not copy Tova records into the packaged reference files — this test
 uses the Golden Journey only as a walkthrough script, never as shipped
 content.
 
@@ -135,8 +135,9 @@ and does not imply every other role at that company is also closed.
 
 ## If a test fails
 
-Re-check [`builder-setup.md`](builder-setup.md) — a failed test usually
-means the Instructions weren't pasted, a Knowledge bundle is missing, or a
-Capability the test depends on isn't enabled. If everything was configured
-correctly and a test still fails, treat the GPT as unverified and do not
-share or publish it until it passes.
+Re-check [`plugin-config.md`](plugin-config.md) and rebuild the archive —
+a failed test usually means the skill didn't activate, a reference file
+is missing from the package, or a platform capability the test depends on
+isn't enabled. If everything was configured correctly and a test still
+fails, treat the plugin as unverified and do not share or submit it until
+it passes.

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Deterministically generates the 9 ChatGPT Custom GPT Knowledge bundles
+# Deterministically generates the 9 ChatGPT Plugin reference bundles
 # under chatgpt/knowledge/ from an explicit allowlist of canonical
 # repository sources. See chatgpt/knowledge-manifest.md for the full
 # bundle-to-source mapping and rationale.

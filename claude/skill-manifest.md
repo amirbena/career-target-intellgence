@@ -168,5 +168,5 @@ Both produce `dist/career-targeting-intelligence.skill.zip`. See
   [`examples/tova/`](../examples/tova/) directly in the repository — it is
   intentionally not shipped inside the Skill package.
 - This package does not include Claude Project instructions or a ChatGPT
-  Custom GPT configuration; those are tracked separately in the project
+  Plugin configuration; those are tracked separately in the project
   roadmap.
