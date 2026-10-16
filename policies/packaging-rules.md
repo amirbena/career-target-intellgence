@@ -134,8 +134,10 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
   automation.
 - Apps (`.app.json`), MCP servers, lifecycle hooks, external APIs,
   monitoring, and outreach execution remain out of scope.
-- macOS/Linux and Windows validators, builders, and packagers must
-  remain logically equivalent.
+- Scripts that explicitly support both Windows and macOS/Linux (builders,
+  packagers, and the validators they call) must remain logically
+  equivalent. CI-only validators run on Linux and may be Bash-only; do not
+  recreate PowerShell counterparts for them.
 - Every ChatGPT package change must check the manifest against the documented limits,
   reference parity, normalized archive paths, and privacy exclusions.
 - Claude-only files must not be changed unless shared documentation
