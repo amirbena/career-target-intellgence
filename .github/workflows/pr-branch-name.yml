@@ -1,0 +1,22 @@
+name: PR branch name
+
+# Checks the PR's head branch name against the convention in
+# policies/git-workflow.md. It reads no repository files beyond the script and
+# does not touch release automation.
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: PR branch name
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate branch name
+        env:
+          BRANCH_NAME: ${{ github.head_ref }}
+        run: scripts/validate-branch-name.sh
