@@ -180,6 +180,42 @@ optional sections — use `None` when a section has nothing useful to add.
 The description must make sense to a reviewer who did not watch the work
 happen. `.github/pull_request_template.md` carries the structure.
 
+## Release classification
+
+Every PR states its release impact with exactly one label, so the release
+decision is explicit and visible on the PR. The label is the carrier because
+squash merge drops PR labels and descriptions from the commit, while the
+merged PR keeps them.
+
+| Label | Meaning |
+| --- | --- |
+| `release: major` | Backward-incompatible change to a public interface or contract (schemas, output contracts, package interfaces) |
+| `release: minor` | Backward-compatible new feature or capability |
+| `release: patch` | Backward-compatible bug fix |
+| `release: none` | No release warranted |
+
+Size and doc-only status do not decide the level: a large change is not
+automatically major, and a docs-only change is not automatically `none`.
+
+**When an agent opens a PR** it evaluates whether the change is
+release-worthy, proposes exactly one label, explains the choice in a
+sentence or two under "Release impact" in the PR description, and applies
+the label when it has permission. The human reviewer makes the final
+decision; an agent does not change a label a reviewer set.
+
+**PR-time check.** `scripts/validate-pr-release.sh` (run by the
+`PR release label` workflow) requires exactly one `release:` label and that
+it is not lower than the PR title implies (`!` or a `BREAKING CHANGE:`
+footer means major, `feat` at least minor, `fix` at least patch). A higher
+label is allowed, so `docs:` with `release: patch` is the explicit way to
+ship a methodology correction. `release: major` needs the breaking marker.
+The check never edits `CHANGELOG.md`, computes a version, tags, or releases.
+
+**After merge**, `scripts/release.sh` reads the label from the merged PR and
+uses it in place of the subject-derived level. Commits with no PR or no label
+(direct pushes, the release commit, history before this rule) keep the
+Conventional Commit logic below.
+
 ## Merge strategy
 
 Prefer squash merge into `main`. Default flow:
@@ -295,10 +331,11 @@ Commit subjects (and squash-merge PR titles) follow
 `type(scope)?: description`, with `!` after the type or a
 `BREAKING CHANGE:` footer for breaking changes.
 
-Releases are automated by `.github/workflows/release.yml` running
+Release levels come from the PR's `release:` label, falling back to the
+conventions below. Releases are automated by `.github/workflows/release.yml` running
 `scripts/release.sh` on every push to `main`, authenticated as the
 "Skill Release Automation" GitHub App. The script derives the next version
-from commits since the last `v*` tag, prepends a section to `CHANGELOG.md`,
+from the commits since the last `v*` tag, prepends a section to `CHANGELOG.md`,
 commits it as `chore(release): vX.Y.Z`, tags that commit, and creates a
 GitHub Release with the Claude Skill ZIP and Claude External Kit ZIP
 attached. Both ZIPs are built from the tagged revision with the existing
@@ -306,16 +343,17 @@ packaging scripts. Do not edit `CHANGELOG.md` by hand for released versions.
 
 What each version component means for this docs/methodology repo:
 
-| Component | Commit trigger | Meaning |
+| Component | Commit trigger (when no label) | Meaning |
 | --- | --- | --- |
 | major | `!` / `BREAKING CHANGE:` | Methodology, schema, or output-contract change that invalidates prior records, outputs, or installed packages |
 | minor | `feat:` | New or extended capability: policy, schema field, workflow, output, or package content |
 | patch | `fix:` | Correction to existing methodology, templates, scripts, or packaging with no new capability |
 
-`docs:`, `chore:`, `ci:`, `test:`, `refactor:`, and non-conventional
-commits produce no release, so changes with no user-facing effect never
-create an empty release. A change to methodology content that users
-consume should therefore use `feat:` or `fix:`, not `docs:`.
+Without a `release:` label, `docs:`, `chore:`, `ci:`, `test:`,
+`refactor:`, and non-conventional commits produce no release, so changes
+with no user-facing effect never create an empty release. The PR's
+[release label](#release-classification) takes precedence, so a
+methodology change titled `docs:` can still ship with `release: patch`.
 
 The script is idempotent: an existing tag or changelog section is never
 duplicated, and a re-run recovers a missing Release or missing assets for
@@ -326,5 +364,5 @@ the existing `1.0.0` changelog section. Preview with
 Required setup: the App is installed on the repository, its ID and
 private key are stored as the `RELEASE_APP_ID` and `RELEASE_APP_PRIVATE_KEY`
 secrets of the `release` GitHub Actions environment (not repository-level),
-and it is on the `main` ruleset's bypass list so it can push the release
-commit.
+it is allowed to read pull requests (for the label lookup), and it is on
+the `main` ruleset's bypass list so it can push the release commit.

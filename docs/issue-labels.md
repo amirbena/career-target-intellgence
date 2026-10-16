@@ -53,6 +53,19 @@ Applied when closing or routing an issue, not when creating it.
 | `duplicate` | `#cfd3d7` | This issue or pull request already exists |
 | `wontfix` | `#ffffff` | This will not be worked on |
 
+## Release labels (pull requests)
+
+Pull requests carry exactly one release label stating the intended release
+impact. Unlike the issue labels above they apply to PRs, not issues. See
+[git-workflow.md](git-workflow.md#release-classification) for the rules.
+
+| Label | Color | Description |
+| --- | --- | --- |
+| `release: major` | `#b60205` | Backward-incompatible change to a public interface or contract |
+| `release: minor` | `#1d76db` | Backward-compatible new feature or capability |
+| `release: patch` | `#0e8a16` | Backward-compatible bug fix |
+| `release: none` | `#cfd3d7` | No release warranted |
+
 ## Default GitHub labels
 
 | Default label | Decision |
@@ -75,5 +88,5 @@ Applied when closing or routing an issue, not when creating it.
 
 ```bash
 gh label create "type: feature" --color 1d76db --description "New capability or behavior" --force
-# ...repeat per table above; --force updates an existing label
+# ...repeat per table above, including the release labels; --force updates an existing label
 ```
