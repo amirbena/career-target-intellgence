@@ -72,7 +72,7 @@ Copy-Item -Path (Join-Path $TemplatesDir "*.md") -Destination (Join-Path $Packag
 # SKILL.md frontmatter. Without it the source file is packaged unchanged.
 if ($ReleaseVersion) {
     $PackagedSkill = Join-Path $PackageRoot "SKILL.md"
-    $Lines = [System.Collections.Generic.List[string]]((Get-Content -LiteralPath $PackagedSkill -Raw -Encoding UTF8) -split "`n")
+    $Lines = [System.Collections.Generic.List[string]](((Get-Content -LiteralPath $PackagedSkill -Raw -Encoding UTF8) -replace "`r`n", "`n") -split "`n")
     $End = $Lines.IndexOf("---", 1)
     $Lines.InsertRange($End, [string[]]@("metadata:", "  version: $ReleaseVersion"))
     [System.IO.File]::WriteAllText($PackagedSkill, ($Lines -join "`n"), (New-Object System.Text.UTF8Encoding($false)))

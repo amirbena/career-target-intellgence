@@ -122,6 +122,49 @@ The canonical outputs the product produces — what they contain, how they're or
 - [outputs/outreach-queue-template.md](outputs/outreach-queue-template.md) — the Outreach Priority Queue
 - [outputs/csv-column-contracts.md](outputs/csv-column-contracts.md) — stable CSV-compatible column definitions for every output
 
+## Installation
+
+Release artifacts are attached to each [GitHub Release](https://github.com/amirbena/career-target-intellgence/releases/latest). Pick one method:
+
+| Method | Status | How |
+| --- | --- | --- |
+| [skills.sh](#skillssh-cli) | Available | `npx skills add` |
+| [Claude Plugin](#claude-plugin) | Available from the first release that includes `career-targeting-intelligence-claude-plugin.zip` | `claude --plugin-dir`, or claude.ai **Upload plugin** |
+| [Claude Skill](#claude-skill-manual) | Available | Skill ZIP from Releases |
+| [Claude Project](#claude-project-external-kit) | Available | External kit from Releases |
+| [ChatGPT Plugin](#chatgpt-plugin-install) | Private install available; public directory submission pending | Plugin ZIP from Releases |
+
+### skills.sh (CLI)
+
+The simplest option. Run it in your project (add `-g` for a user-level install):
+
+```bash
+npx skills add https://github.com/amirbena/career-target-intellgence/tree/main/claude/skill
+```
+
+Use the full `/tree/main/claude/skill` URL: the bare `amirbena/career-target-intellgence` form resolves to the ChatGPT skill, which has no Claude references. This installs the current `main` revision, not a tagged release; use a release ZIP below for a pinned version. Verified: the command installs `SKILL.md`, `references/`, and `templates/`.
+
+### Claude Plugin
+
+Download `career-targeting-intelligence-claude-plugin.zip` from Releases.
+
+- **Claude Code:** `claude --plugin-dir ./career-targeting-intelligence-claude-plugin.zip` (`--plugin-dir` accepts a directory or a `.zip`)
+- **claude.ai / Cowork:** use **Upload plugin** and choose the ZIP.
+
+Details: [claude/packaging.md](claude/packaging.md#packaging-the-claude-plugin).
+
+### Claude Skill (manual)
+
+Download `career-targeting-intelligence.skill.zip` from Releases and install it as a Skill in Claude. Details: [claude/skill-manifest.md](claude/skill-manifest.md), [claude/project-setup.md](claude/project-setup.md).
+
+### Claude Project (external kit)
+
+Download `career-targeting-intelligence-claude-kit.zip` from Releases and follow [claude/external-install/README.md](claude/external-install/README.md) (checklist: [installation-checklist.md](claude/external-install/installation-checklist.md)).
+
+### ChatGPT Plugin (install)
+
+Download `career-targeting-intelligence-chatgpt-plugin.zip` from Releases and install it privately; follow [chatgpt/sharing-and-publishing.md](chatgpt/sharing-and-publishing.md) and smoke-test with [chatgpt/testing-guide.md](chatgpt/testing-guide.md). Public OpenAI directory submission is optional and not yet done.
+
 ## Build / package
 
 Every package is generated from the canonical sources above by a build

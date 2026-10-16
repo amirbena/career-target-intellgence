@@ -79,7 +79,7 @@ if ($ReleaseVersion) {
     [System.IO.File]::WriteAllText($ManifestOut, $Json, (New-Object System.Text.UTF8Encoding($false)))
 
     $PackagedSkill = Join-Path $SkillDir "SKILL.md"
-    $Lines = [System.Collections.Generic.List[string]]((Get-Content -LiteralPath $PackagedSkill -Raw -Encoding UTF8) -split "`n")
+    $Lines = [System.Collections.Generic.List[string]](((Get-Content -LiteralPath $PackagedSkill -Raw -Encoding UTF8) -replace "`r`n", "`n") -split "`n")
     $End = $Lines.IndexOf("---", 1)
     $Lines.InsertRange($End, [string[]]@("metadata:", "  version: $ReleaseVersion"))
     [System.IO.File]::WriteAllText($PackagedSkill, ($Lines -join "`n"), (New-Object System.Text.UTF8Encoding($false)))
