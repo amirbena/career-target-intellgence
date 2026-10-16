@@ -190,5 +190,5 @@ not run the CLI); re-check Claude's current plugin documentation before changing
 Set `RELEASE_VERSION` to write that version into `plugin.json` and the
 packaged `SKILL.md` (`metadata.version`); this applies to all four packagers.
 The GitHub Release tag is the single source of truth.
-`scripts/validate/verify-archive-versions.sh` / `.ps1` check every archive against
+`scripts/validate/verify-archive-versions.sh` (Bash only; release CI runs on Linux) checks every archive against
 the tag. See [../policies/packaging-rules.md](../policies/packaging-rules.md).

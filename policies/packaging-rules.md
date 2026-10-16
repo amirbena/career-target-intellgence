@@ -108,7 +108,7 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
   manifest or metadata: `metadata.version` in the packaged `SKILL.md`
   frontmatter, `version` in each `plugin.json`, and a top-level `VERSION`
   file in the external kit. Without it, local builds keep today's behavior.
-- `scripts/validate/verify-archive-versions.sh` / `.ps1` compare every archive's
+- `scripts/validate/verify-archive-versions.sh` (Bash only) compares every archive's
   embedded version to the tag; the release fails on any mismatch.
 - Version literals in source files are not banned; they are placeholders and
   are overridden at packaging time.
