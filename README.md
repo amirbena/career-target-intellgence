@@ -173,11 +173,7 @@ that platform's length validator before packaging.
 
 ## Development workflow
 
-All implementation work — including documentation-only changes — happens
-on a dedicated task branch created from an up-to-date `main`; never
-implement directly on `main`. See
-[AGENTS.md](AGENTS.md#git-and-pr-workflow) for the full branch-safety,
-stash, and merge policy.
+Contributor and agent rules, including the branch and PR workflow, are in [AGENTS.md](AGENTS.md).
 
 ## Golden example
 
