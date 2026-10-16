@@ -18,6 +18,15 @@ background automation, or automated outreach.
 
 Run `/reload-plugins`, then ask: *"Here is my resume. Build my Candidate Profile."*
 
+**Codex CLI** (same marketplace; *GitHub install not yet verified*):
+
+```bash
+codex plugin marketplace add amirbena/career-target-intellgence
+codex plugin add career-targeting-intelligence@career-targeting-intelligence
+```
+
+Details: [Codex install](docs/installation.md#codex-cli-marketplace).
+
 **ChatGPT** (local plugin marketplace, desktop app; *not verified end-to-end*): download the ChatGPT Plugin ZIP from [Releases](https://github.com/amirbena/career-target-intellgence/releases/latest), register it in `~/.agents/plugins/marketplace.json`, restart the app, then install **Career Targeting** from the Plugins directory and start a chat with `@`. Exact steps and account notes: [ChatGPT install](docs/installation.md#chatgpt-plugin). The public directory listing needs OpenAI review and is not done yet.
 
 **Cursor:**

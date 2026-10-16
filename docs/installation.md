@@ -9,6 +9,7 @@ Release artifacts are attached to each
 | Method | Status |
 | --- | --- |
 | [Claude Code marketplace](#claude-code-marketplace) | Verified locally with `claude plugin validate` and `marketplace add` / `install`; the GitHub form works once this change is on `main` |
+| [Codex CLI marketplace](#codex-cli-marketplace) | Reuses the Claude marketplace; GitHub install **not yet verified** (see below) |
 | [Claude Plugin ZIP](#claude-plugin-zip) | Available |
 | [ChatGPT Plugin (local marketplace)](#chatgpt-plugin) | Per OpenAI docs; **not verified end-to-end** |
 | [npx skills (skills.sh)](#npx-skills-skillssh) | Verified |
@@ -40,6 +41,29 @@ Update with `claude plugin marketplace update career-targeting-intelligence`; th
 Local test from a checkout: `claude plugin validate .` then `claude plugin marketplace add .`.
 
 Docs: [Create and distribute a plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces).
+
+## Codex CLI marketplace
+
+Codex CLI reads the same marketplace file as Claude Code
+([`.claude-plugin/marketplace.json`](../.claude-plugin/marketplace.json)), so no separate
+packaging is needed. From a shell:
+
+```bash
+codex plugin marketplace add amirbena/career-target-intellgence
+codex plugin add career-targeting-intelligence@career-targeting-intelligence
+```
+
+**Verification status: not yet verified from GitHub.** Codex CLI was not available when this
+section was written, so these commands are taken from the issue's plan, not from a recorded run.
+Record the result here (with `codex --version`) once confirmed in a clean, isolated Codex
+environment (for example a throwaway `CODEX_HOME`):
+
+- the installed Skill contains `references/` and `templates/`;
+- the Candidate Profile prompt (*"Here is my resume. Build my Candidate Profile."*) runs the expected workflow.
+
+If it fails, document the failure here. A ChatGPT-specific marketplace is only warranted if a
+concrete compatibility or behavior gap is shown. ChatGPT Desktop installation is separate and
+also unverified: see [ChatGPT Plugin](#chatgpt-plugin).
 
 ## Claude Plugin ZIP
 
