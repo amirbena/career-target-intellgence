@@ -18,6 +18,10 @@ BASELINE="1.0.0"
 ASSETS=(career-targeting-intelligence.skill.zip career-targeting-intelligence-claude-kit.zip)
 WT=""
 trap '[ -z "$WT" ] || git worktree remove --force "$WT" >/dev/null 2>&1 || true' EXIT
+if [ "$DRY_RUN" = 0 ]; then  # identity for the release commit and the annotated tag
+  git config user.name "${GIT_USER_NAME:-github-actions[bot]}"
+  git config user.email "${GIT_USER_EMAIL:-41898282+github-actions[bot]@users.noreply.github.com}"
+fi
 LAST_TAG="$(git describe --tags --abbrev=0 --match 'v[0-9]*' 2>/dev/null || true)"
 
 # Release notes = the version's CHANGELOG.md section (without its heading).
@@ -128,8 +132,6 @@ fi
 if [ "$DRY_RUN" = 1 ]; then tag_and_ensure "$NEW" HEAD; echo "[dry-run] done"; exit 0; fi
 
 if ! git diff --quiet CHANGELOG.md; then
-  git config user.name "${GIT_USER_NAME:-github-actions[bot]}"
-  git config user.email "${GIT_USER_EMAIL:-41898282+github-actions[bot]@users.noreply.github.com}"
   git add CHANGELOG.md
   git commit -m "chore(release): v$NEW"
   git push origin HEAD
