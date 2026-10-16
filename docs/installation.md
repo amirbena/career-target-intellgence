@@ -36,7 +36,7 @@ claude plugin install career-targeting-intelligence@career-targeting-intelligenc
 
 Activate: run `/reload-plugins` (or start a new session), then ask *"Here is my resume. Build my Candidate Profile."* The Skill also triggers automatically on matching requests, and `/career-targeting-intelligence:career-targeting-intelligence` invokes it explicitly.
 
-Update with `claude plugin marketplace update career-targeting-intelligence`; the plugin tracks the repository's default branch.
+Update with `claude plugin marketplace update career-targeting-intelligence`. The plugin tracks the repository's default branch, and each release commit writes the release version into the marketplace entry and plugin manifest so Claude can compare versions. Update detection in Claude Desktop is **not yet verified** against a real newer release.
 
 Local test from a checkout: `claude plugin validate .` then `claude plugin marketplace add .`.
 

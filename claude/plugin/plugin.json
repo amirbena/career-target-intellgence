@@ -1,6 +1,6 @@
 {
   "name": "career-targeting-intelligence",
-  "version": "1.0.0",
+  "version": "1.3.0",
   "description": "Evidence-based career targeting: builds a Candidate Profile, verifies open jobs against employer sources, ranks target companies, finds relevant recruiters and engineering managers, and prepares a manual outreach queue you review and act on yourself.",
   "author": {
     "name": "Amir Ben-Assayag"

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Compute the next semantic version since the last tag from each merged PR's
 # `release:` label (falling back to Conventional Commits), update CHANGELOG.md,
-# tag, and publish a GitHub Release with the Claude Skill, Claude External Kit,
+# sync the version into the marketplace and plugin manifests (same release
+# commit), tag, and publish a GitHub Release with the Claude Skill, Claude External Kit,
 # Claude Plugin and ChatGPT Plugin ZIPs attached, each built with
 # RELEASE_VERSION so its embedded version matches the tag. Safe to re-run:
 # existing tags,
@@ -117,6 +118,20 @@ if [ -z "$LAST_TAG" ]; then
   exit 0
 fi
 
+# Claude Marketplace installs from the repository, not the Release ZIPs, so the
+# release version must also live in the repo metadata it reads. Rewrites only
+# the version line; a no-op when it already matches.
+MARKETPLACE_FILE=".claude-plugin/marketplace.json"
+PLUGIN_MANIFEST="claude/plugin/plugin.json"
+sync_manifest_versions() { # $1=version
+  local f
+  for f in "$MARKETPLACE_FILE" "$PLUGIN_MANIFEST"; do
+    [ "$(grep -c '"version":' "$f")" = 1 ] || { echo "error: $f must contain exactly one \"version\" field" >&2; return 1; }
+    sed -E -i.bak "s/^( *\"version\": )\"[^\"]*\"/\1\"$1\"/" "$f" && rm -f "$f.bak"
+    grep -q "\"version\": \"$1\"" "$f" || { echo "error: could not set version in $f" >&2; return 1; }
+  done
+}
+
 # Release level a commit's merged PR declared with a `release: <level>` label
 # (see scripts/validate/validate-pr-release.sh). Prints major|minor|patch|none, or
 # nothing when the lookup succeeded and found no PR or no release label;
@@ -212,10 +227,14 @@ if ! grep -q "^## $NEW " CHANGELOG.md; then
   if [ "$DRY_RUN" = 1 ]; then diff -u CHANGELOG.md "$out" || true; else cp "$out" CHANGELOG.md; fi
 fi
 
-if [ "$DRY_RUN" = 1 ]; then tag_and_ensure "$NEW" HEAD; echo "[dry-run] done"; exit 0; fi
+if [ "$DRY_RUN" = 1 ]; then
+  echo "[dry-run] would set version $NEW in $MARKETPLACE_FILE and $PLUGIN_MANIFEST"
+  tag_and_ensure "$NEW" HEAD; echo "[dry-run] done"; exit 0
+fi
 
-if ! git diff --quiet CHANGELOG.md; then
-  git add CHANGELOG.md
+sync_manifest_versions "$NEW"
+if ! git diff --quiet CHANGELOG.md "$MARKETPLACE_FILE" "$PLUGIN_MANIFEST"; then
+  git add CHANGELOG.md "$MARKETPLACE_FILE" "$PLUGIN_MANIFEST"
   git commit -m "chore(release): v$NEW"
   git push origin HEAD
 fi

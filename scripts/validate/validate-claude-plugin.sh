@@ -14,6 +14,7 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd -
 REPO_ROOT="$(cd -- "${SCRIPT_DIR}/../.." >/dev/null 2>&1 && pwd -P)"
 
 MANIFEST_FILE="${REPO_ROOT}/claude/plugin/plugin.json"
+MARKETPLACE_FILE="${REPO_ROOT}/.claude-plugin/marketplace.json"
 SKILL_FILE="${REPO_ROOT}/skills/career-targeting-intelligence/SKILL.md"
 BUILT_PLUGIN_DIR="${1:-}"
 
@@ -26,12 +27,12 @@ command -v python3 >/dev/null 2>&1 || fail "python3 is required but was not foun
 [ -f "${MANIFEST_FILE}" ] || fail "plugin manifest not found: ${MANIFEST_FILE}"
 [ -f "${SKILL_FILE}" ] || fail "skill file not found: ${SKILL_FILE}"
 
-python3 - "${MANIFEST_FILE}" "${SKILL_FILE}" <<'PY'
+python3 - "${MANIFEST_FILE}" "${SKILL_FILE}" "${MARKETPLACE_FILE}" <<'PY'
 import json
 import re
 import sys
 
-manifest_path, skill_path = sys.argv[1], sys.argv[2]
+manifest_path, skill_path, marketplace_path = sys.argv[1], sys.argv[2], sys.argv[3]
 errors = []
 
 def check(cond, msg):
@@ -51,6 +52,18 @@ version = manifest.get("version")
 check(isinstance(version, str) and re.fullmatch(r"\d+\.\d+\.\d+", version or ""), "version must be MAJOR.MINOR.PATCH")
 desc = manifest.get("description")
 check(isinstance(desc, str) and desc.strip() != "", "description must be a non-empty string")
+# Claude Marketplace reads the version from the marketplace entry, so it must
+# match the plugin manifest (release.sh keeps them in sync).
+try:
+    with open(marketplace_path, encoding="utf-8") as f:
+        entry = next((p for p in json.load(f).get("plugins", []) if p.get("name") == name), None)
+except (OSError, json.JSONDecodeError) as e:
+    entry = None
+    errors.append(f"marketplace.json unreadable: {e}")
+else:
+    check(entry is not None, "marketplace.json has no entry for the plugin")
+    check(entry is None or entry.get("version") == version,
+          "marketplace.json plugin version must equal plugin.json version")
 for forbidden in ("hooks", "mcpServers", "commands", "agents"):
     check(forbidden not in manifest, f"manifest must not declare '{forbidden}' (skills-only plugin)")
 
