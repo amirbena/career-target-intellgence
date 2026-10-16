@@ -2,6 +2,10 @@
 
 This is the Markdown presentation template for the Unverified/Rejected Job Leads output, which keeps every role that did not pass the [Primary Job Eligibility Gate](../ranking/job-eligibility-gate.md) visible with an explicit reason, per [core/output-contracts.md](../core/output-contracts.md#unverified-and-rejected-job-leads) — instead of silently dropping it. All values below are synthetic.
 
+## Style
+
+Open the output with a one-to-three sentence plain-language summary (conclusion first), then the canonical structure below. Use prose for reasoning and the canonical table only for multi-record data; state shared caveats once. Required fields, citations, confidence, and freshness markers are unchanged. See the [Readability and Voice Guide](readability-guide.md).
+
 ## Disclaimer
 
 > A role appearing here was not confirmed as a strong, currently-open, candidate-fit match — it was not necessarily disproven. Each row states the specific reason it did not enter the [Verified Jobs Map](verified-jobs-map-template.md).

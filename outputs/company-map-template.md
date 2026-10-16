@@ -2,6 +2,10 @@
 
 This is the Markdown presentation template for the Target Company Map output, built from ranked [Company Records](../schemas/company-record.schema.md), per [core/output-contracts.md](../core/output-contracts.md#target-company-map) and the [Company Ranking Model](../ranking/company-ranking-model.md). All values below are synthetic.
 
+## Style
+
+Open the output with a one-to-three sentence plain-language summary (conclusion first), then the canonical structure below. Use prose for reasoning and the canonical table only for multi-record data; state shared caveats once. Required fields, citations, confidence, and freshness markers are unchanged. See the [Readability and Voice Guide](readability-guide.md).
+
 ## Disclaimer
 
 > The target-company map is not a claim that every listed company is currently hiring or that every team uses the same technology stack. Team-level technology and current hiring status must be verified before outreach.

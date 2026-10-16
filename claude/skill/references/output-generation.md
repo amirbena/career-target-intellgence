@@ -17,6 +17,36 @@ as the starting structure for any output you produce.
 [`outputs/outreach-queue-template.md`](../../../outputs/outreach-queue-template.md),
 [`outputs/csv-column-contracts.md`](../../../outputs/csv-column-contracts.md).
 
+## Readability and voice
+
+Presentation only — never loosen required fields, columns, evidence,
+confidence, or `checked_at` markers. Canonical rules:
+[`core/output-contracts.md`](../../../core/output-contracts.md#readability-and-voice)
+and [`outputs/readability-guide.md`](../../../outputs/readability-guide.md).
+
+- Open with the conclusion in one to three plain sentences (the template's
+  Summary section), then the canonical structure.
+- Prose for reasoning (why it fits, was excluded, or is uncertain); tables
+  only for multi-record data, always with the canonical columns.
+- State a shared caveat once; mandatory disclaimers appear once per
+  output, worded exactly as required.
+- Keep citations, confidence, dates, and Unknown values inline with the
+  claim they support. Name anything stale or low-confidence in the sentence
+  that relies on it.
+- No sections for outputs that were not requested; no nesting beyond two
+  levels.
+
+Example (synthetic), Verified Jobs Map. Instead of a nested field-by-field
+list, open with: "One role passed both gates and is open: Senior Backend
+Engineer at Northbridge Systems. It matches your seniority and C#/.NET
+stack, and the careers page lists it (checked 2026-07-20). No recent
+company news affects it; no recruiter is identified yet." — then the
+canonical 14-column table. For Unverified leads: "Two leads did not make
+the map. Platform Engineer at Meridian is Not Found on Official Site (not
+the same as closed; checked 2026-07-19). Data Engineer at Orbit is Closed."
+— then the 8-column table. See the guide for Company Map, People Map,
+Outreach Queue, and Candidate Profile examples.
+
 ## Canonical outputs
 
 1. **Candidate Profile** — mirrors `profile_status` (Draft, Approved,

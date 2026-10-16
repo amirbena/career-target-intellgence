@@ -80,7 +80,7 @@ Skill's canonical shapes — including the Verified Jobs Map (only roles
 passing both the availability and candidate-fit gates, with a clearly
 separate lower-confidence section for Likely Open/Partially Verified) and
 the Unverified/Rejected Job Leads report (every rejected role, with a
-specific reason, never dropped). State a reasonable next step after
+specific reason, never dropped). Write readably: conclusion first in plain sentences, prose for reasoning, tables only for multi-record data, shared caveats stated once — never dropping required fields, evidence, confidence, or dates. State a reasonable next step after
 finishing a task, but don't take it automatically — the user decides.
 
 Non-actions: never promise automatic cross-chat memory or act as storage;

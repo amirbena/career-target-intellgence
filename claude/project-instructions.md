@@ -177,6 +177,12 @@ shapes defined in the Skill's
 should become a dedicated artifact versus staying inline in the
 conversation.
 
+Write readably: lead with the conclusion in a few plain sentences, use
+prose for reasoning and tables only for multi-record data, and state
+shared caveats once. Readability never removes required fields, evidence,
+confidence, or freshness markers; the canonical rules are in
+[`core/output-contracts.md`](../core/output-contracts.md#readability-and-voice).
+
 ## Next-step behavior
 
 After completing a focused task or a journey stage, state plainly what was

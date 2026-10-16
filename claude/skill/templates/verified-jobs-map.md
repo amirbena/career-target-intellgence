@@ -1,5 +1,9 @@
 # Verified Jobs Map — {{candidate_name}}
 
+## Summary
+
+{{summary}} <!-- 1–3 plain sentences: conclusion first, then what needs the user's attention. Keep all required fields, citations, confidence, and checked_at below; state shared caveats once. -->
+
 ## Disclaimer
 
 > This map contains only roles that passed both the current-availability gate and the candidate-fit gate. It is not a claim that these are the only relevant roles at these companies — see the Unverified and Rejected Job Leads report for roles that did not pass the gate, and why.

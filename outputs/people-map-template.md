@@ -2,6 +2,10 @@
 
 This is the Markdown presentation template for the People Map output, built from [Person Records](../schemas/person-record.schema.md), per [core/output-contracts.md](../core/output-contracts.md#people-map) and the [Person Ranking Model](../ranking/person-ranking-model.md). All values below are synthetic.
 
+## Style
+
+Open the output with a one-to-three sentence plain-language summary (conclusion first), then the canonical structure below. Use prose for reasoning and the canonical table only for multi-record data; state shared caveats once. Required fields, citations, confidence, and freshness markers are unchanged. See the [Readability and Voice Guide](readability-guide.md).
+
 ## Required Columns
 
 | Column | Source field |

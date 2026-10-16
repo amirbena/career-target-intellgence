@@ -2,6 +2,10 @@
 
 This is the Markdown presentation template for the Verified Jobs Map (also called the Job Opportunities Map) output — the new canonical **primary** output for job-search intent, built from [Job Records](../schemas/job-record.schema.md) that passed the [Primary Job Eligibility Gate](../ranking/job-eligibility-gate.md), per [core/output-contracts.md](../core/output-contracts.md#verified-jobs-map). All values below are synthetic.
 
+## Style
+
+Open the output with a one-to-three sentence plain-language summary (conclusion first), then the canonical structure below. Use prose for reasoning and the canonical table only for multi-record data; state shared caveats once. Required fields, citations, confidence, and freshness markers are unchanged. See the [Readability and Voice Guide](readability-guide.md).
+
 ## Disclaimer
 
 > This map contains only roles that passed both the current-availability gate and the candidate-fit gate. It is not a claim that these are the only relevant roles at these companies — see the [Unverified and Rejected Job Leads](unverified-job-leads-template.md) report for roles that did not pass the gate, and why.

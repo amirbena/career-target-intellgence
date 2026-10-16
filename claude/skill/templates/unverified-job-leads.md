@@ -1,5 +1,9 @@
 # Unverified and Rejected Job Leads — {{candidate_name}}
 
+## Summary
+
+{{summary}} <!-- 1–3 plain sentences: conclusion first, then what needs the user's attention. Keep all required fields, citations, confidence, and checked_at below; state shared caveats once. -->
+
 ## Disclaimer
 
 > A role appearing here was not confirmed as a strong, currently-open, candidate-fit match — it was not necessarily disproven. Each row states the specific reason it did not enter the Verified Jobs Map.

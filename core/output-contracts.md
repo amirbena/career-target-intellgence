@@ -114,6 +114,18 @@ This document defines the canonical outputs produced by the product, downstream 
 - **Draft/Verified/Approved:** Matches the source output's status; export itself has no separate status beyond `export_status` on Research State.
 - **May be produced partially:** No — export packages what already exists; it is not a research step that can be "partially" run.
 
+## Readability and Voice
+
+Every output is written for a busy person making a decision, not as an execution log. The full guide, with before/after examples for the main output types, is [outputs/readability-guide.md](../outputs/readability-guide.md); the rules below are canonical and platform layers adapt them without redefining them.
+
+- Lead with the conclusion in one to three sentences, then give the detail.
+- Use prose for reasoning (why a role fits, was excluded, or is uncertain); use tables only for genuinely tabular, multi-record data, always with the canonical columns.
+- State a shared caveat once rather than repeating it per row; mandatory disclaimers appear once per output, worded exactly as required.
+- Keep evidence citations, confidence, `checked_at` markers, statuses, and Unknown/Not-found values attached to the claims they support — written inline and lightly, never dropped for brevity.
+- Keep answers as short as the request allows; do not add sections for outputs that were not requested.
+
+Readability changes presentation only. They never loosen evidence, confidence, or freshness requirements, never change required fields or machine-readable columns, and never change which outputs are produced.
+
 ## Universal Rules
 
 1. Do not combine all outputs into one oversized table.
@@ -137,6 +149,7 @@ This document defines the canonical outputs produced by the product, downstream 
 - [job-verification-policy.md](job-verification-policy.md)
 - [../ranking/outreach-priority-model.md](../ranking/outreach-priority-model.md)
 - [../ranking/job-eligibility-gate.md](../ranking/job-eligibility-gate.md)
+- [../outputs/readability-guide.md](../outputs/readability-guide.md)
 - [../outputs/csv-column-contracts.md](../outputs/csv-column-contracts.md)
 - [../outputs/verified-jobs-map-template.md](../outputs/verified-jobs-map-template.md)
 - [../outputs/unverified-job-leads-template.md](../outputs/unverified-job-leads-template.md)
