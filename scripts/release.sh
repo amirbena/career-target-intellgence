@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-# Compute the next semantic version from Conventional Commits since the last
-# tag, update CHANGELOG.md, tag, and publish a GitHub Release with the Claude
-# Skill, Claude External Kit, Claude Plugin and ChatGPT Plugin ZIPs attached,
-# each built with RELEASE_VERSION so its embedded version matches the tag. Safe to re-run: existing tags,
+# Compute the next semantic version since the last tag from each merged PR's
+# `release:` label (falling back to Conventional Commits), update CHANGELOG.md,
+# tag, and publish a GitHub Release with the Claude Skill, Claude External Kit,
+# Claude Plugin and ChatGPT Plugin ZIPs attached, each built with
+# RELEASE_VERSION so its embedded version matches the tag. Safe to re-run:
+# existing tags,
 # changelog sections, and release assets are never duplicated, and a missing
 # Release or missing assets for the latest tag are recovered.
 #
@@ -104,25 +106,66 @@ if [ -z "$LAST_TAG" ]; then
   exit 0
 fi
 
-# Classify commits since the last tag (subject line only; bodies for BREAKING CHANGE).
+# Release level a commit's merged PR declared with a `release: <level>` label
+# (see scripts/validate-pr-release.sh). Prints major|minor|patch|none, or
+# nothing when the lookup succeeded and found no PR or no release label;
+# callers then fall back to the Conventional Commit subject. A failed lookup
+# (API error, missing permission) returns 1 so the release stops instead of
+# silently ignoring labels. Without gh a dry run says so and uses subjects
+# only; a real release needs gh anyway.
+HAVE_GH=1
+if ! command -v gh >/dev/null 2>&1; then
+  [ "$DRY_RUN" = 1 ] || { echo "error: gh is required to read PR release labels." >&2; exit 1; }
+  echo "note: gh not found; dry run uses commit subjects only." >&2; HAVE_GH=0
+fi
+pr_level() { # $1=commit sha
+  [ "$HAVE_GH" = 1 ] || return 0
+  local labels
+  labels="$(gh api "repos/{owner}/{repo}/commits/$1/pulls" --jq '.[].labels[].name')" \
+    || { echo "error: PR label lookup failed for ${1:0:7}. Check the release App's Pull requests: read permission and GH_TOKEN." >&2; return 1; }
+  { grep -E '^release: (major|minor|patch|none)$' <<<"$labels" || true; } | head -n1 | sed 's/^release: //'
+}
+
+raise_bump() { # $1=level; keep the highest of major > minor > patch
+  case "$1" in
+    major) bump="major" ;;
+    minor) [ "$bump" = major ] || bump="minor" ;;
+    patch) [ -n "$bump" ] || bump="patch" ;;
+  esac
+}
+
+# Classify commits since the last tag: the merged PR's release label when it
+# has one, else the Conventional Commit subject (bodies for BREAKING CHANGE).
 bump=""; feats=""; fixes=""; breaks=""
 while IFS= read -r -d $'\x1e' rec; do
   rec="${rec#"${rec%%[![:space:]]*}"}"
   [ -z "$rec" ] && continue
-  subject="$(printf '%s' "$rec" | head -n1)"
-  body="$(printf '%s' "$rec" | tail -n +2)"
+  sha="$(printf '%s' "$rec" | head -n1)"
+  subject="$(printf '%s' "$rec" | sed -n 2p)"
+  body="$(printf '%s' "$rec" | tail -n +3)"
   re='^([a-z]+)(\([^)]*\))?(!)?: (.+)$'
-  [[ "$subject" =~ $re ]] || continue
-  type="${BASH_REMATCH[1]}"; bang="${BASH_REMATCH[3]}"; desc="${BASH_REMATCH[4]}"
+  type=""; bang=""; desc="$subject"
+  if [[ "$subject" =~ $re ]]; then type="${BASH_REMATCH[1]}"; bang="${BASH_REMATCH[3]}"; desc="${BASH_REMATCH[4]}"; fi
   desc="$(printf '%s' "$desc" | sed -E 's/ \(#[0-9]+\)$//')"
+  level="$(pr_level "$sha")" || exit 1
+  if [ -n "$level" ]; then
+    case "$level" in
+      none) continue ;;
+      major) breaks+="- $desc"$'\n' ;;
+      minor) feats+="- $desc"$'\n' ;;
+      patch) fixes+="- $desc"$'\n' ;;
+    esac
+    raise_bump "$level"; continue
+  fi
+  [ -n "$type" ] || continue
   if [ -n "$bang" ] || printf '%s' "$body" | grep -qE '^BREAKING[ -]CHANGE:'; then
-    breaks+="- $desc"$'\n'; bump="major"; continue
+    breaks+="- $desc"$'\n'; raise_bump major; continue
   fi
   case "$type" in
-    feat) feats+="- $desc"$'\n'; [ "$bump" = major ] || bump="minor" ;;
-    fix)  fixes+="- $desc"$'\n'; [ -n "$bump" ] || bump="patch" ;;
+    feat) feats+="- $desc"$'\n'; raise_bump minor ;;
+    fix)  fixes+="- $desc"$'\n'; raise_bump patch ;;
   esac
-done < <(git log "$LAST_TAG..HEAD" --format='%s%n%b%x1e')
+done < <(git log "$LAST_TAG..HEAD" --format='%H%n%s%n%b%x1e')
 
 if [ -z "$bump" ]; then
   echo "No user-facing commits since $LAST_TAG; no new release."
