@@ -1,12 +1,14 @@
 # Repository Instructions (Canonical)
 
-This file is the canonical, provider-neutral source of truth for how any
+This file is the canonical, provider-neutral entry point for how any
 coding agent (Claude, Codex, Gemini, or otherwise) works in this
 repository. Platform-specific files (e.g. `CLAUDE.md`) extend this file
 for their own agent's operating conventions; they must not duplicate it
 wholesale. When both a shared rule and a platform-specific file could
 describe the same topic, the platform-specific file should reference this
 document rather than restate the rule.
+
+Detailed policy lives in linked documents; every rule has one home.
 
 ## Working rules
 
@@ -25,380 +27,19 @@ document rather than restate the rule.
 - Do not push, open a PR, merge, or delete branches unless explicitly
   requested.
 
-## Claude Skill packaging rules
-
-- `claude/skill/` is the installable Skill source.
-- `core/`, `schemas/`, `ranking/`, `workflows/`, and `outputs/` remain
-  canonical — the Skill adapts them, it does not redefine them.
-- Platform adaptations must not silently change canonical rules, numbers,
-  or enums.
-- Packaging uses an explicit allowlist (`SKILL.md`, `references/`,
-  `templates/`), never a recursive repository copy followed by exclusions.
-- Never recursively package the whole repository.
-- The macOS/Linux and Windows packaging scripts must remain logically
-  equivalent (same allowlist, same output filename, same top-level
-  directory, same normalized file list).
-- Real user data and Golden Journey examples must never enter the Skill
-  ZIP.
-- Packaging scripts must work when invoked from outside the repository
-  root.
-- Remove obsolete `.gitkeep` files when real content is added to a
-  directory.
-- Every Skill change must validate package contents before completion.
-- The final packaged Skill `description` field (YAML frontmatter in
-  `claude/skill/SKILL.md`) must be < 2400 characters; prefer <= 2200 to
-  retain a safety margin.
-- Measure the exact final `description` payload that ships in the Skill
-  package, not a raw line count — YAML folding changes the actual string.
-- Do not work around the limit by moving required runtime behavior into
-  the description. It is concise activation metadata; canonical behavior
-  belongs in `SKILL.md` body content and `references/`.
-- These packaging length limits (ChatGPT Instructions and Skill
-  description) are automated build constraints, enforced by dedicated
-  validator scripts wired into packaging, not manual review conventions.
-
-## Claude Project experience rules
-
-- Project Instructions orchestrate; they do not duplicate the Skill.
-- Full and compact Project Instructions must remain behaviorally aligned.
-- Skill activation language must be strong but not claim technical
-  guarantees.
-- Shared Project Knowledge must contain methodology only.
-- Personal records belong only in user-controlled context.
-- Platform persistence must not be reimplemented in prompts.
-- Project files must not redefine canonical weights, schemas, evidence
-  states, or output contracts.
-- Claude Project changes must be validated against the Tova Golden
-  Journey.
-- No ChatGPT files should be changed in Claude-only tasks.
-
-## Claude external kit rules
-
-- External kits use an explicit allowlist.
-- External Instructions are copied from the canonical compact source
-  during packaging.
-- Knowledge deployment files come from canonical repository sources.
-- External kits contain no Golden Journey or personal records.
-- Skill ZIP and External Kit ZIP are distinct artifacts.
-- macOS/Linux and Windows kit packagers must remain logically equivalent.
-- Normalized archive paths and extracted file contents must be validated.
-- Organization sharing and external installation remain separate product
-  paths.
-
-## ChatGPT packaging rules
-
-- `chatgpt/instructions.md` is the canonical Custom GPT behavior source.
-- GPT Instructions define behavior; Knowledge defines reference material.
-- Generated Knowledge bundles must not be edited manually.
-- Knowledge bundles derive only from explicit canonical source allowlists.
-- Keep the Knowledge file count within the current GPT limit.
-- Do not upload Golden Journey or personal records as shared GPT
-  Knowledge.
-- The GPT must not claim unavailable memory, browsing, storage, or
-  automation.
-- Actions, Apps, APIs, monitoring, and outreach execution remain out of
-  scope.
-- macOS/Linux and Windows builders and packagers must remain logically
-  equivalent.
-- Every ChatGPT package change must validate Instructions, Knowledge
-  parity, normalized archive paths, and privacy exclusions.
-- Claude-only files must not be changed unless shared documentation
-  genuinely requires it.
-- Remove obsolete `.gitkeep` files when real content is added.
-- The final packaged ChatGPT Instructions payload (the exact text pasted
-  into the Custom GPT's Instructions field) must be < 8000 characters;
-  prefer <= 7600 to retain headroom.
-- Measure the actual final payload copied into the GPT Instructions field,
-  not a partial or pre-edit draft.
-- Compress structurally to stay within the limit; do not remove required
-  product behavior merely to satisfy it.
-- The canonical source of the Instructions payload remains
-  `chatgpt/instructions.md` unless repository architecture changes.
-
-## Git and PR workflow
-
-### Implementation branch rule
-
-Every implementation task that changes repository files must use a
-dedicated task branch. This includes:
-
-- features
-- fixes
-- refactoring
-- scripts
-- tests
-- configuration
-- prompts
-- skill behavior
-- committed documentation changes
-- generated repository artifacts intended for commit
-
-Read-only analysis/review does not require a branch unless files will be
-modified. Never implement directly on `main`.
-
-### Up-to-date main rule
-
-Every new implementation branch must start from the current remote
-`main`. Before creating the task branch:
-
-- fetch remote state
-- update local `main`
-- verify local `main == origin/main`
-- resolve divergence before implementation
-
-Do not create implementation branches from stale `main`. If valid work
-already exists on an active feature branch, preserve it rather than
-recreating it unnecessarily.
-
-### Pre-edit gate
-
-Before the first repository modification, confirm:
-
-- main is updated
-- working tree is clean or fully understood
-- dedicated task branch is active
-- active branch is not main
-
-Read-only inspection may occur before branch creation. File creation,
-modification, deletion, formatting, or generated committed output may
-not.
-
-### Safe branch switching and stash policy
-
-Never implement changes directly on `main`. This applies to every kind of
-change, however small: features, fixes, refactors, docs, packaging,
-tests, and maintenance. Always create or switch to a dedicated task
-branch first, even for a one-line edit.
-
-**Case A — working tree is clean.** Switch to the base branch, update it,
-and create the task branch normally:
-
-```bash
-git status --short
-git switch main
-git pull --ff-only
-git switch -c <task-branch>
-```
-
-Use the repository's actual default base branch if it is not `main`.
-
-**Case B — uncommitted work is present.** Do not checkout, reset, clean,
-or otherwise discard it. Inspect first:
-
-```bash
-git status --short
-git diff
-git diff --staged
-```
-
-Determine whether the changes belong to the user's current work, to the
-new task, or are unrelated/generated artifacts. Preserve user work first.
-When the existing work should stay on its current branch, stash it with a
-descriptive, recoverable message before switching:
-
-```bash
-git stash push -u -m "preserve/<original-branch>/<YYYY-MM-DD>-before-<task>"
-```
-
-Do not use `git stash --all`/`-a` by default — ignored/generated files may
-be large or intentionally unmanaged. Use `-a` only for a concrete,
-inspected reason.
-
-**Case C — the uncommitted changes are actually part of the requested
-task.** Do not stash them away unnecessarily. If Git allows it, create
-the task branch directly on top of the current working tree
-(`git switch -c <task-branch>`), which carries the changes forward safely.
-Verify this is actually safe by inspection; never assume it.
-
-**Case D — the switch itself is blocked by conflicts.** Do not force the
-switch, reset, or delete anything to make it succeed. Preserve the work
-with a stash (or a commit, if that fits the context) first, then switch.
-
-### Stash lifecycle rules
-
-A stash created only to protect existing work must not silently
-disappear:
-
-- Record the stash reference/message and confirm it exists with
-  `git stash list`.
-- Do not `pop` a protective stash automatically onto an unrelated task
-  branch.
-- Restore it only when returning to the original work context.
-- Prefer `git stash apply` over `git stash pop` when conflict risk
-  matters, and drop the stash only after the restored work has been
-  verified.
-- Never `git stash drop` or `git stash clear` unless the preserved work
-  has been explicitly verified as safely restored or is confirmed no
-  longer needed.
-- If applying a stash conflicts, preserve the conflict state and report
-  it — do not discard either side automatically.
-
-### Branch creation rules
-
-- Start from the correct, updated base branch unless the task explicitly
-  depends on another branch.
-- Create one dedicated branch per scoped task.
-- Name branches for intent: `feat/...`, `fix/...`, `chore/...`,
-  `docs/...`.
-- Never reuse `main` as an implementation workspace.
-- Do not overwrite unrelated branches, and never force-switch or
-  force-delete work that has not been verified as safe to discard.
-- If the requested branch name already exists, inspect it before use. Use
-  it only when it clearly belongs to the same task; otherwise choose a
-  non-conflicting name.
-
-### Keep main clean
-
-`main` is normally used only for: syncing/fetching/pulling, reviewing
-merged state, final package builds when explicitly requested, and
-creating new task branches. All implementation changes — including tiny
-edits — happen on a dedicated branch.
-
-### Issue descriptions
-
-Issues are human-facing planning artifacts, not agent execution reports
-or full design documents, whether authored by a person or by a coding
-agent. Write them in concise, natural language for whoever will
-eventually implement or review the work. Explain the problem, the desired
-outcome, concrete scope, observable acceptance criteria, and meaningful
-validation expectations. Describe what must be true when the work is
-complete rather than prescribing every implementation step, unless a
-specific constraint genuinely matters. Keep each Issue on one coherent
-outcome. Do not paste research transcripts, command or
-repository-inspection logs, or agent-style deliverable reports into an
-Issue. Avoid oversized background sections, repetitive bullets, needless
-validation matrices, and filler; add technical context, dependencies,
-constraints, or examples only when they materially reduce ambiguity. Use
-`None` for optional sections such as dependencies or non-goals when there
-is nothing useful to add. The Issue must make sense to someone who was
-not present when the work was discovered. `.github/ISSUE_TEMPLATE/`
-carries the structure.
-
-Label every issue with one `type:`, one `area:`, and one `priority:`
-label matching its form answers, as defined in
-[docs/issue-labels.md](docs/issue-labels.md). `priority: P0` is applied
-manually only.
-
-### Pull request descriptions
-
-Pull request descriptions are reviewer-facing communication, whether the
-PR is prepared by a person or by a coding agent. Write them in concise,
-natural language that explains what changed, why it matters, and how it
-was meaningfully validated. Summarize outcomes rather than narrating
-commands or producing agent-style execution reports. Mention files or
-implementation details only when they help a reviewer understand the
-change or its risk. Avoid unnecessary boilerplate: exhaustive command
-logs, validation matrices, repeated scope confirmations, and filler in
-optional sections — use `None` when a section has nothing useful to add.
-The description must make sense to a reviewer who did not watch the work
-happen. `.github/pull_request_template.md` carries the structure.
-
-### Merge strategy
-
-Prefer squash merge into `main`. Default flow:
-
-```
-review → squash merge → one focused commit on main
-```
-
-Use a different merge strategy only when there is a clear
-repository-specific reason to preserve multiple commits. Do not rewrite
-or force-push `main`.
-
-#### Admin merge fallback
-
-When squash merging a PR, if GitHub rejects the normal merge solely
-because of a required-review or equivalent branch/ruleset requirement,
-`--admin` may be used automatically without requesting additional user
-confirmation, provided all of the following are true:
-
-- the user has already requested or authorized the merge
-- the PR has been reviewed
-- the PR is mergeable
-- there are no merge conflicts
-- required CI/checks are passing, or no required checks exist
-- the reviewed remote diff has not changed unexpectedly
-- there are no unresolved review comments or known blocking issues
-- the only remaining blocker is the required-review/ruleset restriction
-- squash merge remains the intended merge method
-
-In that case, retry with:
-
-```bash
-gh pr merge <PR> --squash --admin
-```
-
-without stopping for another confirmation.
-
-`--admin` must **not** be used automatically to bypass:
-
-- failing required checks
-- merge conflicts
-- unresolved code-review findings
-- unexpected new commits or changed scope
-- failed validation
-- security or policy findings
-- an explicit instruction not to merge
-- uncertainty about why GitHub rejected the merge
-
-If the merge failure reason is unclear, investigate first rather than
-bypassing it.
-
-A previous instruction to perform the merge is sufficient authorization
-to use the admin fallback when the only blocker is the known
-required-review ruleset — `--admin` does not itself require a second
-confirmation in that case. However, general implementation permission is
-never permission to merge: there must still be an explicit merge task or
-instruction from the user before any merge (normal or admin) is
-attempted.
-
-Preferred merge flow:
-
-```text
-review
-→ verify remote diff/checks/mergeability
-→ attempt normal squash merge
-→ if blocked only by required-review ruleset:
-     retry squash merge with --admin
-→ verify MERGED
-→ sync local main
-→ delete merged branches
-→ safe cleanup
-```
-
-If the repository is known in advance to require the admin bypass
-consistently, it is acceptable to use `--admin` directly once all other
-merge gates above are satisfied.
-
-### Post-merge synchronization
-
-After a PR is successfully merged:
-
-1. fetch latest remote state
-2. switch local checkout to `main`
-3. update local `main` from `origin/main`
-4. verify local `main == origin/main`
-5. verify the merged commit is present
-6. delete the merged local task branch
-7. delete the merged remote branch when appropriate
-
-Because squash merge may make `git branch -d` refuse deletion, verify the
-PR work is represented on `main` before using `git branch -D`. Never
-force-delete first and verify afterward.
-
-### Safe local cleanup
-
-After merge, inspect `git status --short` and remove only known-safe
-disposable artifacts associated with the completed task (e.g. scratch
-files, transient generated output, temporary task-specific artifacts,
-reproducible build/test leftovers).
-
-Do not blindly remove unknown untracked files. Preserve unrelated work,
-user-created files, credentials/secrets, intentional local configuration,
-and another active task's artifacts.
-
-Do not use broad destructive cleanup such as `git clean -fd` unless every
-affected file has been explicitly inspected and confirmed safe.
+## Where the detailed rules live
+
+| Topic | Document |
+| --- | --- |
+| Branches, up-to-date `main`, pre-edit gate, stash policy, Issue and PR descriptions, merge strategy, admin merge fallback, post-merge sync, local cleanup | [docs/git-workflow.md](docs/git-workflow.md) |
+| Claude Skill packaging, Claude Project experience, Claude external kit, ChatGPT packaging (allowlists, length limits, script parity, privacy exclusions) | [docs/packaging-rules.md](docs/packaging-rules.md) |
+| Issue label taxonomy | [docs/issue-labels.md](docs/issue-labels.md) |
+| Scope and non-goals | [core/scope-and-non-goals.md](core/scope-and-non-goals.md) |
+| Quality gates and cross-platform alignment | [core/quality-gates.md](core/quality-gates.md) |
+| Repository layout, validation scripts, and test scenarios | [README.md](README.md), [tests/README.md](tests/README.md) |
+
+Read the Git workflow before your first change, and the packaging rules
+before touching `claude/` or `chatgpt/` packaging.
 
 ## Before completion
 
@@ -419,16 +60,17 @@ Every task's final response must include:
 
 ## Maintenance: preventing instruction drift
 
-When a rule applies to all coding agents, update `AGENTS.md` only. Update
-`CLAUDE.md` (or another platform-specific file) only when the rule is
-genuinely specific to that agent. Do not copy shared `AGENTS.md` rules
-into a platform-specific file for convenience. If both files need to
-mention the same topic, the platform-specific file should reference the
-canonical rule here and only add its own specialization.
+When a rule applies to all coding agents, update the canonical document
+that owns it (this file or a linked document) only. Update `CLAUDE.md`
+(or another platform-specific file) only when the rule is genuinely
+specific to that agent. Do not copy shared rules into a platform-specific
+file for convenience. If both need to mention the same topic, the
+platform-specific file should reference the canonical rule and only add
+its own specialization.
 
 ## Related documents
 
 - [README.md](README.md)
-- [core/scope-and-non-goals.md](core/scope-and-non-goals.md)
 - [CLAUDE.md](CLAUDE.md)
+- [core/scope-and-non-goals.md](core/scope-and-non-goals.md)
 - [docs/issue-labels.md](docs/issue-labels.md)
