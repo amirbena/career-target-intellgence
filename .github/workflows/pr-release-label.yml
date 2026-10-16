@@ -12,6 +12,7 @@ permissions:
 
 jobs:
   validate:
+    name: PR release label
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

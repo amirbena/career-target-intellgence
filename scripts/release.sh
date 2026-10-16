@@ -78,13 +78,21 @@ fi
 
 # Release level a commit's merged PR declared with a `release: <level>` label
 # (see scripts/validate-pr-release.sh). Prints major|minor|patch|none, or
-# nothing when there is no PR, no label, or no gh; callers then fall back to
-# the Conventional Commit subject. A failed lookup warns and never aborts.
+# nothing when the lookup succeeded and found no PR or no release label;
+# callers then fall back to the Conventional Commit subject. A failed lookup
+# (API error, missing permission) returns 1 so the release stops instead of
+# silently ignoring labels. Without gh a dry run says so and uses subjects
+# only; a real release needs gh anyway.
+HAVE_GH=1
+if ! command -v gh >/dev/null 2>&1; then
+  [ "$DRY_RUN" = 1 ] || { echo "error: gh is required to read PR release labels." >&2; exit 1; }
+  echo "note: gh not found; dry run uses commit subjects only." >&2; HAVE_GH=0
+fi
 pr_level() { # $1=commit sha
-  command -v gh >/dev/null 2>&1 || return 0
+  [ "$HAVE_GH" = 1 ] || return 0
   local labels
-  labels="$(gh api "repos/{owner}/{repo}/commits/$1/pulls" --jq '.[].labels[].name' 2>/dev/null)" \
-    || { echo "warning: PR lookup failed for ${1:0:7}; using the commit subject." >&2; return 0; }
+  labels="$(gh api "repos/{owner}/{repo}/commits/$1/pulls" --jq '.[].labels[].name')" \
+    || { echo "error: PR label lookup failed for ${1:0:7}. Check the release App's Pull requests: read permission and GH_TOKEN." >&2; return 1; }
   { grep -E '^release: (major|minor|patch|none)$' <<<"$labels" || true; } | head -n1 | sed 's/^release: //'
 }
 
@@ -109,7 +117,7 @@ while IFS= read -r -d $'\x1e' rec; do
   type=""; bang=""; desc="$subject"
   if [[ "$subject" =~ $re ]]; then type="${BASH_REMATCH[1]}"; bang="${BASH_REMATCH[3]}"; desc="${BASH_REMATCH[4]}"; fi
   desc="$(printf '%s' "$desc" | sed -E 's/ \(#[0-9]+\)$//')"
-  level="$(pr_level "$sha")"
+  level="$(pr_level "$sha")" || exit 1
   if [ -n "$level" ]; then
     case "$level" in
       none) continue ;;

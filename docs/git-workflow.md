@@ -214,7 +214,13 @@ The check never edits `CHANGELOG.md`, computes a version, tags, or releases.
 **After merge**, `scripts/release.sh` reads the label from the merged PR and
 uses it in place of the subject-derived level. Commits with no PR or no label
 (direct pushes, the release commit, history before this rule) keep the
-Conventional Commit logic below.
+Conventional Commit logic below. A lookup that fails (API error, missing App
+permission, no `gh`) stops the release with an error instead of falling back;
+only a successful lookup that finds no label falls back. A dry run without
+`gh` says so and uses commit subjects only.
+
+The required status check for `main` is **`PR release label`** (the job in
+`.github/workflows/pr-release-label.yml`).
 
 ## Merge strategy
 
