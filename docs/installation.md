@@ -59,7 +59,7 @@ Claude Code uses the same marketplace; see [Claude Code marketplace](#claude-cod
 
 | Item | Status |
 | --- | --- |
-| Codex CLI: `marketplace add` from GitHub, `marketplace list`, `plugin add`, `plugin list` | **Verified.** The plugin was installed and enabled; Codex reported its version as `local`. A remote catalog lookup printed a network warning, but local plugin verification succeeded. The `codex --version` output was not recorded. |
+| Codex CLI: `marketplace add` from GitHub, `marketplace list`, `plugin add`, `plugin list` | **Verified.** The plugin was installed and enabled; Codex CLI `codex-cli 0.160.0`; the plugin's reported version was `local`. A remote catalog lookup printed a network warning, but local plugin verification succeeded. |
 | ChatGPT: plugin invocation | **Verified.** The plugin appeared as installed in ChatGPT, its instructions loaded, its nine Knowledge reference files were accessible, and the Candidate Profile intake workflow ran in conversation. |
 | Codex CLI install propagating to ChatGPT Desktop | **Not verified.** That integration path was not tested; do not assume a Codex CLI install makes the plugin available in ChatGPT Desktop. |
 
