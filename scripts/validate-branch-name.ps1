@@ -42,6 +42,6 @@ error: branch name '$Branch' does not follow the convention.
   Example:  fix/38-skip-release-bot
 
 Use lowercase kebab-case after the issue number. Rename the branch with
-'git branch -m <new-name>', then push it again. See docs/git-workflow.md.
+'git branch -m <new-name>', then push it again. See policies/git-workflow.md.
 "@)
 exit 1

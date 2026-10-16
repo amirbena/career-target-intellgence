@@ -1,7 +1,7 @@
 name: PR branch name
 
 # Checks the PR's head branch name against the convention in
-# docs/git-workflow.md. It reads no repository files beyond the script and
+# policies/git-workflow.md. It reads no repository files beyond the script and
 # does not touch release automation.
 on:
   pull_request:

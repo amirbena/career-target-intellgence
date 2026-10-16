@@ -9,7 +9,7 @@
 #
 # Exempt: main only. Every other branch, including auto-generated names such
 # as claude/<slug>-<id>, must be renamed to this convention before it is
-# pushed (see docs/git-workflow.md). Pure string check; it reads no
+# pushed (see policies/git-workflow.md). Pure string check; it reads no
 # repository files and never touches Git.
 #
 # Usage: validate-branch-name.sh [branch]
@@ -42,6 +42,6 @@ error: branch name '$BRANCH' does not follow the convention.
   Example:  fix/38-skip-release-bot
 
 Use lowercase kebab-case after the issue number. Rename the branch with
-'git branch -m <new-name>', then push it again. See docs/git-workflow.md.
+'git branch -m <new-name>', then push it again. See policies/git-workflow.md.
 MSG
 exit 1
