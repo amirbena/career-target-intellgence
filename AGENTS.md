@@ -15,6 +15,10 @@ Detailed policy lives in linked documents; every rule has one home.
 - Always inspect the repository before changing files.
 - Start feature work from the latest `main`.
 - Create one dedicated branch per task.
+- Auto-generated local branch names (e.g. `claude/<slug>-<id>`) are fine while
+  developing. Before the first push or PR, rename the branch to
+  `<type>/<issue-number>-<short-description>` and run
+  `scripts/validate-branch-name.sh` (see the Git workflow).
 - Do not modify unrelated files.
 - Treat `core/` as the platform-independent source of truth.
 - Keep `claude/` and `chatgpt/` platform-specific.
@@ -36,7 +40,7 @@ development).
 
 | Topic | Document |
 | --- | --- |
-| Branches, up-to-date `main`, pre-edit gate, stash policy, Issue and PR descriptions, release classification (`release:` labels), merge strategy, admin merge fallback, post-merge sync, local cleanup | [policies/git-workflow.md](policies/git-workflow.md) |
+| Branches and branch naming, up-to-date `main`, pre-edit gate, stash policy, Issue and PR descriptions, release classification (`release:` labels), merge strategy, admin merge fallback, post-merge sync, local cleanup | [policies/git-workflow.md](policies/git-workflow.md) |
 | Claude Skill packaging, Claude Project experience, Claude external kit, ChatGPT packaging (allowlists, length limits, script parity, privacy exclusions) | [policies/packaging-rules.md](policies/packaging-rules.md) |
 | Issue label taxonomy | [policies/issue-labels.md](policies/issue-labels.md) |
 | Scope and non-goals | [core/scope-and-non-goals.md](core/scope-and-non-goals.md) |
