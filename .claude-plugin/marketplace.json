@@ -8,7 +8,7 @@
     {
       "name": "career-targeting-intelligence",
       "source": ".",
-      "version": "1.3.0",
+      "version": "1.4.0",
       "description": "Builds a Candidate Profile, verifies open jobs against employer sources, ranks target companies, finds relevant recruiters and engineering managers, and prepares a manual outreach queue you review and act on yourself.",
       "category": "productivity",
       "skills": ["./skills/career-targeting-intelligence"]
