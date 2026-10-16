@@ -1,6 +1,6 @@
 # Tests
 
-This repository is documentation- and prompt-driven — there is no executable application code to unit-test. "Tests" here are synthetic, fully fictional scenario fixtures and validation checklists that a human (or an agent walking through the methodology) can use to confirm the canonical policy in `core/`, `schemas/`, `ranking/`, and `workflows/` produces the required behavior, and that all three platform packages (ChatGPT Custom GPT, Claude Project, Claude Skill) stay semantically aligned with it.
+This repository is documentation- and prompt-driven — there is no executable application code to unit-test. "Tests" here are synthetic, fully fictional scenario fixtures and validation checklists that a human (or an agent walking through the methodology) can use to confirm the canonical policy in `core/`, `schemas/`, `ranking/`, and `workflows/` produces the required behavior, and that all three platform packages (ChatGPT Plugin, Claude Project, Claude Skill) stay semantically aligned with it.
 
 All names, companies, people, and events in this directory are synthetic. None represent real candidates, companies, or events — consistent with [`core/data-model.md`](../core/data-model.md#personal-context) and [AGENTS.md](../AGENTS.md).
 
