@@ -59,13 +59,15 @@ ensure_release() { # $1=version
   fi
   WT="$(mktemp -d)"
   git worktree add --detach "$WT" "refs/tags/$tag" >/dev/null
-  # Build from the tagged revision with RELEASE_VERSION. A tag that predates a
-  # packager cannot produce that asset; it is skipped rather than built from
-  # newer sources. Archives for the whole tag are verified before any upload.
+  # Build from the tagged revision with RELEASE_VERSION. A tag whose packager
+  # is missing or predates RELEASE_VERSION cannot produce a version-correct
+  # asset, so it is skipped rather than built from newer sources.
   local files=() a pk built=()
   for a in "${missing[@]}"; do
     pk="$(packager_for "$a")"
-    if [ ! -x "$WT/scripts/$pk" ]; then echo "warning: $tag has no $pk; skipping $a" >&2; continue; fi
+    if [ ! -x "$WT/scripts/$pk" ] || ! grep -q RELEASE_VERSION "$WT/scripts/$pk"; then
+      echo "warning: $tag has no $pk with RELEASE_VERSION support; skipping $a" >&2; continue
+    fi
     RELEASE_VERSION="$1" "$WT/scripts/$pk" >/dev/null
     files+=("$WT/dist/$a"); built+=("$a")
   done
