@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Compute the version and changelog diff without releasing
+        type: boolean
+        default: true
+
+# One release run at a time; later runs queue instead of racing on tags.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: release
+    environment: release
+    steps:
+      # The "Skill Release Automation" GitHub App is the release identity. It
+      # must be installed on this repo and allowed to bypass the main ruleset.
+      - id: app
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.RELEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ steps.app.outputs.token }}
+      - name: Release
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+          APP_SLUG: ${{ steps.app.outputs.app-slug }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+        run: |
+          uid="$(gh api "/users/${APP_SLUG}[bot]" --jq .id)"
+          [ -n "$uid" ] || { echo "Could not resolve bot user ID for ${APP_SLUG}[bot]" >&2; exit 1; }
+          export GIT_USER_NAME="${APP_SLUG}[bot]"
+          export GIT_USER_EMAIL="${uid}+${APP_SLUG}[bot]@users.noreply.github.com"
+          if [ "$DRY_RUN" = "true" ]; then
+            scripts/release.sh --dry-run
+          else
+            scripts/release.sh
+          fi
