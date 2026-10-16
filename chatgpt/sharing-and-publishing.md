@@ -1,44 +1,41 @@
 # Sharing and Publishing
 
-Supported deployment stages for the Career Targeting Intelligence Custom
-GPT, in order.
+Supported deployment stages for the Career Targeting Intelligence ChatGPT
+Plugin, in order.
 
-## Private Draft
+## Private Install
 
-Use for initial configuration and testing. Keep the GPT private while you
-work through [`testing-guide.md`](testing-guide.md) — nothing here should
-be visible to anyone else yet.
+Use for initial testing. Build the archive with
+`scripts/package-chatgpt-plugin.sh` (or `.ps1`), install it privately, and
+work through [`testing-guide.md`](testing-guide.md). Nothing here should be
+visible to anyone else yet.
 
-## Shared by Link or Workspace
+## Public Directory Submission
 
-Use once the smoke tests pass. Share with specific people, or within your
-workspace, subject to whatever sharing options your account and workspace
-actually expose — not every account has every sharing mode available.
+An optional later step, not a required one. Submission is through the
+OpenAI Platform dashboard (Plugins → Upload new or existing plugin) by an
+organization owner or a member with Apps Management Write, under a
+verified developer identity. Before submitting, confirm:
 
-## Public Publishing
-
-An optional later step, not a required one. Before publishing more
-broadly, confirm:
-
-- The name and description are accurate and match
-  [`builder-config.md`](builder-config.md).
-- No private Knowledge files were uploaded — only the nine generated
-  bundles from `knowledge/`.
+- `plugin.json` passes `scripts/validate-chatgpt-plugin.sh` (or `.ps1`),
+  which enforces the documented manifest limits.
+- The listing text matches [`plugin-config.md`](plugin-config.md).
+- The archive contains only the allowlisted files — no personal records,
+  no Golden Journey content (see [`package-manifest.md`](package-manifest.md)).
 - There is no misleading affiliation with any company, job board, or
   platform.
 - There is no unsupported guarantee of job outcomes, guaranteed current
   data, or guaranteed automation.
-- No external Actions or Apps are configured.
+- No apps, hooks, or MCP servers are declared — submission with apps or
+  hooks is not currently accepted, and this package defines none.
 - [`testing-guide.md`](testing-guide.md) passes in full.
-- Privacy boundaries are visible to a new user — the description and
-  Instructions should make clear what the GPT does and does not do (see
-  the explicit non-actions in [`instructions.md`](instructions.md)).
-- Any Builder Profile requirements the platform itself presents (for
-  example, a verified builder name) are completed.
+- The required skill scans complete successfully, and the primary plugin
+  icon required by the dashboard has been supplied (this repository does
+  not ship one; see the brief in [`plugin-config.md`](plugin-config.md)).
 
 ## What this guide does not promise
 
-Not every account or workspace supports every sharing mode described
-above — availability depends on your platform plan and configuration.
-This guide documents the stages in the order they're meant to be used; it
-does not guarantee any specific stage is available to you.
+Submission requirements, review rules, and available sharing modes are
+set by OpenAI and change over time. This guide records what was verified
+against OpenAI's plugin documentation when the package was created; check
+the current submission documentation before each submission.

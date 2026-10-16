@@ -1134,7 +1134,7 @@ Surfaces all eight [Company Ranking Model](../ranking/company-ranking-model.md) 
 
 # Readability and Voice Guide
 
-Canonical style guidance for every generated answer, referenced from [core/output-contracts.md](../core/output-contracts.md#readability-and-voice). It changes how an output is *written*, never what it must *contain*: required fields, canonical column names and order, evidence citations, confidence labels, freshness markers (`checked_at`), statuses, and disclaimers are unchanged. Platform layers (Custom GPT, Claude Skill, Claude Project) adapt this guide; they do not redefine it.
+Canonical style guidance for every generated answer, referenced from [core/output-contracts.md](../core/output-contracts.md#readability-and-voice). It changes how an output is *written*, never what it must *contain*: required fields, canonical column names and order, evidence citations, confidence labels, freshness markers (`checked_at`), statuses, and disclaimers are unchanged. Platform layers (ChatGPT Plugin, Claude Skill, Claude Project) adapt this guide; they do not redefine it.
 
 ## Principles
 

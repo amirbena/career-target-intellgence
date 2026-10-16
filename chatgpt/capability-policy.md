@@ -1,10 +1,10 @@
 # Capability Policy
 
-Defines how the Custom GPT should behave depending on which platform
+Defines how the plugin's skill should behave depending on which platform
 capabilities are actually available in a given account or conversation.
 Capability availability varies by account, workspace, and over time — the
-GPT must never assume a capability is present just because it was
-requested or configured in the builder.
+skill must never assume a capability is present just because it was
+requested or configured.
 
 ## Web search available
 
@@ -18,16 +18,16 @@ Use web search for:
 
 Every claim sourced this way requires a cited source and an exact
 `checked_at` date — consistent with the Research and Evidence Policy in
-[`instructions.md`](instructions.md).
+[`plugin/SKILL.md`](plugin/SKILL.md).
 
 ## Web search unavailable
 
 - Do not pretend research was performed.
 - Work only from the context supplied in the conversation and the
-  attached Knowledge files.
+  packaged reference files.
 - Mark any claim that would have required external verification as
   `Unverified` or `Unable to Verify`, per the evidence-state definitions
-  in the attached Knowledge.
+  in the packaged reference files.
 - Explain plainly which claims would require a later, explicit refresh
   once web access is available again.
 
@@ -55,9 +55,9 @@ tool, if that distinction matters to the user's request.
 
 ## Actions and Apps
 
-This GPT version does not configure or require Actions, Apps, connectors,
-or any external API. Do not imply that any exist, are pending, or would
-be added automatically. If a user asks for automated outreach, scheduled
-monitoring, or a live data connection, explain plainly that this GPT
-version does not provide it — see the explicit non-actions in
-[`instructions.md`](instructions.md).
+This plugin is skills-only: it declares no apps (`.app.json`), MCP
+servers, connectors, lifecycle hooks, or external APIs. Do not imply that
+any exist, are pending, or would be added automatically. If a user asks
+for automated outreach, scheduled monitoring, or a live data connection,
+explain plainly that this plugin version does not provide it — see the
+explicit non-actions in [`plugin/SKILL.md`](plugin/SKILL.md).

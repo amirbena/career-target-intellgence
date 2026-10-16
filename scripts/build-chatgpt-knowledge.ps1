@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Deterministically generates the 9 ChatGPT Custom GPT Knowledge bundles
+    Deterministically generates the 9 ChatGPT Plugin reference bundles
     under chatgpt/knowledge/ from an explicit allowlist of canonical
     repository sources.
 

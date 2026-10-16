@@ -27,7 +27,7 @@ This golden example is expected to later be used to test:
 
 - Claude Skill behavior
 - Claude Project behavior
-- ChatGPT GPT behavior
+- ChatGPT Plugin behavior
 - Cross-platform parity (comparing Claude and ChatGPT outputs against this same synthetic input)
 - Output validation (checking that generated outputs conform to the templates and column contracts exercised here)
 

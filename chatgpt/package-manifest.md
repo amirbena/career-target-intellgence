@@ -1,58 +1,52 @@
 # ChatGPT Package Manifest
 
-Defines the exact structure of the deployable ChatGPT Custom GPT archive.
-See [`README.md`](README.md) for what the package is for, and
-[`knowledge-manifest.md`](knowledge-manifest.md) for the Knowledge
+Defines the exact structure of the deployable ChatGPT Plugin archive. See
+[`README.md`](README.md) for what the package is for,
+[`plugin-config.md`](plugin-config.md) for the manifest values, and
+[`knowledge-manifest.md`](knowledge-manifest.md) for the reference
 bundle-to-source mapping this package embeds.
 
 ## Package identity
 
-- **Package name:** `career-targeting-intelligence-chatgpt`
-- **Output archive:** `dist/career-targeting-intelligence-chatgpt.zip`
-- **Top-level directory inside the archive:** `career-targeting-intelligence-chatgpt/`
+- **Plugin name:** `career-targeting-intelligence`
+- **Output archive:** `dist/career-targeting-intelligence-chatgpt-plugin.zip`
+- **Archive root:** the plugin root — `plugin.json` sits at the top level
+  of the zip, with no wrapping directory. This layout is unconfirmed
+  against the submission dashboard; see
+  [`plugin-config.md`](plugin-config.md#unconfirmed-choices).
 
 ## Expected structure
 
 ```text
-career-targeting-intelligence-chatgpt/
-  README.md
-  instructions.md
-  builder-config.md
-  conversation-starters.md
-  builder-setup.md
-  capability-policy.md
-  testing-guide.md
-  sharing-and-publishing.md
-  knowledge-manifest.md
-
-  knowledge/
-    01-product-and-terminology.md
-    02-candidate-and-search.md
-    03-company-intelligence.md
-    04-people-and-activity.md
-    05-ranking-and-exclusions.md
-    06-workflow-and-state.md
-    07-evidence-confidence-freshness.md
-    08-output-contracts.md
-    09-job-and-company-state.md
+plugin.json
+skills/
+  career-targeting-intelligence/
+    SKILL.md
+    references/
+      capability-policy.md
+      01-product-and-terminology.md
+      02-candidate-and-search.md
+      03-company-intelligence.md
+      04-people-and-activity.md
+      05-ranking-and-exclusions.md
+      06-workflow-and-state.md
+      07-evidence-confidence-freshness.md
+      08-output-contracts.md
+      09-job-and-company-state.md
 ```
 
-Exactly one top-level directory is allowed inside the archive.
+The archive contains file entries only (no directory entries), with
+forward-slash paths. The packagers fail if the archive contents differ
+from this list.
 
 ## Source mapping
 
 | Archive file | Source |
 |---|---|
-| `README.md` | [`README.md`](README.md) |
-| `instructions.md` | [`instructions.md`](instructions.md) |
-| `builder-config.md` | [`builder-config.md`](builder-config.md) |
-| `conversation-starters.md` | [`conversation-starters.md`](conversation-starters.md) |
-| `builder-setup.md` | [`builder-setup.md`](builder-setup.md) |
-| `capability-policy.md` | [`capability-policy.md`](capability-policy.md) |
-| `testing-guide.md` | [`testing-guide.md`](testing-guide.md) |
-| `sharing-and-publishing.md` | [`sharing-and-publishing.md`](sharing-and-publishing.md) |
-| `knowledge-manifest.md` | [`knowledge-manifest.md`](knowledge-manifest.md) |
-| `knowledge/*.md` | The output of `scripts/build-chatgpt-knowledge.sh` / `.ps1`, built first and embedded unchanged |
+| `plugin.json` | [`plugin/plugin.json`](plugin/plugin.json) |
+| `skills/career-targeting-intelligence/SKILL.md` | [`plugin/SKILL.md`](plugin/SKILL.md) |
+| `skills/career-targeting-intelligence/references/capability-policy.md` | [`capability-policy.md`](capability-policy.md) |
+| `skills/career-targeting-intelligence/references/0N-*.md` | The output of `scripts/build-chatgpt-knowledge.sh` / `.ps1`, built first and embedded unchanged |
 
 ## Excluded from the archive
 
@@ -66,21 +60,26 @@ archive never contains:
 - Any Claude distribution files (`claude/`)
 - `examples/` (including the Tova Golden Journey)
 - `tests/`
+- The repository-facing docs in `chatgpt/` (`README.md`,
+  `plugin-config.md`, `package-manifest.md`, `knowledge-manifest.md`,
+  `testing-guide.md`, `sharing-and-publishing.md`)
 - Any real candidate, company, or person data
 - Temporary/staging directories or previous archives
-- Action schemas, API credentials, or any other API configuration
+- App references (`.app.json`), MCP configuration (`mcp.json`), lifecycle
+  hooks, API credentials, or any other API configuration
 - `.DS_Store`, `Thumbs.db`, `__MACOSX/`
 
 ## Building the package
 
 ```bash
-./scripts/package-chatgpt-gpt.sh
+./scripts/package-chatgpt-plugin.sh
 ```
 
 ```powershell
-.\scripts\package-chatgpt-gpt.ps1
+.\scripts\package-chatgpt-plugin.ps1
 ```
 
-Both scripts run the Knowledge builder first (via
-`build-chatgpt-knowledge.sh` / `.ps1`), then assemble the archive around
-its output using the explicit allowlist above.
+Both scripts validate the manifest and skill
+(`validate-chatgpt-plugin.sh` / `.ps1`), run the Knowledge builder
+(`build-chatgpt-knowledge.sh` / `.ps1`), then assemble the archive using
+the explicit allowlist above.

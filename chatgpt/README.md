@@ -1,11 +1,12 @@
-# Career Targeting Intelligence — ChatGPT Custom GPT
+# Career Targeting Intelligence — ChatGPT Plugin
 
-This is the deployable ChatGPT Custom GPT package for Career Targeting
+This is the deployable ChatGPT Plugin package for Career Targeting
 Intelligence. It packages the same methodology defined canonically in
-`core/`, `schemas/`, `ranking/`, `workflows/`, and `outputs/` for
-execution as a ChatGPT Custom GPT.
+`core/`, `schemas/`, `ranking/`, `workflows/`, and `outputs/` as a
+skills-only plugin: one skill plus reference files, with no apps, MCP
+servers, hooks, or external APIs.
 
-## What this GPT does
+## What this plugin does
 
 Given a candidate's background and search constraints, it produces a
 prioritized, evidence-based map of target companies, relevant recruiters
@@ -15,83 +16,50 @@ on themselves, not an automation system.
 
 ## Canonical source and how to regenerate
 
-This archive is generated, not hand-authored. Do not edit
-`instructions.md` or any file under `knowledge/` inside a built archive —
-edit the canonical source (`chatgpt/instructions.md` and the canonical
-files listed in [`knowledge-manifest.md`](knowledge-manifest.md)) and
-rebuild:
+The archive is generated, not hand-authored. Do not edit files inside a
+built archive or the generated `knowledge/` bundles — edit the canonical
+source and rebuild:
+
+- Behavior: [`plugin/SKILL.md`](plugin/SKILL.md)
+- Manifest and listing metadata: [`plugin/plugin.json`](plugin/plugin.json)
+- Reference material: the canonical files listed in
+  [`knowledge-manifest.md`](knowledge-manifest.md)
 
 ```bash
-./scripts/build-chatgpt-knowledge.sh   # regenerates knowledge/*.md
-./scripts/package-chatgpt-gpt.sh       # validates and builds the archive
+./scripts/build-chatgpt-knowledge.sh    # regenerates knowledge/*.md
+./scripts/validate-chatgpt-plugin.sh    # checks manifest and skill limits
+./scripts/package-chatgpt-plugin.sh     # validates and builds the archive
 ```
 
-(`.ps1` equivalents on Windows, run from the repository root.) This
-produces `dist/career-targeting-intelligence-chatgpt.zip`.
+(`.ps1` equivalents on Windows, run from the repository root.) Packaging
+produces `dist/career-targeting-intelligence-chatgpt-plugin.zip`. The
+packager runs the Knowledge builder and the validator itself and fails the
+build on any violation — these are automated constraints, not manual
+checks.
 
-**Instructions length limit:** the packaged `instructions.md` payload
-must be `< 8000` characters (prefer `<= 7600`). `package-chatgpt-gpt.sh`
-runs `scripts/validate-chatgpt-instructions.sh` before building and fails
-the build if the limit is exceeded — this is an automated constraint, not
-a manual check.
-
-## What this archive contains
+## What the archive contains
 
 ```text
-career-targeting-intelligence-chatgpt/
-  README.md
-  instructions.md
-  builder-config.md
-  conversation-starters.md
-  builder-setup.md
-  capability-policy.md
-  testing-guide.md
-  sharing-and-publishing.md
-  knowledge-manifest.md
-  knowledge/
-    01-product-and-terminology.md
-    02-candidate-and-search.md
-    03-company-intelligence.md
-    04-people-and-activity.md
-    05-ranking-and-exclusions.md
-    06-workflow-and-state.md
-    07-evidence-confidence-freshness.md
-    08-output-contracts.md
-    09-job-and-company-state.md
+plugin.json
+skills/career-targeting-intelligence/
+  SKILL.md
+  references/
+    capability-policy.md
+    01-product-and-terminology.md … 09-job-and-company-state.md
 ```
 
 See [`package-manifest.md`](package-manifest.md) for the full structure
-definition and exclusions.
+definition and exclusions, and [`plugin-config.md`](plugin-config.md) for
+the manifest values and limits.
 
-## How to build the GPT
+## Installing and sharing
 
-1. Paste [`instructions.md`](instructions.md) into the GPT's Instructions
-   field.
-2. Upload all nine files under `knowledge/` as Knowledge.
-3. Set the Name, Description, and Capabilities from
-   [`builder-config.md`](builder-config.md).
-4. Add the Conversation Starters from
-   [`conversation-starters.md`](conversation-starters.md).
-
-Full step-by-step instructions: [`builder-setup.md`](builder-setup.md).
-
-## Which nine files to upload as Knowledge
-
-All nine files under `knowledge/`, listed above — no more, no fewer. They
-are generated from canonical repository sources; see
-[`knowledge-manifest.md`](knowledge-manifest.md) for exactly which source
-maps to which bundle.
-
-## What goes into Instructions
-
-The entire content of [`instructions.md`](instructions.md), pasted
-unedited. It defines behavior, routing, trust boundaries, and output
-policy — it deliberately does not duplicate the scoring weights, evidence
-states, or output columns that live in Knowledge instead.
+See [`sharing-and-publishing.md`](sharing-and-publishing.md) for private
+install and directory submission.
 
 ## Required validation
 
-Before sharing or publishing, run every test in
+Before sharing or submitting, run every test in
 [`testing-guide.md`](testing-guide.md) and confirm each behaves as
 documented.
 
@@ -99,16 +67,15 @@ documented.
 
 - This archive contains no real candidate, company, or person data, and
   no Golden Journey example content.
-- Knowledge is reference methodology only — never personal records. See
+- Reference files are methodology only — never personal records. See
   [`knowledge-manifest.md`](knowledge-manifest.md).
-- The GPT does not promise persistence, automatic memory, or guaranteed
+- The plugin does not promise persistence, automatic memory, or guaranteed
   web access — see the explicit non-actions in
-  [`instructions.md`](instructions.md).
+  [`plugin/SKILL.md`](plugin/SKILL.md).
 
-## Actions and APIs are not included
+## Apps, MCP, and APIs are not included
 
-This package configures no Actions, Apps, connectors, or external APIs.
-See [`capability-policy.md`](capability-policy.md) for exactly how the GPT
-behaves with and without built-in platform capabilities like web search
-and data analysis — that is a separate question from Actions/Apps, which
-this package does not use at all.
+This package declares no apps, MCP servers, hooks, connectors, or external
+APIs. See [`capability-policy.md`](capability-policy.md) for how the
+skill behaves with and without built-in platform capabilities like web
+search and data analysis.

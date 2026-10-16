@@ -94,9 +94,9 @@ The shared product specification does not:
 
 The product may use prior context when the platform makes that context available. When prior context is unavailable, it must not pretend to remember it.
 
-### Role of the GPT, Project, and Skill
+### Role of the ChatGPT Plugin, Project, and Skill
 
-The GPT, Claude Project Instructions, and Claude Skill provide:
+The ChatGPT Plugin, Claude Project Instructions, and Claude Skill provide:
 
 - the logical gateway into the product;
 - intent detection;

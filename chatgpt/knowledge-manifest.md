@@ -1,16 +1,16 @@
 # Knowledge Manifest
 
 Defines the nine Knowledge bundles for the Career Targeting Intelligence
-Custom GPT: what each contains, which canonical repository files it's
-generated from, and what Knowledge must never contain. A Custom GPT
-currently accepts up to 10 Knowledge files — this package uses 9,
-comfortably inside that limit.
+ChatGPT Plugin: what each contains, which canonical repository files it's
+generated from, and what Knowledge must never contain. The plugin ships
+them as the skill's `references/` files; the repository keeps the
+generated bundles under `chatgpt/knowledge/`.
 
 Knowledge bundles are generated, not hand-written. Rebuild them with
 [`../scripts/build-chatgpt-knowledge.sh`](../scripts/build-chatgpt-knowledge.sh)
 (or `.ps1`) — never edit a file under `chatgpt/knowledge/` directly. See
-[`instructions.md`](instructions.md) for how the GPT is expected to use
-Knowledge versus Instructions.
+[`plugin/SKILL.md`](plugin/SKILL.md) for how the skill is expected to use
+reference files versus its own instructions.
 
 ## What Knowledge contains
 
@@ -24,9 +24,9 @@ Knowledge versus Instructions.
 
 ## What Knowledge must not contain
 
-- Behavioral instructions that belong in [`instructions.md`](instructions.md)
+- Behavioral instructions that belong in [`plugin/SKILL.md`](plugin/SKILL.md)
   (routing, clarification policy, non-actions) — Knowledge is reference
-  material, not GPT configuration.
+  material, not skill configuration.
 - Personal candidate records.
 - Tova or any other Golden Journey content.
 - Repository-development rules (`AGENTS.md`, `CLAUDE.md`, working rules,
@@ -173,7 +173,7 @@ Knowledge bundle.
   called out (none currently are).
 - Rebuilding the bundles from unchanged sources must produce identical
   file contents — the build scripts are deterministic.
-- No personal data, Golden Journey content, or GPT behavioral instructions
+- No personal data, Golden Journey content, or skill behavioral instructions
   may enter a bundle. If a future canonical source changes to include
   such content, the build should fail loudly rather than propagate it
   silently — but as of this package, no canonical source referenced above

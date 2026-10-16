@@ -66,31 +66,31 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
 
 ## ChatGPT packaging rules
 
-- `chatgpt/instructions.md` is the canonical Custom GPT behavior source.
-- GPT Instructions define behavior; Knowledge defines reference material.
+- The ChatGPT package is a skills-only ChatGPT Plugin. `chatgpt/plugin/SKILL.md`
+  is the canonical behavior source and `chatgpt/plugin/plugin.json` is the
+  canonical manifest.
+- The skill defines behavior; reference files define reference material.
 - Generated Knowledge bundles must not be edited manually.
-- Knowledge bundles derive only from explicit canonical source allowlists.
-- Keep the Knowledge file count within the current GPT limit.
-- Do not upload Golden Journey or personal records as shared GPT
-  Knowledge.
-- The GPT must not claim unavailable memory, browsing, storage, or
+- Knowledge bundles derive only from explicit canonical source allowlists
+  and ship as the skill's `references/` files.
+- Manifest fields must stay within OpenAI's documented plugin limits
+  (see `chatgpt/plugin-config.md`), enforced by
+  `scripts/validate-chatgpt-plugin.sh` / `.ps1` and run by the packagers.
+- The plugin archive is built from an explicit allowlist, and the
+  packagers verify the archive's exact file list, with forward-slash
+  paths and no directory entries.
+- Do not include Golden Journey or personal records in the plugin
+  package.
+- The plugin must not claim unavailable memory, browsing, storage, or
   automation.
-- Actions, Apps, APIs, monitoring, and outreach execution remain out of
-  scope.
-- macOS/Linux and Windows builders and packagers must remain logically
-  equivalent.
-- Every ChatGPT package change must validate Instructions, Knowledge
-  parity, normalized archive paths, and privacy exclusions.
+- Apps (`.app.json`), MCP servers, lifecycle hooks, external APIs,
+  monitoring, and outreach execution remain out of scope.
+- macOS/Linux and Windows validators, builders, and packagers must
+  remain logically equivalent.
+- Every ChatGPT package change must validate the manifest and skill,
+  reference parity, normalized archive paths, and privacy exclusions.
 - Claude-only files must not be changed unless shared documentation
   genuinely requires it.
 - Remove obsolete `.gitkeep` files when real content is added.
-- The final packaged ChatGPT Instructions payload (the exact text pasted
-  into the Custom GPT's Instructions field) must be < 8000 characters;
-  prefer <= 7600 to retain headroom.
-- Measure the actual final payload copied into the GPT Instructions field,
-  not a partial or pre-edit draft.
-- Compress structurally to stay within the limit; do not remove required
-  product behavior merely to satisfy it.
-- The canonical source of the Instructions payload remains
-  `chatgpt/instructions.md` unless repository architecture changes.
-
+- Re-check OpenAI's current plugin documentation before changing the
+  manifest shape or limits; they are set by OpenAI and change over time.
