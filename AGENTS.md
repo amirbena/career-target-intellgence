@@ -274,6 +274,11 @@ is nothing useful to add. The Issue must make sense to someone who was
 not present when the work was discovered. `.github/ISSUE_TEMPLATE/`
 carries the structure.
 
+Label every issue with one `type:`, one `area:`, and one `priority:`
+label matching its form answers, as defined in
+[docs/issue-labels.md](docs/issue-labels.md). `priority: P0` is applied
+manually only.
+
 ### Pull request descriptions
 
 Pull request descriptions are reviewer-facing communication, whether the
@@ -426,3 +431,4 @@ canonical rule here and only add its own specialization.
 - [README.md](README.md)
 - [core/scope-and-non-goals.md](core/scope-and-non-goals.md)
 - [CLAUDE.md](CLAUDE.md)
+- [docs/issue-labels.md](docs/issue-labels.md)

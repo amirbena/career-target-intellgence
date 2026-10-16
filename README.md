@@ -55,6 +55,7 @@ once, in `core/`.
 | `chatgpt/` | ChatGPT Custom GPT instructions and Knowledge bundles |
 | `scripts/` | Build, packaging, and validation scripts for every platform |
 | `tests/` | Synthetic verification scenarios and packaging/quality-gate checklists |
+| `docs/` | Repository documentation, including the [issue label taxonomy](docs/issue-labels.md) |
 | `.github/` | GitHub contribution templates (Engineering Task Issue Form, pull request template) |
 | `examples/tova/` | The fully synthetic Golden Journey example |
 
