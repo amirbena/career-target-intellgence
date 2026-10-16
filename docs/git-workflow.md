@@ -324,6 +324,7 @@ the existing `1.0.0` changelog section. Preview with
 `scripts/release.sh --dry-run` or the workflow's manual dry-run input.
 
 Required setup: the App is installed on the repository, its ID is stored
-as the `RELEASE_APP_ID` repository variable and its private key as the
-`RELEASE_APP_PRIVATE_KEY` secret, and it is on the `main` ruleset's bypass
+as the `RELEASE_APP_ID` variable and its private key as the
+`RELEASE_APP_PRIVATE_KEY` secret of the `release` GitHub Actions
+environment, and it is on the `main` ruleset's bypass
 list so it can push the release commit.

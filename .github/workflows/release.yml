@@ -21,6 +21,7 @@ permissions:
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: release
     steps:
       # The "Skill Release Automation" GitHub App is the release identity. It
       # must be installed on this repo and allowed to bypass the main ruleset.
