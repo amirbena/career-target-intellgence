@@ -16,7 +16,7 @@ param(
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
-$RepoRoot = Split-Path -Parent $PSScriptRoot
+$RepoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 if (-not $DistDir) { $DistDir = Join-Path $RepoRoot "dist" }
 $Version = $Version.TrimStart("v")
 

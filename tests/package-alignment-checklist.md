@@ -5,11 +5,11 @@ Confirms the three distributed platform surfaces stay semantically aligned with 
 ## Build commands to run
 
 ```bash
-./scripts/build-chatgpt-knowledge.sh
-./scripts/package-chatgpt-plugin.sh
-./scripts/package-claude-skill.sh
-./scripts/package-claude-external-kit.sh
-./scripts/package-claude-plugin.sh
+./scripts/package/build-chatgpt-knowledge.sh
+./scripts/package/package-chatgpt-plugin.sh
+./scripts/package/package-claude-skill.sh
+./scripts/package/package-claude-external-kit.sh
+./scripts/package/package-claude-plugin.sh
 ```
 
 Each script must exit successfully and print its packaged file list. None of them should be hand-edited afterward — a mismatch is fixed by editing the canonical source and re-running the script, never by editing `chatgpt/knowledge/*.md`, `dist/*.zip` contents, or any generated bundle directly.
@@ -35,10 +35,10 @@ Run when changing packaging scripts or the release process. The GitHub Release t
 
 ```bash
 export RELEASE_VERSION=9.9.9   # any MAJOR.MINOR.PATCH
-./scripts/package-claude-skill.sh && ./scripts/package-claude-external-kit.sh \
-  && ./scripts/package-claude-plugin.sh && ./scripts/package-chatgpt-plugin.sh
-./scripts/verify-archive-versions.sh "$RELEASE_VERSION"   # must pass
-./scripts/verify-archive-versions.sh 0.0.0                # must fail
+./scripts/package/package-claude-skill.sh && ./scripts/package/package-claude-external-kit.sh \
+  && ./scripts/package/package-claude-plugin.sh && ./scripts/package/package-chatgpt-plugin.sh
+./scripts/validate/verify-archive-versions.sh "$RELEASE_VERSION"   # must pass
+./scripts/validate/verify-archive-versions.sh 0.0.0                # must fail
 ```
 
 | # | Check |

@@ -53,7 +53,7 @@ once, in `core/`.
 | `outputs/` | Canonical output templates and CSV column contracts |
 | `claude/` | Claude Skill, Claude Project instructions, and the external self-install kit |
 | `chatgpt/` | ChatGPT Plugin skill, manifest, and reference bundles |
-| `scripts/` | Build, packaging, and validation scripts for every platform |
+| `scripts/` | Scripts grouped by purpose: `package/` (archives and generated knowledge), `validate/` (CI and packaging checks), `release/` (release orchestration); `.sh` and `.ps1` pairs sit together |
 | `tests/` | Synthetic verification scenarios and packaging/quality-gate checklists |
 | `docs/` | Contributor documentation: [Git and PR workflow](docs/git-workflow.md), [packaging rules](docs/packaging-rules.md), [issue label taxonomy](docs/issue-labels.md) |
 | `.github/` | GitHub contribution templates (Engineering Task Issue Form, pull request template) |
@@ -213,12 +213,12 @@ that platform's validator before packaging.
 - Canonical source: [chatgpt/plugin/SKILL.md](chatgpt/plugin/SKILL.md) (behavior) + [chatgpt/plugin/plugin.json](chatgpt/plugin/plugin.json) (manifest) + [chatgpt/knowledge-manifest.md](chatgpt/knowledge-manifest.md)-mapped bundles (reference material)
 - Build:
   ```bash
-  ./scripts/build-chatgpt-knowledge.sh
-  ./scripts/package-chatgpt-plugin.sh
+  ./scripts/package/build-chatgpt-knowledge.sh
+  ./scripts/package/package-chatgpt-plugin.sh
   ```
   (`.ps1` equivalents on Windows)
 - Output: `dist/career-targeting-intelligence-chatgpt-plugin.zip` — skills-only; no apps, MCP servers, hooks, or external APIs
-- Limits: manifest fields must stay within OpenAI's documented plugin limits; enforced by `scripts/validate-chatgpt-plugin.sh`
+- Limits: manifest fields must stay within OpenAI's documented plugin limits; enforced by `scripts/validate/validate-chatgpt-plugin.sh`
 - More: [chatgpt/plugin-config.md](chatgpt/plugin-config.md) (manifest values and limits), [chatgpt/testing-guide.md](chatgpt/testing-guide.md) (smoke tests), [chatgpt/package-manifest.md](chatgpt/package-manifest.md) (package structure)
 
 ### Claude Project
@@ -229,14 +229,14 @@ that platform's validator before packaging.
   [external self-install kit](claude/external-install/README.md) bundles
   the Skill, Instructions, and approved Knowledge:
   ```bash
-  ./scripts/package-claude-external-kit.sh
+  ./scripts/package/package-claude-external-kit.sh
   ```
   producing `dist/career-targeting-intelligence-claude-kit.zip`
 
 ### Claude Plugin
 
 - Canonical source: [claude/plugin/plugin.json](claude/plugin/plugin.json) (manifest) + the Claude Skill sources — the Skill is not forked
-- Build: `./scripts/package-claude-plugin.sh` (`.ps1` on Windows), producing `dist/career-targeting-intelligence-claude-plugin.zip`
+- Build: `./scripts/package/package-claude-plugin.sh` (`.ps1` on Windows), producing `dist/career-targeting-intelligence-claude-plugin.zip`
 - Versions: set `RELEASE_VERSION` when packaging; the GitHub Release tag is the single source of truth ([claude/packaging.md](claude/packaging.md))
 
 ### Claude Skill
@@ -244,17 +244,17 @@ that platform's validator before packaging.
 - Canonical source: [skills/career-targeting-intelligence/SKILL.md](skills/career-targeting-intelligence/SKILL.md) entry point, packaged via an explicit allowlist ([claude/skill-manifest.md](claude/skill-manifest.md)) — never a recursive repository copy
 - Build:
   ```bash
-  ./scripts/package-claude-skill.sh
+  ./scripts/package/package-claude-skill.sh
   ```
   (`.ps1` equivalent on Windows)
 - Output: `dist/career-targeting-intelligence.skill.zip`
-- Limit: the packaged Skill `description` (SKILL.md YAML frontmatter) must be `< 2400` characters (prefer `<= 2200`); enforced by `scripts/validate-skill-description.sh`
+- Limit: the packaged Skill `description` (SKILL.md YAML frontmatter) must be `< 2400` characters (prefer `<= 2200`); enforced by `scripts/validate/validate-skill-description.sh`
 - Packaging guide: [claude/packaging.md](claude/packaging.md)
 
 ## Validation
 
-- `scripts/validate-chatgpt-plugin.sh` / `.ps1` — ChatGPT Plugin manifest and skill gate, run automatically by `package-chatgpt-plugin.sh`
-- `scripts/validate-skill-description.sh` / `.ps1` — Claude Skill description length gate, run automatically by `package-claude-skill.sh`
+- `scripts/validate/validate-chatgpt-plugin.sh` / `.ps1` — ChatGPT Plugin manifest and skill gate, run automatically by `scripts/package/package-chatgpt-plugin.sh`
+- `scripts/validate/validate-skill-description.sh` / `.ps1` — Claude Skill description length gate, run automatically by `scripts/package/package-claude-skill.sh`
 - [tests/README.md](tests/README.md) — synthetic job-verification scenarios, quality-gate checklist, and package-alignment checklist (this repository is documentation-driven; these are reviewed synthetic scenarios rather than executable unit tests)
 
 ## Development workflow

@@ -2,7 +2,7 @@
 #
 # Validates a pull request's release classification. Pure string checks: it
 # never calculates a version, edits CHANGELOG.md, tags, or releases. Those
-# stay in scripts/release.sh, which reads the same label after merge.
+# stay in scripts/release/release.sh, which reads the same label after merge.
 #
 # Rules:
 #   - exactly one `release: major|minor|patch|none` label

@@ -22,7 +22,7 @@ function Fail {
     exit 1
 }
 
-$RepoRoot = Split-Path -Parent $PSScriptRoot
+$RepoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $ChatGptDir = Join-Path $RepoRoot "chatgpt"
 $PluginSrcDir = Join-Path $ChatGptDir "plugin"
 $KnowledgeDir = Join-Path $ChatGptDir "knowledge"
@@ -34,7 +34,7 @@ $SkillName = "career-targeting-intelligence"
 $OutputZip = Join-Path $DistDir "$PackageName.zip"
 
 # Validate the manifest and skill against the plugin limits before packaging.
-$Validator = Join-Path $PSScriptRoot "validate-chatgpt-plugin.ps1"
+$Validator = Join-Path $PSScriptRoot "../validate/validate-chatgpt-plugin.ps1"
 if (-not (Test-Path -LiteralPath $Validator -PathType Leaf)) {
     Fail "required validation script not found: $Validator"
 }

@@ -24,12 +24,12 @@ if ($ReleaseVersion -and $ReleaseVersion -notmatch '^\d+\.\d+\.\d+$') {
     Fail "RELEASE_VERSION must be MAJOR.MINOR.PATCH, got: $ReleaseVersion"
 }
 
-$RepoRoot = Split-Path -Parent $PSScriptRoot
+$RepoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $SkillSourceDir = Join-Path $RepoRoot "skills\career-targeting-intelligence"
 
 # Validate the Skill description field payload stays within the Claude
 # Skill description character limit before packaging anything.
-$DescriptionValidator = Join-Path $PSScriptRoot "validate-skill-description.ps1"
+$DescriptionValidator = Join-Path $PSScriptRoot "../validate/validate-skill-description.ps1"
 if (-not (Test-Path -LiteralPath $DescriptionValidator -PathType Leaf)) {
     Fail "required validation script not found: $DescriptionValidator"
 }

@@ -60,14 +60,14 @@ archive's contents directly. Edit the canonical sources it packages
 [`skills/career-targeting-intelligence/`](../../skills/career-targeting-intelligence/)) and rebuild:
 
 ```bash
-./scripts/package-claude-external-kit.sh
+./scripts/package/package-claude-external-kit.sh
 ```
 
 (`.ps1` equivalent on Windows, run from the repository root.) This
 produces `dist/career-targeting-intelligence-claude-kit.zip`, which
 embeds the packaged Skill ZIP. Since it embeds the Skill package, the
 Skill's `description` length limit (`< 2400` characters, prefer
-`<= 2200`, enforced by `scripts/validate-skill-description.sh`) applies
+`<= 2200`, enforced by `scripts/validate/validate-skill-description.sh`) applies
 transitively.
 
 ## Related documents

@@ -7,7 +7,7 @@ them as the skill's `references/` files; the repository keeps the
 generated bundles under `chatgpt/knowledge/`.
 
 Knowledge bundles are generated, not hand-written. Rebuild them with
-[`../scripts/build-chatgpt-knowledge.sh`](../scripts/build-chatgpt-knowledge.sh)
+[`../scripts/package/build-chatgpt-knowledge.sh`](../scripts/package/build-chatgpt-knowledge.sh)
 (or `.ps1`) — never edit a file under `chatgpt/knowledge/` directly. See
 [`plugin/SKILL.md`](plugin/SKILL.md) for how the skill is expected to use
 reference files versus its own instructions.

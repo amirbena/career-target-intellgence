@@ -27,7 +27,7 @@ function Fail {
     exit 1
 }
 
-$RepoRoot = Split-Path -Parent $PSScriptRoot
+$RepoRoot = Split-Path -Parent (Split-Path -Parent $PSScriptRoot)
 $SkillFile = Join-Path $RepoRoot "skills\career-targeting-intelligence\SKILL.md"
 
 $HardLimit = 2400

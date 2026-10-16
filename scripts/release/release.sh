@@ -8,7 +8,7 @@
 # changelog sections, and release assets are never duplicated, and a missing
 # Release or missing assets for the latest tag are recovered.
 #
-# Usage: scripts/release.sh [--dry-run]
+# Usage: scripts/release/release.sh [--dry-run]
 # Needs: git, zip; gh + GH_TOKEN when publishing.
 # Optional: GIT_USER_NAME / GIT_USER_EMAIL for the release commit identity.
 set -euo pipefail
@@ -24,6 +24,15 @@ ASSETS=(
   career-targeting-intelligence-claude-plugin.zip
   career-targeting-intelligence-chatgpt-plugin.zip
 )
+# Locate a script in a tagged worktree: current grouped layout first, then the
+# flat scripts/ layout used by tags that predate it. Prints nothing if absent.
+tagged_script() { # $1=worktree $2=script file name
+  local d
+  for d in package validate release .; do
+    [ -x "$1/scripts/$d/$2" ] && { echo "$1/scripts/$d/$2"; return 0; }
+  done
+  return 0
+}
 # asset -> packaging script (run from the tagged revision)
 packager_for() {
   case "$1" in
@@ -64,18 +73,20 @@ ensure_release() { # $1=version
   # Build from the tagged revision with RELEASE_VERSION. A tag whose packager
   # is missing or predates RELEASE_VERSION cannot produce a version-correct
   # asset, so it is skipped rather than built from newer sources.
-  local files=() a pk built=()
+  local files=() a pk pkpath verifier built=()
   for a in "${missing[@]}"; do
     pk="$(packager_for "$a")"
-    if [ ! -x "$WT/scripts/$pk" ] || ! grep -q RELEASE_VERSION "$WT/scripts/$pk"; then
+    pkpath="$(tagged_script "$WT" "$pk")"
+    if [ -z "$pkpath" ] || ! grep -q RELEASE_VERSION "$pkpath"; then
       echo "warning: $tag has no $pk with RELEASE_VERSION support; skipping $a" >&2; continue
     fi
-    RELEASE_VERSION="$1" "$WT/scripts/$pk" >/dev/null
+    RELEASE_VERSION="$1" "$pkpath" >/dev/null
     files+=("$WT/dist/$a"); built+=("$a")
   done
   # Fail the release if any built archive's embedded version differs from the tag.
-  if [ -x "$WT/scripts/verify-archive-versions.sh" ] && [ "${#built[@]}" -gt 0 ]; then
-    "$WT/scripts/verify-archive-versions.sh" "$1" "$WT/dist" "${built[@]}"
+  verifier="$(tagged_script "$WT" verify-archive-versions.sh)"
+  if [ -n "$verifier" ] && [ "${#built[@]}" -gt 0 ]; then
+    "$verifier" "$1" "$WT/dist" "${built[@]}"
   fi
   [ "${#files[@]}" -gt 0 ] || { echo "No buildable assets for $tag."; return 0; }
   if gh release view "$tag" >/dev/null 2>&1; then
@@ -107,7 +118,7 @@ if [ -z "$LAST_TAG" ]; then
 fi
 
 # Release level a commit's merged PR declared with a `release: <level>` label
-# (see scripts/validate-pr-release.sh). Prints major|minor|patch|none, or
+# (see scripts/validate/validate-pr-release.sh). Prints major|minor|patch|none, or
 # nothing when the lookup succeeded and found no PR or no release label;
 # callers then fall back to the Conventional Commit subject. A failed lookup
 # (API error, missing permission) returns 1 so the release stops instead of

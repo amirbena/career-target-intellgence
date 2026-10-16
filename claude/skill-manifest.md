@@ -134,7 +134,7 @@ root.
 macOS / Linux:
 
 ```bash
-./scripts/package-claude-skill.sh
+./scripts/package/package-claude-skill.sh
 ```
 
 Windows PowerShell:

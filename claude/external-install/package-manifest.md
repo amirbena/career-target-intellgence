@@ -58,7 +58,7 @@ Exactly one top-level directory is allowed inside the archive.
 | `conversation-starters.md` | [`external-install/conversation-starters.md`](conversation-starters.md) |
 | `verification-guide.md` | [`external-install/verification-guide.md`](verification-guide.md) |
 | `privacy-guide.md` | [`external-install/privacy-guide.md`](privacy-guide.md) |
-| `skill/career-targeting-intelligence.skill.zip` | The output of `scripts/package-claude-skill.sh` / `.ps1`, built first and embedded unchanged |
+| `skill/career-targeting-intelligence.skill.zip` | The output of `scripts/package/package-claude-skill.sh` / `.ps1`, built first and embedded unchanged |
 | `knowledge/*.md` | The fixed allowlist in [`knowledge-files.md`](knowledge-files.md), each copied byte-for-byte from its canonical `core/` or `ranking/` source |
 
 ## Excluded from the kit
@@ -81,7 +81,7 @@ never contains:
 ## Building the kit
 
 ```bash
-./scripts/package-claude-external-kit.sh
+./scripts/package/package-claude-external-kit.sh
 ```
 
 ```powershell
