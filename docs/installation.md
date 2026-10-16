@@ -8,7 +8,7 @@ Release artifacts are attached to each
 
 | Method | Status |
 | --- | --- |
-| [Claude Code marketplace](#claude-code-marketplace) | Verified locally with `claude plugin validate` and `marketplace add` / `install`; the GitHub form works once this change is on `main` |
+| [Claude Code marketplace](#claude-code-marketplace) | Verified locally with `marketplace add` / `install`; repository structure is checked by `validate-claude-plugin.sh` (no CLI needed) |
 | [Codex CLI marketplace](#codex-cli-marketplace) | **Verified** from GitHub (marketplace add, plugin add, plugin list) |
 | [Claude Plugin ZIP](#claude-plugin-zip) | Available |
 | [ChatGPT Plugin (local marketplace)](#chatgpt-plugin) | Plugin invocation in ChatGPT verified; the Desktop local-marketplace steps below are per OpenAI docs and **not verified end-to-end** |
@@ -38,9 +38,17 @@ Activate: run `/reload-plugins` (or start a new session), then ask *"Here is my 
 
 Update with `claude plugin marketplace update career-targeting-intelligence`. The plugin tracks the repository's default branch, and each release commit writes the release version into the marketplace entry and plugin manifest so Claude can compare versions. Update detection in Claude Desktop is **not yet verified** against a real newer release.
 
-Local test from a checkout: `claude plugin validate .` then `claude plugin marketplace add .`.
+Local test from a checkout: `claude plugin marketplace add .`. See [Manual verification](#manual-verification).
 
 Docs: [Create and distribute a plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces).
+
+### Manual verification
+
+CI (`scripts/validate/validate-claude-plugin.sh`) checks only repository structure: JSON syntax, required marketplace fields, source and skill paths, and that the marketplace and plugin versions match. It does not install anything and does not verify Claude Desktop compatibility or Update button behavior. After a release, check by hand with a real Claude install:
+
+1. `claude plugin marketplace add amirbena/career-target-intellgence` (or `claude plugin marketplace update career-targeting-intelligence` if already added).
+2. `claude plugin install career-targeting-intelligence@career-targeting-intelligence`, then confirm the reported version equals the release version, not a commit SHA.
+3. After the *next* release, update the marketplace and confirm the Update button (Claude Desktop) or `claude plugin update` offers the newer version.
 
 ## Codex CLI marketplace
 

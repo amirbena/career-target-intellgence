@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 #
-# Validates the Claude Plugin manifest (claude/plugin/plugin.json) against the
-# documented Claude Plugin requirements and the Skill it wraps
-# (skills/career-targeting-intelligence/SKILL.md). When the `claude` CLI is available and a built
-# plugin directory is passed as $1, also runs `claude plugin validate`.
+# Validates the Claude Plugin manifest (claude/plugin/plugin.json) and the
+# marketplace manifest (.claude-plugin/marketplace.json) as repository
+# structure: JSON syntax, required fields, source/skill paths, and version
+# consistency, plus the Skill the plugin wraps
+# (skills/career-targeting-intelligence/SKILL.md). When a built plugin
+# directory is passed as $1, also checks its layout. It does not invoke the
+# `claude` CLI and does not prove Claude can install or update the plugin;
+# that is a manual check (docs/installation.md#manual-verification).
 #
 # Works when invoked from inside or outside the repository root, since all
 # paths are resolved relative to this script's own location.
@@ -29,6 +33,7 @@ command -v python3 >/dev/null 2>&1 || fail "python3 is required but was not foun
 
 python3 - "${MANIFEST_FILE}" "${SKILL_FILE}" "${MARKETPLACE_FILE}" <<'PY'
 import json
+import os
 import re
 import sys
 
@@ -52,18 +57,32 @@ version = manifest.get("version")
 check(isinstance(version, str) and re.fullmatch(r"\d+\.\d+\.\d+", version or ""), "version must be MAJOR.MINOR.PATCH")
 desc = manifest.get("description")
 check(isinstance(desc, str) and desc.strip() != "", "description must be a non-empty string")
-# Claude Marketplace reads the version from the marketplace entry, so it must
-# match the plugin manifest (release.sh keeps them in sync).
+# Marketplace manifest: syntax, required fields, paths, version consistency.
+# release.sh keeps the marketplace entry version equal to plugin.json.
+repo_root = os.path.dirname(os.path.dirname(os.path.abspath(marketplace_path)))
 try:
     with open(marketplace_path, encoding="utf-8") as f:
-        entry = next((p for p in json.load(f).get("plugins", []) if p.get("name") == name), None)
+        market = json.load(f)
 except (OSError, json.JSONDecodeError) as e:
+    market = None
+    errors.append(f"marketplace.json unreadable or invalid JSON: {e}")
+if market is not None:
+    check(isinstance(market.get("name"), str) and re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", market.get("name") or ""), "marketplace name must be kebab-case")
+    check(isinstance((market.get("owner") or {}).get("name"), str), "marketplace owner.name is required")
+    plugins = market.get("plugins")
+    check(isinstance(plugins, list) and plugins, "marketplace plugins must be a non-empty list")
     entry = None
-    errors.append(f"marketplace.json unreadable: {e}")
-else:
-    check(entry is not None, "marketplace.json has no entry for the plugin")
-    check(entry is None or entry.get("version") == version,
-          "marketplace.json plugin version must equal plugin.json version")
+    for p in plugins if isinstance(plugins, list) else []:
+        if p.get("name") == name:
+            entry = p
+        check(isinstance(p.get("source"), str), f"plugin entry {p.get('name')!r} needs a string source")
+        if isinstance(p.get("source"), str):
+            check(os.path.isdir(os.path.normpath(os.path.join(repo_root, p["source"]))), f"source path not found: {p['source']}")
+        for sk in p.get("skills", []):
+            check(os.path.isfile(os.path.join(repo_root, sk, "SKILL.md")), f"skills path has no SKILL.md: {sk}")
+    check(entry is not None, "marketplace.json has no entry matching the plugin name")
+    if entry is not None:
+        check(entry.get("version") == version, "marketplace.json plugin version must equal plugin.json version")
 for forbidden in ("hooks", "mcpServers", "commands", "agents"):
     check(forbidden not in manifest, f"manifest must not declare '{forbidden}' (skills-only plugin)")
 
@@ -83,11 +102,9 @@ print("plugin.json: valid")
 PY
 
 if [ -n "${BUILT_PLUGIN_DIR}" ]; then
-  if command -v claude >/dev/null 2>&1; then
-    claude plugin validate "${BUILT_PLUGIN_DIR}" || fail "'claude plugin validate' failed for ${BUILT_PLUGIN_DIR}"
-  else
-    echo "note: 'claude' CLI not found; skipping 'claude plugin validate'." >&2
-  fi
+  [ -f "${BUILT_PLUGIN_DIR}/.claude-plugin/plugin.json" ] || fail "built plugin is missing .claude-plugin/plugin.json: ${BUILT_PLUGIN_DIR}"
+  [ -f "${BUILT_PLUGIN_DIR}/skills/career-targeting-intelligence/SKILL.md" ] || fail "built plugin is missing skills/career-targeting-intelligence/SKILL.md: ${BUILT_PLUGIN_DIR}"
+  python3 -c 'import json,sys; json.load(open(sys.argv[1]))' "${BUILT_PLUGIN_DIR}/.claude-plugin/plugin.json" || fail "built plugin.json is not valid JSON"
 fi
 
 echo "OK: Claude Plugin manifest and skill are valid."

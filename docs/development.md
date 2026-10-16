@@ -54,6 +54,6 @@ that platform's validator before packaging.
 ## Validation
 
 - `scripts/validate/validate-chatgpt-plugin.sh` / `.ps1` — ChatGPT Plugin manifest and skill gate, run automatically by `scripts/package/package-chatgpt-plugin.sh`
-- `claude plugin validate .` — Claude marketplace manifest (`.claude-plugin/marketplace.json`) and the plugin it lists; requires the `claude` CLI
+- `scripts/validate/validate-claude-plugin.sh` / `.ps1` — Claude plugin manifest and marketplace manifest (`.claude-plugin/marketplace.json`): JSON syntax, required fields, source/skill paths, version consistency. Needs only `python3`; CI never invokes the `claude` CLI. Whether Claude can actually install and update the plugin is a [manual check](installation.md#manual-verification)
 - `scripts/validate/validate-skill-description.sh` / `.ps1` — Claude Skill description length gate, run automatically by `scripts/package/package-claude-skill.sh`
 - [tests/README.md](../tests/README.md) — synthetic job-verification scenarios, quality-gate checklist, and package-alignment checklist (this repository is documentation-driven; these are reviewed synthetic scenarios rather than executable unit tests)

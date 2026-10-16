@@ -169,8 +169,8 @@ claude.ai **Upload plugin** and `claude --plugin-dir`.
 
 ### Layout decision
 
-Checked against `claude plugin validate` (Claude Code CLI) when this was
-added; re-check Claude's current plugin documentation before changing it.
+Checked once by hand with the Claude Code CLI when this was added (CI does
+not run the CLI); re-check Claude's current plugin documentation before changing it.
 
 - The manifest lives at `.claude-plugin/plugin.json` at the archive root.
   Only `name` is required; this package sets `name`, `version`,

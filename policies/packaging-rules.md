@@ -74,8 +74,8 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
   `references/*.md`, and `templates/*.md` allowlist as the Skill ZIP.
 - It is a skills-only plugin: no hooks, MCP servers, commands, or agents.
 - The packagers verify the exact archive file list (forward-slash paths, no
-  directory entries) and run `claude plugin validate` when the `claude` CLI
-  is available.
+  directory entries) and run `scripts/validate/validate-claude-plugin.sh`
+  on the built plugin; neither needs the `claude` CLI.
 - No Golden Journey content or personal data.
 - `scripts/package/package-claude-plugin.sh` / `.ps1` and
   `scripts/validate/validate-claude-plugin.sh` / `.ps1` must remain logically
@@ -87,9 +87,12 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
   marketplace. Its single entry uses the repository root as the plugin
   source and points `skills` at the canonical
   `skills/career-targeting-intelligence/` directory; it copies no Skill
-  files and declares no `version` (the commit identifies the version).
+  files. Its `version` is written by `scripts/release/release.sh` in the
+  `chore(release)` commit and must equal `claude/plugin/plugin.json`.
 - Keep the entry `name` equal to the plugin name and run
-  `claude plugin validate .` after any edit.
+  `scripts/validate/validate-claude-plugin.sh` after any edit. CI does not
+  invoke the `claude` CLI; installing and updating in Claude is verified
+  manually ([docs/installation.md](../docs/installation.md#manual-verification)).
 - Keep the plugin skills-only; the marketplace adds no hooks, MCP servers,
   commands, or agents.
 - The ChatGPT plugin has no repository marketplace: OpenAI marketplaces
