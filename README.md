@@ -138,10 +138,10 @@ Release artifacts are attached to each [GitHub Release](https://github.com/amirb
 Prerequisite: Node.js 18+ (includes `npx`). Run in your project, or add `-g` for a user-level install:
 
 ```bash
-npx skills add https://github.com/amirbena/career-target-intellgence/tree/main/claude/skill
+npx skills add amirbena/career-target-intellgence
 ```
 
-Use this full URL, not `npx skills add amirbena/career-target-intellgence`: the repository holds two skills with the same name, and the short form installs the ChatGPT one, which has no Claude references. The command prompts you to pick the target agent(s); skip the prompt with `-a <agent>` (for example `-a claude-code`, `-a cursor`) and `-y`. It installs the current `main`, not a pinned release.
+The command prompts you to pick the target agent(s); skip the prompt with `-a <agent>` (for example `-a claude-code`, `-a cursor`) and `-y`. It installs the Skill from [`skills/career-targeting-intelligence/`](skills/career-targeting-intelligence/) with its `references/` and `templates/`, from the current `main` rather than a pinned release.
 
 Verify: `npx skills list` shows `career-targeting-intelligence`. Then ask your agent: *"Here is my resume. Build my Candidate Profile."*
 
@@ -151,7 +151,7 @@ Prerequisites: a Cursor version with Agent Skills (the docs reference 2.4) and N
 
 1. In your project folder, run:
    ```bash
-   npx skills add https://github.com/amirbena/career-target-intellgence/tree/main/claude/skill -a cursor -y
+   npx skills add amirbena/career-target-intellgence -a cursor -y
    ```
    This writes `.agents/skills/career-targeting-intelligence/` (`SKILL.md`, `references/`, `templates/`), which Cursor discovers automatically. Add `-g` to install for all projects.
 2. Restart Cursor or reopen the project.
@@ -241,7 +241,7 @@ that platform's validator before packaging.
 
 ### Claude Skill
 
-- Canonical source: [claude/skill/SKILL.md](claude/skill/SKILL.md) entry point, packaged via an explicit allowlist ([claude/skill-manifest.md](claude/skill-manifest.md)) — never a recursive repository copy
+- Canonical source: [skills/career-targeting-intelligence/SKILL.md](skills/career-targeting-intelligence/SKILL.md) entry point, packaged via an explicit allowlist ([claude/skill-manifest.md](claude/skill-manifest.md)) — never a recursive repository copy
 - Build:
   ```bash
   ./scripts/package-claude-skill.sh

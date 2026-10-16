@@ -27,15 +27,15 @@ describes.
 
 - **Skill name:** `career-targeting-intelligence`
 - **Version:** set at release time from the GitHub Release tag (`RELEASE_VERSION`), written to `metadata.version` in the packaged `SKILL.md`; the source file carries no version
-- **Package root (source):** [`claude/skill/`](skill/)
+- **Package root (source):** [`skills/career-targeting-intelligence/`](../skills/career-targeting-intelligence/)
 - **Top-level directory inside the ZIP:** `career-targeting-intelligence/`
 
 ## Included files
 
-Everything under `claude/skill/` is Skill source and enters the package:
+Everything under `skills/career-targeting-intelligence/` is Skill source and enters the package:
 
 ```
-claude/skill/
+skills/career-targeting-intelligence/
   SKILL.md
   references/
     candidate-intelligence.md
@@ -80,7 +80,7 @@ The package uses an explicit allowlist (`SKILL.md`, `references/`,
 
 ## Canonical source mappings
 
-Every reference file in `claude/skill/references/` adapts specific
+Every reference file in `skills/career-targeting-intelligence/references/` adapts specific
 canonical repository files rather than redefining them. See the "Canonical
 sources" note at the top of each reference file for the exact mapping.
 Summary:
@@ -97,7 +97,7 @@ Summary:
 | `output-generation.md` | `core/output-contracts.md`, `outputs/*-template.md`, `outputs/csv-column-contracts.md` |
 | `quality-and-trust.md` | `core/source-policy.md`, `core/confidence-model.md`, `core/freshness-policy.md`, `core/quality-gates.md`, `core/job-verification-policy.md` |
 
-Templates in `claude/skill/templates/` mirror the placeholder structure of
+Templates in `skills/career-targeting-intelligence/templates/` mirror the placeholder structure of
 the matching file in `outputs/*-template.md`, with all synthetic example
 content stripped — templates ship as clean, reusable placeholders only.
 

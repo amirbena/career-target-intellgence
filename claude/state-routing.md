@@ -3,7 +3,7 @@
 Defines how the Project uses available active context — conversation
 history, uploaded files, and any Research State the user supplies — to
 decide what to run and what to reuse. This adapts the Skill's
-[workflow-routing reference](skill/references/workflow-routing.md) and the
+[workflow-routing reference](../skills/career-targeting-intelligence/references/workflow-routing.md) and the
 canonical [`schemas/research-state.schema.md`](../schemas/research-state.schema.md)
 for the Project's conversational layer; it does not redefine either.
 
@@ -49,6 +49,6 @@ for the Project's conversational layer; it does not redefine either.
 | User asks to export or produce an artifact from already-approved results | Produce the artifact/export directly — no module re-run, no new evidence created |
 
 This table mirrors the Skill's
-[Focused Task routing table](skill/references/workflow-routing.md#focused-task)
+[Focused Task routing table](../skills/career-targeting-intelligence/references/workflow-routing.md#focused-task)
 at the conversational-request level; it does not add new routing logic the
 Skill doesn't already define.

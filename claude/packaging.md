@@ -1,7 +1,7 @@
 # Packaging the Claude Skill
 
 This document explains how to build the installable Career Targeting
-Intelligence Claude Skill ZIP from `claude/skill/`. For what the package
+Intelligence Claude Skill ZIP from `skills/career-targeting-intelligence/`. For what the package
 contains and why, see [`skill-manifest.md`](skill-manifest.md).
 
 ## Commands
@@ -23,8 +23,8 @@ Both scripts:
 - Resolve all paths relative to their own location, so they work whether
   invoked from the repository root, from `scripts/`, or from any other
   working directory, including one outside the repository.
-- Validate that `claude/skill/SKILL.md`, `claude/skill/references/`, and
-  `claude/skill/templates/` exist before doing any packaging work, and fail
+- Validate that `skills/career-targeting-intelligence/SKILL.md`, `skills/career-targeting-intelligence/references/`, and
+  `skills/career-targeting-intelligence/templates/` exist before doing any packaging work, and fail
   with an actionable message if any are missing.
 - Copy only the explicit package allowlist — `SKILL.md`, `references/`,
   `templates/` — into a dedicated staging directory. Neither script performs
@@ -179,7 +179,7 @@ added; re-check Claude's current plugin documentation before changing it.
 - Skills live at `skills/<skill-name>/SKILL.md` at the archive root (not
   inside `.claude-plugin/`). The skill folder holds the same `SKILL.md`,
   `references/`, and `templates/` as the Skill ZIP, copied from
-  `claude/skill/` with the same allowlist — the Skill is not forked.
+  `skills/career-targeting-intelligence/` with the same allowlist — the Skill is not forked.
 - Skills-only: no hooks, MCP servers, commands, or agents.
 - The plugin and Skill name match (`career-targeting-intelligence`), so the
   Skill is invoked as `/career-targeting-intelligence:career-targeting-intelligence`

@@ -6,7 +6,7 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
 
 ## Claude Skill packaging rules
 
-- `claude/skill/` is the installable Skill source.
+- `skills/career-targeting-intelligence/` is the installable Skill source.
 - `core/`, `schemas/`, `ranking/`, `workflows/`, and `outputs/` remain
   canonical — the Skill adapts them, it does not redefine them.
 - Platform adaptations must not silently change canonical rules, numbers,
@@ -25,7 +25,7 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
   directory.
 - Every Skill change must validate package contents before completion.
 - The final packaged Skill `description` field (YAML frontmatter in
-  `claude/skill/SKILL.md`) must be < 2400 characters; prefer <= 2200 to
+  `skills/career-targeting-intelligence/SKILL.md`) must be < 2400 characters; prefer <= 2200 to
   retain a safety margin.
 - Measure the exact final `description` payload that ships in the Skill
   package, not a raw line count — YAML folding changes the actual string.
@@ -67,7 +67,7 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
 ## Claude Plugin packaging rules
 
 - The Claude Plugin ZIP wraps the existing Skill: `claude/plugin/plugin.json`
-  is the manifest source and `claude/skill/` supplies the Skill content. The
+  is the manifest source and `skills/career-targeting-intelligence/` supplies the Skill content. The
   Skill is never forked.
 - The archive root is the plugin root: `.claude-plugin/plugin.json` plus
   `skills/career-targeting-intelligence/` with the same `SKILL.md`,

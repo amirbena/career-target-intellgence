@@ -2,7 +2,7 @@
 .SYNOPSIS
     Validates the Claude Plugin manifest (claude/plugin/plugin.json) against
     the documented Claude Plugin requirements and the Skill it wraps
-    (claude/skill/SKILL.md). When the `claude` CLI is available and a built
+    (skills/career-targeting-intelligence/SKILL.md). When the `claude` CLI is available and a built
     plugin directory is passed, also runs `claude plugin validate`.
 
 .DESCRIPTION
@@ -22,7 +22,7 @@ function Fail {
 
 $RepoRoot = Split-Path -Parent $PSScriptRoot
 $ManifestFile = Join-Path $RepoRoot "claude\plugin\plugin.json"
-$SkillFile = Join-Path $RepoRoot "claude\skill\SKILL.md"
+$SkillFile = Join-Path $RepoRoot "skills\career-targeting-intelligence\SKILL.md"
 
 foreach ($required in @($ManifestFile, $SkillFile)) {
     if (-not (Test-Path -LiteralPath $required -PathType Leaf)) { Fail "required file not found: $required" }

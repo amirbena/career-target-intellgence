@@ -2,7 +2,7 @@
 #
 # Validates the Claude Plugin manifest (claude/plugin/plugin.json) against the
 # documented Claude Plugin requirements and the Skill it wraps
-# (claude/skill/SKILL.md). When the `claude` CLI is available and a built
+# (skills/career-targeting-intelligence/SKILL.md). When the `claude` CLI is available and a built
 # plugin directory is passed as $1, also runs `claude plugin validate`.
 #
 # Works when invoked from inside or outside the repository root, since all
@@ -14,7 +14,7 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd -
 REPO_ROOT="$(cd -- "${SCRIPT_DIR}/.." >/dev/null 2>&1 && pwd -P)"
 
 MANIFEST_FILE="${REPO_ROOT}/claude/plugin/plugin.json"
-SKILL_FILE="${REPO_ROOT}/claude/skill/SKILL.md"
+SKILL_FILE="${REPO_ROOT}/skills/career-targeting-intelligence/SKILL.md"
 BUILT_PLUGIN_DIR="${1:-}"
 
 fail() {

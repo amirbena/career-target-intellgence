@@ -36,7 +36,7 @@ where a user wants the underlying rules visible and citable in chat. It is
 not a replacement for the Skill, and it is not a place for personal data.
 
 - **Do not duplicate the Skill package wholesale into Project Knowledge.**
-  The Skill (`claude/skill/`) is the execution methodology layer — it
+  The Skill (`skills/career-targeting-intelligence/`) is the execution methodology layer — it
   already adapts these canonical files for progressive, in-conversation
   use. Uploading the entire Skill package as Knowledge on top of installing
   it as a Skill creates redundant, potentially divergent copies of the

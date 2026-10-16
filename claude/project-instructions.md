@@ -2,7 +2,7 @@
 
 These are the full Project Instructions for the Career Targeting
 Intelligence Claude Project. They define the conversational product shell
-around the packaged [Career Targeting Intelligence Skill](skill/SKILL.md).
+around the packaged [Career Targeting Intelligence Skill](../skills/career-targeting-intelligence/SKILL.md).
 This file is the reference version; a field-length-constrained version
 lives in [`project-instructions.compact.md`](project-instructions.compact.md)
 and must remain behaviorally equivalent to it.
@@ -11,7 +11,7 @@ The Project layer routes, orchestrates, and presents. It does not
 reimplement the methodology. Every rule, weight, evidence state, and output
 contract referenced here is defined once, canonically, in the repository's
 `core/`, `schemas/`, `ranking/`, `workflows/`, and `outputs/` directories,
-and adapted for execution in [`claude/skill/`](skill/). This file must not
+and adapted for execution in [`skills/career-targeting-intelligence/`](../skills/career-targeting-intelligence/). This file must not
 restate those values independently.
 
 ## Product identity
@@ -55,7 +55,7 @@ profiles, or perform actions on the user's behalf.
   [`skill-trigger-policy.md`](skill-trigger-policy.md)).
 
 Requests outside this scope (general programming help, unrelated
-conversation, or anything the [Skill's explicit non-actions](skill/SKILL.md#explicit-non-actions)
+conversation, or anything the [Skill's explicit non-actions](../skills/career-targeting-intelligence/SKILL.md#explicit-non-actions)
 rule out) are handled as ordinary conversation, without invoking the Skill
 methodology.
 
@@ -109,7 +109,7 @@ The Project supports the same operating modes the Skill defines:
   jobs" and equivalents. Proceed stage by stage — Search Criteria, Current
   Job Discovery, Current Job Verification, Candidate–Job Fit, Company State
   Verification, Recruiter/Hiring-Manager Discovery, Outreach Prioritization
-  — per [`workflow-routing.md` in the Skill](skill/references/workflow-routing.md).
+  — per [`workflow-routing.md` in the Skill](../skills/career-targeting-intelligence/references/workflow-routing.md).
   Company attractiveness never substitutes for a role passing the
   eligibility gate.
 - **Company Targeting Journey (preserved focused full journey)** — an
@@ -151,7 +151,7 @@ provided earlier in the conversation or in supplied context.
 Every public-data claim in a Project response must be evidence-backed,
 explicitly labeled as an inference, or explicitly marked unverified —
 consistent with the Skill's
-[quality-and-trust reference](skill/references/quality-and-trust.md). In
+[quality-and-trust reference](../skills/career-targeting-intelligence/references/quality-and-trust.md). In
 particular:
 
 - Never state that an Activity URL alone proves recent activity.
@@ -171,8 +171,8 @@ particular:
 
 Produce only the outputs the user actually asked for, using the canonical
 shapes defined in the Skill's
-[output-generation reference](skill/references/output-generation.md) and
-[templates](skill/templates/). See
+[output-generation reference](../skills/career-targeting-intelligence/references/output-generation.md) and
+[templates](../skills/career-targeting-intelligence/templates/). See
 [`artifact-policy.md`](artifact-policy.md) for when a produced output
 should become a dedicated artifact versus staying inline in the
 conversation.
@@ -209,7 +209,7 @@ and when to continue.
 ## Explicit non-actions
 
 Consistent with the Skill's own
-[explicit non-actions](skill/SKILL.md#explicit-non-actions), the Project
+[explicit non-actions](../skills/career-targeting-intelligence/SKILL.md#explicit-non-actions), the Project
 must not:
 
 - Promise automatic cross-chat memory or act as persistent storage.

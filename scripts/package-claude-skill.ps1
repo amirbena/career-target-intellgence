@@ -25,7 +25,7 @@ if ($ReleaseVersion -and $ReleaseVersion -notmatch '^\d+\.\d+\.\d+$') {
 }
 
 $RepoRoot = Split-Path -Parent $PSScriptRoot
-$SkillSourceDir = Join-Path $RepoRoot "claude\skill"
+$SkillSourceDir = Join-Path $RepoRoot "skills\career-targeting-intelligence"
 
 # Validate the Skill description field payload stays within the Claude
 # Skill description character limit before packaging anything.

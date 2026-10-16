@@ -71,7 +71,7 @@ for the step-by-step checklist.
 | Layer | Responsibility |
 |---|---|
 | Core repository (`core/`, `schemas/`, `ranking/`, `workflows/`, `outputs/`) | Canonical methodology |
-| Claude Skill (`claude/skill/`) | Execution and progressive loading |
+| Claude Skill (`skills/career-targeting-intelligence/`) | Execution and progressive loading |
 | Project Instructions | Conversation routing and UX |
 | Project Knowledge | Shared methodology and optional private context |
 | Claude platform | Available context, persistence, and retention |

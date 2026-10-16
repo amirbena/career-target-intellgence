@@ -29,7 +29,7 @@ if ($ReleaseVersion -and $ReleaseVersion -notmatch '^\d+\.\d+\.\d+$') {
 
 $RepoRoot = Split-Path -Parent $PSScriptRoot
 $PluginSrcDir = Join-Path $RepoRoot "claude\plugin"
-$SkillSourceDir = Join-Path $RepoRoot "claude\skill"
+$SkillSourceDir = Join-Path $RepoRoot "skills\career-targeting-intelligence"
 $DistDir = Join-Path $RepoRoot "dist"
 $BuildDir = Join-Path $RepoRoot ".build\claude-plugin-package"
 $PackageName = "career-targeting-intelligence-claude-plugin"

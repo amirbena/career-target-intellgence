@@ -5,7 +5,7 @@ sized for a constrained Project Instructions field. It omits worked
 explanations, examples, and cross-references, but keeps every essential
 rule the full version defines. It intentionally excludes detailed schemas,
 scoring weights, output columns, and other reference content — those live
-only in the [Skill](skill/SKILL.md).
+only in the [Skill](../skills/career-targeting-intelligence/SKILL.md).
 
 ## Parity note
 

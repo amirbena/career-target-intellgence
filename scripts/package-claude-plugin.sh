@@ -21,7 +21,7 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd -
 REPO_ROOT="$(cd -- "${SCRIPT_DIR}/.." >/dev/null 2>&1 && pwd -P)"
 
 PLUGIN_SRC_DIR="${REPO_ROOT}/claude/plugin"
-SKILL_SOURCE_DIR="${REPO_ROOT}/claude/skill"
+SKILL_SOURCE_DIR="${REPO_ROOT}/skills/career-targeting-intelligence"
 DIST_DIR="${REPO_ROOT}/dist"
 BUILD_DIR="${REPO_ROOT}/.build/claude-plugin-package"
 PACKAGE_NAME="career-targeting-intelligence-claude-plugin"

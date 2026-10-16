@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Validates that the `description:` field in claude/skill/SKILL.md's YAML
+# Validates that the `description:` field in skills/career-targeting-intelligence/SKILL.md's YAML
 # frontmatter — the canonical source of the packaged Claude Skill's
 # activation-triggering description — stays within the platform's
 # character limit.
@@ -18,7 +18,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd -P)"
 REPO_ROOT="$(cd -- "${SCRIPT_DIR}/.." >/dev/null 2>&1 && pwd -P)"
 
-SKILL_FILE="${REPO_ROOT}/claude/skill/SKILL.md"
+SKILL_FILE="${REPO_ROOT}/skills/career-targeting-intelligence/SKILL.md"
 
 HARD_LIMIT=2400
 WARN_THRESHOLD=2200
@@ -59,14 +59,14 @@ description = data['description']
 print(len(description))
 " "${SKILL_FILE}")"
 
-echo "claude/skill/SKILL.md description: ${CHAR_COUNT} characters (hard limit ${HARD_LIMIT}, warn threshold ${WARN_THRESHOLD})"
+echo "skills/career-targeting-intelligence/SKILL.md description: ${CHAR_COUNT} characters (hard limit ${HARD_LIMIT}, warn threshold ${WARN_THRESHOLD})"
 
 if [ "${CHAR_COUNT}" -ge "${HARD_LIMIT}" ]; then
-  fail "claude/skill/SKILL.md description is ${CHAR_COUNT} characters, at or over the ${HARD_LIMIT}-character Claude Skill description hard limit. Shorten it before packaging."
+  fail "skills/career-targeting-intelligence/SKILL.md description is ${CHAR_COUNT} characters, at or over the ${HARD_LIMIT}-character Claude Skill description hard limit. Shorten it before packaging."
 fi
 
 if [ "${CHAR_COUNT}" -gt "${WARN_THRESHOLD}" ]; then
-  echo "warning: claude/skill/SKILL.md description is ${CHAR_COUNT} characters, over the ${WARN_THRESHOLD}-character safety margin (hard limit ${HARD_LIMIT})." >&2
+  echo "warning: skills/career-targeting-intelligence/SKILL.md description is ${CHAR_COUNT} characters, over the ${WARN_THRESHOLD}-character safety margin (hard limit ${HARD_LIMIT})." >&2
 fi
 
-echo "OK: claude/skill/SKILL.md description is within the Claude Skill description limit."
+echo "OK: skills/career-targeting-intelligence/SKILL.md description is within the Claude Skill description limit."
