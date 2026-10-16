@@ -40,7 +40,7 @@ All steps, activation, and verification: [docs/installation.md](docs/installatio
 
 - *Find currently open Senior Backend roles that match my experience.*
 - *Identify product companies worth targeting for me.*
-- *Find relevant recruiters for this verified open role: <link>.*
+- *Find relevant recruiters for this verified open role: [job URL].*
 
 ## Supported Platforms
 
