@@ -55,7 +55,7 @@ once, in `core/`.
 | `chatgpt/` | ChatGPT Custom GPT instructions and Knowledge bundles |
 | `scripts/` | Build, packaging, and validation scripts for every platform |
 | `tests/` | Synthetic verification scenarios and packaging/quality-gate checklists |
-| `docs/` | Repository documentation, including the [issue label taxonomy](docs/issue-labels.md) |
+| `docs/` | Contributor documentation: [Git and PR workflow](docs/git-workflow.md), [packaging rules](docs/packaging-rules.md), [issue label taxonomy](docs/issue-labels.md) |
 | `.github/` | GitHub contribution templates (Engineering Task Issue Form, pull request template) |
 | `examples/tova/` | The fully synthetic Golden Journey example |
 
@@ -173,11 +173,7 @@ that platform's length validator before packaging.
 
 ## Development workflow
 
-All implementation work — including documentation-only changes — happens
-on a dedicated task branch created from an up-to-date `main`; never
-implement directly on `main`. See
-[AGENTS.md](AGENTS.md#git-and-pr-workflow) for the full branch-safety,
-stash, and merge policy.
+Contributor and agent rules, including the branch and PR workflow, are in [AGENTS.md](AGENTS.md).
 
 ## Golden example
 
