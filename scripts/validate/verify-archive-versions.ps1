@@ -5,7 +5,7 @@
     Logically equivalent to verify-archive-versions.sh.
 
 .EXAMPLE
-    .\scripts\verify-archive-versions.ps1 -Version 1.2.0
+    .\scripts\validate\verify-archive-versions.ps1 -Version 1.2.0
 #>
 param(
     [Parameter(Mandatory = $true)][string]$Version,

@@ -1,6 +1,6 @@
 # Package Alignment Checklist
 
-Confirms the three distributed platform surfaces stay semantically aligned with the canonical sources in `core/`, `schemas/`, `ranking/`, `workflows/`, and `outputs/`, per [`docs/packaging-rules.md`](../docs/packaging-rules.md) (Claude Skill packaging rules, Claude Project experience rules, ChatGPT packaging rules) and [`core/quality-gates.md` — Cross-Platform Package Alignment](../core/quality-gates.md#cross-platform-package-alignment). Run this after any canonical change and before treating a packaging change as complete.
+Confirms the three distributed platform surfaces stay semantically aligned with the canonical sources in `core/`, `schemas/`, `ranking/`, `workflows/`, and `outputs/`, per [`policies/packaging-rules.md`](../policies/packaging-rules.md) (Claude Skill packaging rules, Claude Project experience rules, ChatGPT packaging rules) and [`core/quality-gates.md` — Cross-Platform Package Alignment](../core/quality-gates.md#cross-platform-package-alignment). Run this after any canonical change and before treating a packaging change as complete.
 
 ## Build commands to run
 
@@ -50,7 +50,7 @@ export RELEASE_VERSION=9.9.9   # any MAJOR.MINOR.PATCH
 ## Related documents
 
 - [../AGENTS.md](../AGENTS.md)
-- [../docs/packaging-rules.md](../docs/packaging-rules.md)
+- [../policies/packaging-rules.md](../policies/packaging-rules.md)
 - [../core/quality-gates.md](../core/quality-gates.md)
 - [../claude/packaging.md](../claude/packaging.md)
 - [../claude/skill-manifest.md](../claude/skill-manifest.md)

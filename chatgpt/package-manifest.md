@@ -76,7 +76,7 @@ archive never contains:
 ```
 
 ```powershell
-.\scripts\package-chatgpt-plugin.ps1
+.\scripts\package\package-chatgpt-plugin.ps1
 ```
 
 Both scripts validate the manifest and skill

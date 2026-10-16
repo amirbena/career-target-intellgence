@@ -15,7 +15,7 @@ contains and why, see [`skill-manifest.md`](skill-manifest.md).
 ### Windows PowerShell
 
 ```powershell
-.\scripts\package-claude-skill.ps1
+.\scripts\package\package-claude-skill.ps1
 ```
 
 Both scripts:
@@ -131,7 +131,7 @@ for its full structure.
 ```
 
 ```powershell
-.\scripts\package-claude-external-kit.ps1
+.\scripts\package\package-claude-external-kit.ps1
 ```
 
 Both scripts build the Skill ZIP first (by invoking
@@ -164,7 +164,7 @@ claude.ai **Upload plugin** and `claude --plugin-dir`.
 ```
 
 ```powershell
-.\scripts\package-claude-plugin.ps1
+.\scripts\package\package-claude-plugin.ps1
 ```
 
 ### Layout decision
@@ -191,4 +191,4 @@ Set `RELEASE_VERSION` to write that version into `plugin.json` and the
 packaged `SKILL.md` (`metadata.version`); this applies to all four packagers.
 The GitHub Release tag is the single source of truth.
 `scripts/validate/verify-archive-versions.sh` / `.ps1` check every archive against
-the tag. See [../docs/packaging-rules.md](../docs/packaging-rules.md).
+the tag. See [../policies/packaging-rules.md](../policies/packaging-rules.md).

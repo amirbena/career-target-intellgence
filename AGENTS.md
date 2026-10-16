@@ -29,14 +29,19 @@ Detailed policy lives in linked documents; every rule has one home.
 
 ## Where the detailed rules live
 
+Responsibilities are separate: `core/` holds the product methodology,
+`policies/` holds the rules agents follow when changing this repository,
+and `docs/` holds human-facing documentation (installation, architecture,
+development).
+
 | Topic | Document |
 | --- | --- |
-| Branches, up-to-date `main`, pre-edit gate, stash policy, Issue and PR descriptions, release classification (`release:` labels), merge strategy, admin merge fallback, post-merge sync, local cleanup | [docs/git-workflow.md](docs/git-workflow.md) |
-| Claude Skill packaging, Claude Project experience, Claude external kit, ChatGPT packaging (allowlists, length limits, script parity, privacy exclusions) | [docs/packaging-rules.md](docs/packaging-rules.md) |
-| Issue label taxonomy | [docs/issue-labels.md](docs/issue-labels.md) |
+| Branches, up-to-date `main`, pre-edit gate, stash policy, Issue and PR descriptions, release classification (`release:` labels), merge strategy, admin merge fallback, post-merge sync, local cleanup | [policies/git-workflow.md](policies/git-workflow.md) |
+| Claude Skill packaging, Claude Project experience, Claude external kit, ChatGPT packaging (allowlists, length limits, script parity, privacy exclusions) | [policies/packaging-rules.md](policies/packaging-rules.md) |
+| Issue label taxonomy | [policies/issue-labels.md](policies/issue-labels.md) |
 | Scope and non-goals | [core/scope-and-non-goals.md](core/scope-and-non-goals.md) |
 | Quality gates and cross-platform alignment | [core/quality-gates.md](core/quality-gates.md) |
-| Repository layout, validation scripts, and test scenarios | [README.md](README.md), [tests/README.md](tests/README.md) |
+| Repository layout, validation scripts, and test scenarios | [README.md](README.md), [docs/development.md](docs/development.md), [tests/README.md](tests/README.md) |
 
 Read the Git workflow before your first change, and the packaging rules
 before touching `claude/` or `chatgpt/` packaging.
@@ -73,4 +78,4 @@ its own specialization.
 - [README.md](README.md)
 - [CLAUDE.md](CLAUDE.md)
 - [core/scope-and-non-goals.md](core/scope-and-non-goals.md)
-- [docs/issue-labels.md](docs/issue-labels.md)
+- [policies/issue-labels.md](policies/issue-labels.md)

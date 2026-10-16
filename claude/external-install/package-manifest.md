@@ -85,7 +85,7 @@ never contains:
 ```
 
 ```powershell
-.\scripts\package-claude-external-kit.ps1
+.\scripts\package\package-claude-external-kit.ps1
 ```
 
 Both build the Skill ZIP first (via the existing Skill packager), then

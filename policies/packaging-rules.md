@@ -81,6 +81,22 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
   `scripts/validate/validate-claude-plugin.sh` / `.ps1` must remain logically
   equivalent.
 
+## Claude marketplace rules
+
+- `.claude-plugin/marketplace.json` makes this repository a Claude Code
+  marketplace. Its single entry uses the repository root as the plugin
+  source and points `skills` at the canonical
+  `skills/career-targeting-intelligence/` directory; it copies no Skill
+  files and declares no `version` (the commit identifies the version).
+- Keep the entry `name` equal to the plugin name and run
+  `claude plugin validate .` after any edit.
+- Keep the plugin skills-only; the marketplace adds no hooks, MCP servers,
+  commands, or agents.
+- The ChatGPT plugin has no repository marketplace: OpenAI marketplaces
+  need an assembled plugin tree, which would duplicate generated content.
+  It is installed from the release ZIP; see
+  [../docs/installation.md](../docs/installation.md).
+
 ## Release versioning rules
 
 - The GitHub Release tag is the single source of truth for package versions.

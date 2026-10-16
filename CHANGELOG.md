@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.3.0 - 2026-10-16
+
+### Features
+
+- add Claude marketplace and separate policies from docs
+
 ## 1.2.0 - 2026-10-16
 
 ### Features
