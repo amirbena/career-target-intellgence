@@ -4,7 +4,7 @@ Defines when the Project should produce a dedicated artifact (a standalone,
 reusable document) versus keeping a result inline in the conversation, and
 what every artifact must preserve. This adapts the canonical
 [`core/output-contracts.md`](../core/output-contracts.md) and the Skill's
-[output-generation reference](skill/references/output-generation.md) for
+[output-generation reference](../skills/career-targeting-intelligence/references/output-generation.md) for
 the Project's conversational layer — it does not redefine either.
 
 ## Supported artifacts
@@ -22,7 +22,7 @@ the Project's conversational layer — it does not redefine either.
 - CSV-compatible table
 
 Each uses the shape defined by its matching
-[Skill template](skill/templates/) and the corresponding canonical output
+[Skill template](../skills/career-targeting-intelligence/templates/) and the corresponding canonical output
 contract — an artifact is a presentation of that shape, not a new one.
 
 ## Rules

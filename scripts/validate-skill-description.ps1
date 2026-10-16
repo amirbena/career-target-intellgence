@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Validates that the `description:` field in claude/skill/SKILL.md's YAML
+    Validates that the `description:` field in skills/career-targeting-intelligence/SKILL.md's YAML
     frontmatter — the canonical source of the packaged Claude Skill's
     activation-triggering description — stays within the platform's
     character limit.
@@ -28,7 +28,7 @@ function Fail {
 }
 
 $RepoRoot = Split-Path -Parent $PSScriptRoot
-$SkillFile = Join-Path $RepoRoot "claude\skill\SKILL.md"
+$SkillFile = Join-Path $RepoRoot "skills\career-targeting-intelligence\SKILL.md"
 
 $HardLimit = 2400
 $WarnThreshold = 2200
@@ -70,18 +70,18 @@ print(len(description))
 
 $CharCountRaw = & python3 -c $PythonScript $SkillFile
 if ($LASTEXITCODE -ne 0) {
-    Fail "failed to parse claude/skill/SKILL.md frontmatter"
+    Fail "failed to parse skills/career-targeting-intelligence/SKILL.md frontmatter"
 }
 $CharCount = [int]$CharCountRaw
 
-Write-Host "claude/skill/SKILL.md description: $CharCount characters (hard limit $HardLimit, warn threshold $WarnThreshold)"
+Write-Host "skills/career-targeting-intelligence/SKILL.md description: $CharCount characters (hard limit $HardLimit, warn threshold $WarnThreshold)"
 
 if ($CharCount -ge $HardLimit) {
-    Fail "claude/skill/SKILL.md description is $CharCount characters, at or over the $HardLimit-character Claude Skill description hard limit. Shorten it before packaging."
+    Fail "skills/career-targeting-intelligence/SKILL.md description is $CharCount characters, at or over the $HardLimit-character Claude Skill description hard limit. Shorten it before packaging."
 }
 
 if ($CharCount -gt $WarnThreshold) {
-    Write-Warning "claude/skill/SKILL.md description is $CharCount characters, over the $WarnThreshold-character safety margin (hard limit $HardLimit)."
+    Write-Warning "skills/career-targeting-intelligence/SKILL.md description is $CharCount characters, over the $WarnThreshold-character safety margin (hard limit $HardLimit)."
 }
 
-Write-Host "OK: claude/skill/SKILL.md description is within the Claude Skill description limit."
+Write-Host "OK: skills/career-targeting-intelligence/SKILL.md description is within the Claude Skill description limit."

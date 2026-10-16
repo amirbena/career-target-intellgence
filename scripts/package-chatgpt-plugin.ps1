@@ -79,6 +79,17 @@ New-Item -ItemType Directory -Path (Join-Path $SkillDir "references") -Force | O
 
 # Explicit allowlist copy — never a recursive repository copy.
 Copy-Item -LiteralPath $PluginManifest -Destination (Join-Path $PackageRoot "plugin.json") -Force
+# With RELEASE_VERSION set, write it into the packaged manifest's version field.
+if ($env:RELEASE_VERSION) {
+    if ($env:RELEASE_VERSION -notmatch '^\d+\.\d+\.\d+$') {
+        Fail "RELEASE_VERSION must be MAJOR.MINOR.PATCH, got: $($env:RELEASE_VERSION)"
+    }
+    $ManifestOut = Join-Path $PackageRoot "plugin.json"
+    $Json = [System.IO.File]::ReadAllText($ManifestOut)
+    $Json = [regex]::Replace($Json, '(?m)^(  "version": )"[^"]*"', "`${1}`"$($env:RELEASE_VERSION)`"")
+    if ($Json -notmatch [regex]::Escape("`"version`": `"$($env:RELEASE_VERSION)`"")) { Fail "could not set version in the packaged plugin.json" }
+    [System.IO.File]::WriteAllText($ManifestOut, $Json, (New-Object System.Text.UTF8Encoding($false)))
+}
 Copy-Item -LiteralPath $SkillFile -Destination (Join-Path $SkillDir "SKILL.md") -Force
 Copy-Item -LiteralPath $CapabilityPolicy -Destination (Join-Path $SkillDir "references\capability-policy.md") -Force
 foreach ($kf in $KnowledgeFiles) {

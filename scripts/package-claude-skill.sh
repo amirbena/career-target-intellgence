@@ -12,7 +12,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd -P)"
 REPO_ROOT="$(cd -- "${SCRIPT_DIR}/.." >/dev/null 2>&1 && pwd -P)"
 
-SKILL_SOURCE_DIR="${REPO_ROOT}/claude/skill"
+SKILL_SOURCE_DIR="${REPO_ROOT}/skills/career-targeting-intelligence"
 DIST_DIR="${REPO_ROOT}/dist"
 BUILD_DIR="${REPO_ROOT}/.build/claude-skill-package"
 PACKAGE_NAME="career-targeting-intelligence"
@@ -22,6 +22,11 @@ fail() {
   echo "error: $1" >&2
   exit 1
 }
+
+if [ -n "${RELEASE_VERSION:-}" ]; then
+  command -v python3 >/dev/null 2>&1 || fail "python3 is required when RELEASE_VERSION is set."
+  [[ "${RELEASE_VERSION}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || fail "RELEASE_VERSION must be MAJOR.MINOR.PATCH, got: ${RELEASE_VERSION}"
+fi
 
 command -v zip >/dev/null 2>&1 || fail "the 'zip' command is required but was not found on PATH. Install zip and re-run this script."
 
@@ -43,6 +48,18 @@ mkdir -p -- "${PACKAGE_ROOT}/references" "${PACKAGE_ROOT}/templates"
 
 # Explicit allowlist copy — never a recursive repository copy.
 cp -- "${SKILL_SOURCE_DIR}/SKILL.md" "${PACKAGE_ROOT}/SKILL.md"
+# With RELEASE_VERSION set, record it as metadata.version in the packaged
+# SKILL.md frontmatter. Without it the source file is packaged unchanged.
+if [ -n "${RELEASE_VERSION:-}" ]; then
+  python3 - "${PACKAGE_ROOT}/SKILL.md" "${RELEASE_VERSION}" <<'PY'
+import sys
+path, version = sys.argv[1], sys.argv[2]
+lines = open(path, encoding="utf-8").read().split("\n")
+end = lines.index("---", 1)
+lines[end:end] = ["metadata:", f"  version: {version}"]
+open(path, "w", encoding="utf-8", newline="").write("\n".join(lines))
+PY
+fi
 cp -- "${SKILL_SOURCE_DIR}"/references/*.md "${PACKAGE_ROOT}/references/"
 cp -- "${SKILL_SOURCE_DIR}"/templates/*.md "${PACKAGE_ROOT}/templates/"
 

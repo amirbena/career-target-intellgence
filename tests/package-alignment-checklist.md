@@ -9,6 +9,7 @@ Confirms the three distributed platform surfaces stay semantically aligned with 
 ./scripts/package-chatgpt-plugin.sh
 ./scripts/package-claude-skill.sh
 ./scripts/package-claude-external-kit.sh
+./scripts/package-claude-plugin.sh
 ```
 
 Each script must exit successfully and print its packaged file list. None of them should be hand-edited afterward — a mismatch is fixed by editing the canonical source and re-running the script, never by editing `chatgpt/knowledge/*.md`, `dist/*.zip` contents, or any generated bundle directly.
@@ -28,11 +29,30 @@ Each script must exit successfully and print its packaged file list. None of the
 | 9 | None of the three surfaces (ChatGPT Instructions, Claude Project Instructions, Claude Skill) restate a canonical enum, weight, threshold, or rule with a different value than its canonical source — each should reference the canonical file rather than re-deriving the value. |
 | 10 | Every new canonical file introduced by this change (`schemas/job-record.schema.md`, `schemas/company-state-record.schema.md`, `core/job-verification-policy.md`, `ranking/job-eligibility-gate.md`, `workflows/job-search-journey.md`, `workflows/discover-jobs.md`, `workflows/verify-job.md`, `workflows/evaluate-candidate-job-fit.md`, `workflows/verify-company-state.md`, `outputs/verified-jobs-map-template.md`, `outputs/unverified-job-leads-template.md`) is referenced from at least one packaging manifest or build-script allowlist — none omitted by accident. |
 
+## Release version checks
+
+Run when changing packaging scripts or the release process. The GitHub Release tag is the single source of truth for versions.
+
+```bash
+export RELEASE_VERSION=9.9.9   # any MAJOR.MINOR.PATCH
+./scripts/package-claude-skill.sh && ./scripts/package-claude-external-kit.sh \
+  && ./scripts/package-claude-plugin.sh && ./scripts/package-chatgpt-plugin.sh
+./scripts/verify-archive-versions.sh "$RELEASE_VERSION"   # must pass
+./scripts/verify-archive-versions.sh 0.0.0                # must fail
+```
+
+| # | Check |
+|---|---|
+| 11 | `dist/career-targeting-intelligence-claude-plugin.zip` contains `.claude-plugin/plugin.json` and `skills/career-targeting-intelligence/` with the same `SKILL.md`, `references/`, and `templates/` file list as the Skill ZIP, passes `claude plugin validate`, and contains no Golden Journey or personal data. |
+| 12 | With `RELEASE_VERSION` set, the Skill ZIP, Claude Project Kit, Claude Plugin, and ChatGPT Plugin each embed that version; without it, packagers behave as before. |
+| 13 | The `.sh` and `.ps1` packagers and validators list the same normalized files. |
+
 ## Related documents
 
 - [../AGENTS.md](../AGENTS.md)
 - [../docs/packaging-rules.md](../docs/packaging-rules.md)
 - [../core/quality-gates.md](../core/quality-gates.md)
+- [../claude/packaging.md](../claude/packaging.md)
 - [../claude/skill-manifest.md](../claude/skill-manifest.md)
 - [../claude/external-install/package-manifest.md](../claude/external-install/package-manifest.md)
 - [../chatgpt/knowledge-manifest.md](../chatgpt/knowledge-manifest.md)

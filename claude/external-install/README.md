@@ -25,7 +25,7 @@ into their own, separate Claude Project.
 ## What you get
 
 - The packaged Skill (`career-targeting-intelligence.skill.zip`), unchanged
-  from [`claude/skill/`](../skill/).
+  from [`skills/career-targeting-intelligence/`](../../skills/career-targeting-intelligence/).
 - The same compact Project Instructions used throughout this repository,
   copied byte-for-byte at packaging time — never a separately maintained
   fork.
@@ -57,7 +57,7 @@ The kit is generated, not hand-authored — do not edit an extracted
 archive's contents directly. Edit the canonical sources it packages
 (`claude/project-instructions.compact.md`, the Knowledge files listed in
 [`knowledge-files.md`](knowledge-files.md), and the Skill source under
-[`claude/skill/`](../skill/)) and rebuild:
+[`skills/career-targeting-intelligence/`](../../skills/career-targeting-intelligence/)) and rebuild:
 
 ```bash
 ./scripts/package-claude-external-kit.sh

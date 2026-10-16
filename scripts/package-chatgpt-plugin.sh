@@ -58,6 +58,13 @@ mkdir -p -- "${SKILL_DIR}/references"
 
 # Explicit allowlist copy — never a recursive repository copy.
 cp -- "${PLUGIN_SRC_DIR}/plugin.json" "${PACKAGE_ROOT}/plugin.json"
+# With RELEASE_VERSION set, write it into the packaged manifest's version field.
+if [ -n "${RELEASE_VERSION:-}" ]; then
+  [[ "${RELEASE_VERSION}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || fail "RELEASE_VERSION must be MAJOR.MINOR.PATCH, got: ${RELEASE_VERSION}"
+  sed -E -i.bak "s/^(  \"version\": )\"[^\"]*\"/\1\"${RELEASE_VERSION}\"/" "${PACKAGE_ROOT}/plugin.json"
+  rm -f -- "${PACKAGE_ROOT}/plugin.json.bak"
+  grep -q "\"version\": \"${RELEASE_VERSION}\"" "${PACKAGE_ROOT}/plugin.json" || fail "could not set version in the packaged plugin.json"
+fi
 cp -- "${PLUGIN_SRC_DIR}/SKILL.md" "${SKILL_DIR}/SKILL.md"
 cp -- "${CHATGPT_DIR}/capability-policy.md" "${SKILL_DIR}/references/capability-policy.md"
 for kf in "${KNOWLEDGE_FILES[@]}"; do

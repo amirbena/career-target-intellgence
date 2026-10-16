@@ -56,7 +56,7 @@ them — you create them from your own research.
 
 The kit's Knowledge set never includes:
 
-- A duplicate copy of the Skill source (`claude/skill/` — the Skill is
+- A duplicate copy of the Skill source (`skills/career-targeting-intelligence/` — the Skill is
   installed separately as a Skill package, not re-uploaded as Knowledge).
 - Golden Journey example files (`examples/tova/`).
 - `AGENTS.md` and `CLAUDE.md` (repository working instructions for

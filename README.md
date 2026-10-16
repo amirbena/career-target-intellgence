@@ -122,6 +122,86 @@ The canonical outputs the product produces — what they contain, how they're or
 - [outputs/outreach-queue-template.md](outputs/outreach-queue-template.md) — the Outreach Priority Queue
 - [outputs/csv-column-contracts.md](outputs/csv-column-contracts.md) — stable CSV-compatible column definitions for every output
 
+## Installation
+
+Release artifacts are attached to each [GitHub Release](https://github.com/amirbena/career-target-intellgence/releases/latest).
+
+| Method | Status |
+| --- | --- |
+| [npx skills (skills.sh)](#npx-skills-skillssh) | Verified |
+| [Cursor](#cursor) | Install verified; in-app steps follow Cursor's docs |
+| [ChatGPT Plugin](#chatgpt-plugin-install) | Per OpenAI docs; **not verified end-to-end** |
+| [Claude Plugin](#claude-plugin), [Claude Skill](#claude-skill-manual), [Claude Project](#claude-project-external-kit) | Available (Claude Plugin ZIP ships from the first release containing it) |
+
+### npx skills (skills.sh)
+
+Prerequisite: Node.js 18+ (includes `npx`). Run in your project, or add `-g` for a user-level install:
+
+```bash
+npx skills add amirbena/career-target-intellgence
+```
+
+The command prompts you to pick the target agent(s); skip the prompt with `-a <agent>` (for example `-a claude-code`, `-a cursor`) and `-y`. It installs the Skill from [`skills/career-targeting-intelligence/`](skills/career-targeting-intelligence/) with its `references/` and `templates/`, from the current `main` rather than a pinned release.
+
+Verify: `npx skills list` shows `career-targeting-intelligence`. Then ask your agent: *"Here is my resume. Build my Candidate Profile."*
+
+### Cursor
+
+Prerequisites: a Cursor version with Agent Skills (the docs reference 2.4) and Node.js 18+.
+
+1. In your project folder, run:
+   ```bash
+   npx skills add amirbena/career-target-intellgence -a cursor -y
+   ```
+   This writes `.agents/skills/career-targeting-intelligence/` (`SKILL.md`, `references/`, `templates/`), which Cursor discovers automatically. Add `-g` to install for all projects.
+2. Restart Cursor or reopen the project.
+3. Verify: in the sidebar open **Customize → Skills** and look for `career-targeting-intelligence`.
+4. Use it: in Agent chat type `/career-targeting-intelligence` and send *"Here is my resume. Build my Candidate Profile."* Cursor also applies it automatically when a request matches its description.
+
+Details: [Cursor Agent Skills docs](https://cursor.com/docs/skills).
+
+### ChatGPT Plugin (install)
+
+Not verified end-to-end. OpenAI documents plugins in ChatGPT on web and desktop (not the IDE extension), and local plugins are installed through the **desktop app**. OpenAI's docs do not list plan requirements for local installs, and workspace admins can restrict plugins, so availability may vary by account.
+
+1. Download `career-targeting-intelligence-chatgpt-plugin.zip` from Releases and unzip it into `~/.codex/plugins/career-targeting-intelligence/` (so `plugin.json` sits at the top of that folder).
+2. Create `~/.agents/plugins/marketplace.json` (on Windows, `%USERPROFILE%\.agents\plugins\marketplace.json`):
+   ```json
+   {
+     "name": "local",
+     "plugins": [
+       {
+         "name": "career-targeting-intelligence",
+         "source": { "source": "local", "path": "./.codex/plugins/career-targeting-intelligence" },
+         "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+         "category": "Productivity"
+       }
+     ]
+   }
+   ```
+   `path` is relative to the marketplace root; if the plugin folder is not reachable from there, point `path` at it with a `./`-prefixed path inside that root.
+3. Restart the ChatGPT desktop app, open the **Plugins** directory, choose your `local` marketplace, and select the plus button to install `Career Targeting`.
+4. Start a new chat. Type `@` and choose the plugin, then send *"Here is my resume. Build my Candidate Profile."* A working install answers with the Candidate Profile workflow and asks for your resume details.
+
+Details: [chatgpt/sharing-and-publishing.md](chatgpt/sharing-and-publishing.md), [chatgpt/testing-guide.md](chatgpt/testing-guide.md); OpenAI: [Package your plugin](https://developers.openai.com/plugins/build/plugins), [Plugins in ChatGPT](https://learn.chatgpt.com/docs/plugins.md). Public directory submission is optional and not yet done.
+
+### Claude Plugin
+
+Download `career-targeting-intelligence-claude-plugin.zip` from Releases.
+
+- **Claude Code:** `claude --plugin-dir ./career-targeting-intelligence-claude-plugin.zip` (accepts a directory or a `.zip`).
+- **claude.ai / Cowork:** use **Upload plugin** and choose the ZIP.
+
+Details: [claude/packaging.md](claude/packaging.md#packaging-the-claude-plugin).
+
+### Claude Skill (manual)
+
+Download `career-targeting-intelligence.skill.zip` from Releases and install it as a Skill in Claude. Details: [claude/skill-manifest.md](claude/skill-manifest.md), [claude/project-setup.md](claude/project-setup.md).
+
+### Claude Project (external kit)
+
+Download `career-targeting-intelligence-claude-kit.zip` from Releases and follow [claude/external-install/README.md](claude/external-install/README.md) (checklist: [installation-checklist.md](claude/external-install/installation-checklist.md)).
+
 ## Build / package
 
 Every package is generated from the canonical sources above by a build
@@ -153,9 +233,15 @@ that platform's validator before packaging.
   ```
   producing `dist/career-targeting-intelligence-claude-kit.zip`
 
+### Claude Plugin
+
+- Canonical source: [claude/plugin/plugin.json](claude/plugin/plugin.json) (manifest) + the Claude Skill sources — the Skill is not forked
+- Build: `./scripts/package-claude-plugin.sh` (`.ps1` on Windows), producing `dist/career-targeting-intelligence-claude-plugin.zip`
+- Versions: set `RELEASE_VERSION` when packaging; the GitHub Release tag is the single source of truth ([claude/packaging.md](claude/packaging.md))
+
 ### Claude Skill
 
-- Canonical source: [claude/skill/SKILL.md](claude/skill/SKILL.md) entry point, packaged via an explicit allowlist ([claude/skill-manifest.md](claude/skill-manifest.md)) — never a recursive repository copy
+- Canonical source: [skills/career-targeting-intelligence/SKILL.md](skills/career-targeting-intelligence/SKILL.md) entry point, packaged via an explicit allowlist ([claude/skill-manifest.md](claude/skill-manifest.md)) — never a recursive repository copy
 - Build:
   ```bash
   ./scripts/package-claude-skill.sh

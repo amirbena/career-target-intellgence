@@ -1,12 +1,12 @@
 # Packaging Rules
 
 Detailed packaging and platform-experience rules for the Claude Skill,
-Claude Project, Claude external kit, and ChatGPT surfaces. Moved verbatim
+Claude Plugin, Claude Project, Claude external kit, and ChatGPT surfaces. Moved verbatim
 from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
 
 ## Claude Skill packaging rules
 
-- `claude/skill/` is the installable Skill source.
+- `skills/career-targeting-intelligence/` is the installable Skill source.
 - `core/`, `schemas/`, `ranking/`, `workflows/`, and `outputs/` remain
   canonical — the Skill adapts them, it does not redefine them.
 - Platform adaptations must not silently change canonical rules, numbers,
@@ -25,7 +25,7 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
   directory.
 - Every Skill change must validate package contents before completion.
 - The final packaged Skill `description` field (YAML frontmatter in
-  `claude/skill/SKILL.md`) must be < 2400 characters; prefer <= 2200 to
+  `skills/career-targeting-intelligence/SKILL.md`) must be < 2400 characters; prefer <= 2200 to
   retain a safety margin.
 - Measure the exact final `description` payload that ships in the Skill
   package, not a raw line count — YAML folding changes the actual string.
@@ -63,6 +63,36 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
 - Normalized archive paths and extracted file contents must be validated.
 - Organization sharing and external installation remain separate product
   paths.
+
+## Claude Plugin packaging rules
+
+- The Claude Plugin ZIP wraps the existing Skill: `claude/plugin/plugin.json`
+  is the manifest source and `skills/career-targeting-intelligence/` supplies the Skill content. The
+  Skill is never forked.
+- The archive root is the plugin root: `.claude-plugin/plugin.json` plus
+  `skills/career-targeting-intelligence/` with the same `SKILL.md`,
+  `references/*.md`, and `templates/*.md` allowlist as the Skill ZIP.
+- It is a skills-only plugin: no hooks, MCP servers, commands, or agents.
+- The packagers verify the exact archive file list (forward-slash paths, no
+  directory entries) and run `claude plugin validate` when the `claude` CLI
+  is available.
+- No Golden Journey content or personal data.
+- `scripts/package-claude-plugin.sh` / `.ps1` and
+  `scripts/validate-claude-plugin.sh` / `.ps1` must remain logically
+  equivalent.
+
+## Release versioning rules
+
+- The GitHub Release tag is the single source of truth for package versions.
+- Every packager (Skill, external kit, Claude Plugin, ChatGPT Plugin) accepts
+  `RELEASE_VERSION` (`MAJOR.MINOR.PATCH`) and writes it into the packaged
+  manifest or metadata: `metadata.version` in the packaged `SKILL.md`
+  frontmatter, `version` in each `plugin.json`, and a top-level `VERSION`
+  file in the external kit. Without it, local builds keep today's behavior.
+- `scripts/verify-archive-versions.sh` / `.ps1` compare every archive's
+  embedded version to the tag; the release fails on any mismatch.
+- Version literals in source files are not banned; they are placeholders and
+  are overridden at packaging time.
 
 ## ChatGPT packaging rules
 

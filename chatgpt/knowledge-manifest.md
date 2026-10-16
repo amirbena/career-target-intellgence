@@ -122,7 +122,7 @@ exists in the repository. There is no standalone Markdown output template
 for Research State; it is defined only as a schema
 (`schemas/research-state.schema.md`, already included in
 `06-workflow-and-state.md`) and packaged as a Skill template
-(`claude/skill/templates/research-state.md`) rather than as a repository
+(`skills/career-targeting-intelligence/templates/research-state.md`) rather than as a repository
 `outputs/*-template.md` file. This bundle therefore covers all ten
 `outputs/*-template.md` files that actually exist, plus
 `core/output-contracts.md`, `outputs/csv-column-contracts.md`, and

@@ -19,8 +19,13 @@ function Fail {
     exit 1
 }
 
+$ReleaseVersion = $env:RELEASE_VERSION
+if ($ReleaseVersion -and $ReleaseVersion -notmatch '^\d+\.\d+\.\d+$') {
+    Fail "RELEASE_VERSION must be MAJOR.MINOR.PATCH, got: $ReleaseVersion"
+}
+
 $RepoRoot = Split-Path -Parent $PSScriptRoot
-$SkillSourceDir = Join-Path $RepoRoot "claude\skill"
+$SkillSourceDir = Join-Path $RepoRoot "skills\career-targeting-intelligence"
 
 # Validate the Skill description field payload stays within the Claude
 # Skill description character limit before packaging anything.
@@ -62,6 +67,16 @@ New-Item -ItemType Directory -Path (Join-Path $PackageRoot "templates") -Force |
 Copy-Item -LiteralPath $SkillMdPath -Destination (Join-Path $PackageRoot "SKILL.md") -Force
 Copy-Item -Path (Join-Path $ReferencesDir "*.md") -Destination (Join-Path $PackageRoot "references") -Force
 Copy-Item -Path (Join-Path $TemplatesDir "*.md") -Destination (Join-Path $PackageRoot "templates") -Force
+
+# With RELEASE_VERSION set, record it as metadata.version in the packaged
+# SKILL.md frontmatter. Without it the source file is packaged unchanged.
+if ($ReleaseVersion) {
+    $PackagedSkill = Join-Path $PackageRoot "SKILL.md"
+    $Lines = [System.Collections.Generic.List[string]](((Get-Content -LiteralPath $PackagedSkill -Raw -Encoding UTF8) -replace "`r`n", "`n") -split "`n")
+    $End = $Lines.IndexOf("---", 1)
+    $Lines.InsertRange($End, [string[]]@("metadata:", "  version: $ReleaseVersion"))
+    [System.IO.File]::WriteAllText($PackagedSkill, ($Lines -join "`n"), (New-Object System.Text.UTF8Encoding($false)))
+}
 
 # Strip platform artifacts if any slipped in via the source tree.
 Get-ChildItem -LiteralPath $BuildDir -Recurse -Force -File |
