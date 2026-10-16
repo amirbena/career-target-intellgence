@@ -53,9 +53,9 @@ that platform's validator before packaging.
 
 ## Validation
 
-CI runs on Linux, so CI-only scripts are Bash only: `validate-branch-name.sh`, `validate-pr-release.sh`, and `verify-archive-versions.sh` have no `.ps1` twins (removed because no workflow or Windows packaging path uses them). The validators called by the `.ps1` packagers (`validate-chatgpt-plugin`, `validate-claude-plugin`, `validate-skill-description`) keep their `.ps1` versions.
+CI runs on Linux, so CI-only scripts are Bash only: `validate-branch-name.sh`, `validate-pr-release.sh`, and `verify-archive-versions.sh` have no `.ps1` twins (removed because no workflow or Windows packaging path uses them). `validate-claude-plugin.sh` is also Bash only (the Windows plugin packager skips it; run it under Bash or WSL). The validators still called by the `.ps1` packagers (`validate-chatgpt-plugin`, `validate-skill-description`) keep their `.ps1` versions.
 
 - `scripts/validate/validate-chatgpt-plugin.sh` / `.ps1` — ChatGPT Plugin manifest and skill gate, run automatically by `scripts/package/package-chatgpt-plugin.sh`
-- `scripts/validate/validate-claude-plugin.sh` / `.ps1` — Claude plugin manifest and marketplace manifest (`.claude-plugin/marketplace.json`): JSON syntax, required fields, source/skill paths, version consistency. Needs only `python3`; CI never invokes the `claude` CLI. Whether Claude can actually install and update the plugin is a [manual check](installation.md#manual-verification)
+- `scripts/validate/validate-claude-plugin.sh` — Claude plugin manifest and marketplace manifest (`.claude-plugin/marketplace.json`): JSON syntax, required fields, source/skill paths, version consistency. Needs only `python3`; CI never invokes the `claude` CLI. Whether Claude can actually install and update the plugin is a [manual check](installation.md#manual-verification)
 - `scripts/validate/validate-skill-description.sh` / `.ps1` — Claude Skill description length gate, run automatically by `scripts/package/package-claude-skill.sh`
 - [tests/README.md](../tests/README.md) — synthetic job-verification scenarios, quality-gate checklist, and package-alignment checklist (this repository is documentation-driven; these are reviewed synthetic scenarios rather than executable unit tests)

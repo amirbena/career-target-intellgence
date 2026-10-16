@@ -77,9 +77,9 @@ from `AGENTS.md`; the entry point is [../AGENTS.md](../AGENTS.md).
   directory entries) and run `scripts/validate/validate-claude-plugin.sh`
   on the built plugin; neither needs the `claude` CLI.
 - No Golden Journey content or personal data.
-- `scripts/package/package-claude-plugin.sh` / `.ps1` and
-  `scripts/validate/validate-claude-plugin.sh` / `.ps1` must remain logically
-  equivalent.
+- `scripts/package/package-claude-plugin.sh` / `.ps1` must remain logically
+  equivalent (the `.ps1` packager does not run the Bash-only
+  `validate-claude-plugin.sh`).
 
 ## Claude marketplace rules
 
