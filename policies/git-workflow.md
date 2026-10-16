@@ -142,7 +142,7 @@ opens no PR, so it is unaffected. Historical branches are not renamed.
 
 1. rename an auto-generated or otherwise non-compliant local branch with
    `git branch -m <type>/<issue-number>-<short-description>`;
-2. run `scripts/validate-branch-name.sh "$(git branch --show-current)"` and
+2. run `scripts/validate/validate-branch-name.sh "$(git branch --show-current)"` and
    push only if it passes.
 
 Do not rename a branch that already has an open PR; report it instead.
