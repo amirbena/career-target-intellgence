@@ -7,6 +7,8 @@ and potential hiring managers, and produces an evidence-based **manual**
 outreach queue. It runs on demand inside your AI assistant: no scraping,
 background automation, or automated outreach.
 
+**📖 [Read the Wiki](https://github.com/amirbena/career-target-intellgence/wiki)**: how the Skill works, what each reference and template is for, and how to extend it. The Wiki explains; this repository is the source of truth.
+
 ## Installation
 
 **Claude Code** (terminal; marketplace):
