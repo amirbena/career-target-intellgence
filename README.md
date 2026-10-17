@@ -61,6 +61,7 @@ job, refresh a company) run only the modules they need.
 
 ## Documentation
 
+- [Repository map](docs/repository-map.md): what each top-level area is, source of truth vs. packaging, and where to start by task
 - [Installation](docs/installation.md)
 - [Architecture](docs/architecture.md) and [Development](docs/development.md)
 - [Workflow](core/workflow.md), [job verification policy](core/job-verification-policy.md), [scope and non-goals](core/scope-and-non-goals.md)

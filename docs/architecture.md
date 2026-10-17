@@ -1,6 +1,6 @@
 # Architecture
 
-The product is a platform-independent methodology in `core/` and its supporting folders; the `claude/` and `chatgpt/` folders are thin platform wrappers generated from it. The [README](../README.md#architecture) has the short overview.
+The product is a platform-independent methodology in `core/` and its supporting folders; the `claude/` and `chatgpt/` folders are thin platform wrappers generated from it. The [repository map](repository-map.md) shows how every top-level area relates.
 
 ## Core journeys
 

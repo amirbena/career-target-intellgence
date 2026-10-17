@@ -73,7 +73,8 @@ development).
 | Issue label taxonomy | [policies/issue-labels.md](policies/issue-labels.md) |
 | Scope and non-goals | [core/scope-and-non-goals.md](core/scope-and-non-goals.md) |
 | Quality gates and cross-platform alignment | [core/quality-gates.md](core/quality-gates.md) |
-| Repository layout, validation scripts, and test scenarios | [README.md](README.md), [docs/development.md](docs/development.md), [tests/README.md](tests/README.md) |
+| Repository layout and where to start | [docs/repository-map.md](docs/repository-map.md) |
+| Validation scripts and test scenarios | [README.md](README.md), [docs/development.md](docs/development.md), [tests/README.md](tests/README.md) |
 
 Read the Git workflow before your first change, and the packaging rules
 before touching `claude/` or `chatgpt/` packaging.
