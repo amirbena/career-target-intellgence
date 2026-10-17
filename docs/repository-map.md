@@ -30,6 +30,7 @@ canonical sources and the three surfaces must stay equivalent.
 | [claude/](../claude/README.md) | Claude Project instructions, Skill trigger/state/artifact policy, packaging docs, plugin manifest, external install kit. | Platform surface; `external-install/` and `plugin/` are distribution | [README.md](../claude/README.md) |
 | [policies/](../policies/README.md) | Git/PR workflow, packaging rules, issue labels. | Policy | [git-workflow.md](../policies/git-workflow.md) |
 | [docs/](README.md) | Installation, architecture, development, and this map. | Docs | [installation.md](installation.md) |
+| [Wiki](https://github.com/amirbena/career-target-intellgence/wiki) | GitHub Wiki (outside the repository tree): how the Claude Skill works, what each reference and template is for, how to extend it. Summarizes and links; defines no rules. | Docs (explanatory, non-authoritative) | [Home](https://github.com/amirbena/career-target-intellgence/wiki) |
 | [scripts/](../scripts/README.md) | Package, validate, and release scripts. | Tooling | [development.md](development.md) |
 | [tests/](../tests/README.md) | Synthetic verification scenarios and checklists. | Fixture | [README.md](../tests/README.md) |
 | [examples/](../examples/README.md) | Synthetic end-to-end golden example ("Tova"). | Fixture | [examples/tova/](../examples/tova/) |
