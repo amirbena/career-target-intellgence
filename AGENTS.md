@@ -45,8 +45,10 @@ sources; each surface adapts them and must not redefine them.
   and any other applicable contract.
 - Wording, interaction style, formatting, and presentation may differ per
   platform. Behavior must not drift.
-- The Claude external self-install kit is a distribution artifact built from
-  existing Claude sources, not an independent behavioral surface.
+- The Claude external self-install kit and the Claude Plugin are distribution
+  artifacts built from existing Claude sources, not independent behavioral
+  surfaces. The ChatGPT Plugin package is the packaging of the ChatGPT
+  surface, not an additional one.
 - Exempt: work that ships no user-facing behavior — maintenance, CI/tooling,
   documentation or release infrastructure, research without a shipped
   capability, and behavior-neutral internal refactors.
