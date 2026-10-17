@@ -1,6 +1,6 @@
 # Development
 
-See the [repository map](repository-map.md) for the directory layout. Contributor and agent rules live in [AGENTS.md](../AGENTS.md) and [policies/](../policies/). The README keeps only a short [development summary](../README.md#development).
+See the [repository map](repository-map.md) for the directory layout. Contributor and agent rules live in [AGENTS.md](../AGENTS.md) and [policies/](../policies/).
 
 ## Build / package
 
