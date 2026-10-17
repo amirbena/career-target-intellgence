@@ -99,7 +99,7 @@ Before treating a generated ChatGPT Knowledge bundle, Claude Project Knowledge/I
 
 - it was produced by the repository's own build/packaging scripts, never hand-edited;
 - it reflects the current canonical `core/`, `schemas/`, `ranking/`, `workflows/`, and `outputs/` content, including the Job Record, Company State Record, job-verification policy, and eligibility gate;
-- the three platform surfaces remain semantically aligned — none defines a rule, enum, or threshold the others don't share.
+- the three platform surfaces (ChatGPT Custom GPT, Claude Skill, Claude Project) remain semantically aligned — none defines a rule, enum, or threshold the others don't share, and every applicable user-facing capability is exposed through all of them, per [Cross-package delivery](../AGENTS.md#cross-package-delivery).
 
 ## Universal Final Check
 

@@ -31,6 +31,32 @@ Detailed policy lives in linked documents; every rule has one home.
 - Do not push, open a PR, merge, or delete branches unless explicitly
   requested.
 
+## Cross-package delivery
+
+The supported behavioral package surfaces are the ChatGPT Custom GPT, the
+Claude Skill, and the Claude Project. `core/`, `schemas/`, `ranking/`,
+`workflows/`, and `outputs/` remain the canonical methodology and contract
+sources; each surface adapts them and must not redefine them.
+
+- A user-facing capability is complete only when it is exposed through all
+  three surfaces.
+- Exposure must be behaviorally equivalent: routing and triggers, inputs,
+  evidence and freshness rules, ranking and eligibility behavior, outputs,
+  and any other applicable contract.
+- Wording, interaction style, formatting, and presentation may differ per
+  platform. Behavior must not drift.
+- The Claude external self-install kit is a distribution artifact built from
+  existing Claude sources, not an independent behavioral surface.
+- Exempt: work that ships no user-facing behavior — maintenance, CI/tooling,
+  documentation or release infrastructure, research without a shipped
+  capability, and behavior-neutral internal refactors.
+- Feature Issues and their Acceptance Criteria must cover cross-package
+  exposure and equivalence when applicable, or state the exemption.
+
+Verification lives in the Cross-Platform Package Alignment gate in
+[core/quality-gates.md](core/quality-gates.md); packaging mechanics live in
+[policies/packaging-rules.md](policies/packaging-rules.md).
+
 ## Where the detailed rules live
 
 Responsibilities are separate: `core/` holds the product methodology,
